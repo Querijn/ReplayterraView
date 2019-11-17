@@ -1,3 +1,5 @@
+import AnimationDoneHandler from "./animation_done.js";
+
 export default class Animation {
 
 	constructor(effects) {
@@ -26,7 +28,9 @@ export default class Animation {
 	}
 
 	onDone(onDoneFunc) {
-		this._onDoneFuncs.push(onDoneFunc);
+		this._effects.push(new AnimationDoneHandler(onDoneFunc));
+
+		return this;
 	}
 
 	update(timeMs) {
@@ -34,7 +38,13 @@ export default class Animation {
 		let isDone = true;
 		for (const effect of this._effects) {
 
-			effect.update(timeMs);
+			if (effect.isDoneHandler) {
+				effect.onDone(this);
+			}
+			else {
+				effect.update(timeMs);
+			}
+
 			if (!effect.isDoneAt(timeMs)) {
 				isDone = false;
 				break;
@@ -44,9 +54,12 @@ export default class Animation {
 		if (isDone && this._effects.length > 0) {
 			const onDoneFuncs = this._onDoneFuncs;
 			this.reset();
-
-			for (const onDone of onDoneFuncs)
-				onDone(this);
 		}
+	}
+
+	get length() { 
+		return this._effects.reduce(function(prev, effect) {
+			return prev + effect.duration;
+		}, 0);
 	}
 }

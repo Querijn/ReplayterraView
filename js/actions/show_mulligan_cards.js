@@ -6,13 +6,17 @@ export default class ShowMulliganCardsAction extends BaseAction {
 
 	cards = [];
 
-	constructor(time, isYou, cards) {
-		super("ShowMulliganCards", time);
+	constructor(isYou, cards) {
+		super("ShowMulliganCards");
 
 		this.isYou = isYou;
 
 		for (const cardInfo of cards)
 			this.cards.push(new CardData(cardInfo.id, cardInfo.code));
+	}
+
+	isReadyToPlay(timeMs) {
+		return timeMs > 2000;
 	}
 
 	play() {
@@ -21,7 +25,7 @@ export default class ShowMulliganCardsAction extends BaseAction {
 		player.deck.drawToMulliganView(); // Draw a card (these are guaranteed at the top)
 	}
 
-	get relatedCardData() {
+	get deckCardData() {
 		return this.cards;
 	}
 }

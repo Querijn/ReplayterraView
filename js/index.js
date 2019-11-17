@@ -8,8 +8,7 @@ async function main() {
 
 	const fakeActions = [
 		{ 
-			name: "ShowMulliganCards", 
-			time: 1750, 
+			name: "ShowMulliganCards",
 			isYou: true, 
 			cards: [
 				{ id: "0", code: "01DE001" },
@@ -20,8 +19,7 @@ async function main() {
 		},
 		
 		{ 
-			name: "ShowMulliganCards", 
-			time: 1750, 
+			name: "ShowMulliganCards",
 			isYou: false, 
 			cards: [
 				{ id: "4", code: "01DE001" },
@@ -29,7 +27,33 @@ async function main() {
 				{ id: "6", code: "01DE001" },
 				{ id: "7", code: "01DE001" }, 
 			]
-		}
+		},
+
+		{ 
+			name: "ReplaceMulliganCards",
+			isYou: true, 
+			oldCards: [
+				{ id: "2", code: "01DE003" },
+				{ id: "3", code: "01DE004" }, 
+			],
+			newCards: [
+				{ id: "8", code: "01DE010" },
+				{ id: "9", code: "01DE011" }, 
+			]
+		},
+		
+		{ 
+			name: "ReplaceMulliganCards",
+			isYou: false, 
+			oldCards: [
+				{ id: "5", code: "01DE001" },
+				{ id: "7", code: "01DE001" }, 
+			],
+			newCards: [
+				{ id: "8", code: "01DE010" },
+				{ id: "9", code: "01DE011" }, 
+			]
+		},
 	]
 
 	Replay.play(fakeActions);

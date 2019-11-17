@@ -2,20 +2,23 @@ import Replay from "../replay.js";
 
 export default class BaseAction {
 
-	constructor(name, time) {
+	constructor(name) {
 		this.name = name;
-		this.time = time;
 	}
 
 	play() {
-		throw new Error("Play not implemented for this action!");
+		throw new Error("play not implemented for this action!");
+	}
+
+	isReadyToPlay(timeMs) {
+		throw new Error("isReadyToPlay not implemented for this action!");
 	}
 
 	destroy() { // Default destroy action
 		Replay.actions.splice(0, 1);
 	}
 
-	get relatedCardData() {
+	get deckCardData() {
 		return [];
 	}
 }

@@ -39,6 +39,9 @@ export default class AnimationEffect {
 		if (this.startTime < 0) {
 			this.startTime = performance.now();
 			this.endTime = this.startTime + this.duration;
+			
+			this.startValue = this.target[this.propertyName];
+			this.valueRange = this.targetValue - this.startValue;
 		}
 
 		const t = this.getProgress(timeMs);

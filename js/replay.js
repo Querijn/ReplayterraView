@@ -1,15 +1,17 @@
 import PlayerSide from "./player_side.js";
 import Scene from "./scene.js";
 import ShowMulliganCards from "./actions/show_mulligan_cards.js";
+import ReplaceMulliganCards from "./actions/replace_mulligan_cards.js";
 
 export default class Replay {
 
 	static speed = 1;
+	static actions = [];
 	static players = [ new PlayerSide(true), new PlayerSide(false) ];
 	static lastTime = -1;
 	static lastTimer = -1;
 	static forcedTime = -1;
-	static actions = [];
+	static timeSinceLastAction = 0;
 	static _currentActionIterator = 0;
 
 	static setupField(timeMs) {
@@ -22,7 +24,10 @@ export default class Replay {
 		const actionName = data.name;
 		switch (actionName) {
 			case "ShowMulliganCards":
-				return new ShowMulliganCards(data.time, data.isYou, data.cards);
+				return new ShowMulliganCards(data.isYou, data.cards);
+
+			case "ReplaceMulliganCards":
+				return new ReplaceMulliganCards(data.isYou, data.oldCards, data.newCards);
 
 			default:
 				throw new Error(`Unknown action ${actionName}! Args given:`, data);
@@ -35,12 +40,8 @@ export default class Replay {
 			console.log(`Adding ${actions.length} new actions..`);
 			for (let actionData of actions) {
 				const action = Replay.getAction(actionData);
-				action.time += 2000;
-
 				Replay.actions.push(action);
 			}
-
-			Replay.actions.sort((a, b) => a.time - b.time);
 
 			Replay.players[0].deck.prepare();
 			Replay.players[1].deck.prepare();
@@ -60,10 +61,17 @@ export default class Replay {
 		if (Replay.lastTime < 0 || Math.abs(timeMs - Replay.lastTime) > 1000) { // First time playing or difference in time is longer than a second, reinit.
 			Replay.setupField(timeMs);
 		}
-		else while (Replay.currentAction && Replay.currentAction.time > timeMs) {
+		else while (Replay.currentAction && Replay.currentAction.isReadyToPlay(timeMs)) {
 			Replay.currentAction.play();
 			Replay._currentActionIterator++;
+			Replay.timeSinceLastAction = performance.now();
+			
+			if (Replay.actions.length == Replay._currentActionIterator) {
+				console.log("Replay is done!");
+				break;
+			}
 		}
+
 
 		Replay.lastTime = timeMs;
 		Replay.lastTimer = performance.now();
@@ -72,5 +80,9 @@ export default class Replay {
 
 	static get currentAction() {
 		return this.actions[this._currentActionIterator];
+	}
+
+	static get timeMulliganResolved() {
+		return Math.max(this.players[0].mulliganView.resolveTime, this.players[1].mulliganView.resolveTime);
 	}
 }

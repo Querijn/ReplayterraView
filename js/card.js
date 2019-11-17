@@ -50,12 +50,16 @@ export default class Card extends RenderObject {
 		// this.rotation.y += 0.02;
 	}
 
-	moveTo(x, y, z = 1, durationMs = 250, resetRot = true) {
+	moveTo(x, y, z = 1, durationMs = 250, resetRot = true, resetScale = false) {
 
 		if (durationMs === 0) {
 			this.position.x = x;
 			this.position.y = y;
 			this.z = z;
+
+			if (resetScale) {
+				this.scale = scale;
+			}
 			
 			if (resetRot) {
 				this.rotation.z = this.isYours ? Math.PI : 0;
@@ -71,16 +75,32 @@ export default class Card extends RenderObject {
 			this.addAnimation().add(new AnimationEffect(Easing.easeInOutQuad, this.rotation, "z", this.isYours ? Math.PI : 0, durationMs));
 		}
 
-		console.log(`Moving card ${this.code} to ${x}, ${y} within ${durationMs} ms.`);
+		if (resetScale) {
+			this.addAnimation().add(new AnimationEffect(Easing.easeInOutQuad, this, "scale", 1, durationMs));
+		}
+
 		return animation;
 	}
 
+	showFront(delay = 300, durationMs = 500) { 
+
+		if (Math.abs(this.rotation.y) < 0.1) { // TODO: Make flip use showBack/showFront rather than this way
+			return this.flip(delay, durationMs);
+		}
+
+		return this.addAnimation(); // return empty animation
+	}
+
+	showBack(delay = 300, durationMs = 500) { 
+
+		if (Math.abs(Math.PI - this.rotation.y) < 0.1) { // TODO: Make flip use showBack/showFront rather than this way
+			return this.flip(delay, durationMs);
+		}
+
+		return this.addAnimation(); // return empty animation
+	}
+
 	flip(delay = 300, durationMs = 500) {
-		
-		this.addAnimation()
-		.add(new AnimationDelay(delay))
-		.add(new AnimationEffect(Easing.easeInOutQuad, this, "scale", 1.2, 2 * durationMs))
-		.add(new AnimationEffect(Easing.easeOutQuad, this, "scale", 1, 2 * durationMs));
 
 		return this.addAnimation()
 		.add(new AnimationDelay(delay))
@@ -107,7 +127,7 @@ export default class Card extends RenderObject {
 	}
 	
 	updateScale() { 
-		this.quad.scale.x = this.quad.scale.y = this.scale * (1.0 + this.z * 0.03);
+		this.quad.scale.x = this.quad.scale.y = this.scale * (1.0 - (this.z * 0.03));
 
 		this.position.z = 255 - this.z;
 	}
