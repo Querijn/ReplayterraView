@@ -42,10 +42,11 @@ export default class Animation {
 		}
 
 		if (isDone && this._effects.length > 0) {
-			for (const onDone in this._onDoneFuncs)
-				onDone(this);
-
+			const onDoneFuncs = this._onDoneFuncs;
 			this.reset();
+
+			for (const onDone of onDoneFuncs)
+				onDone(this);
 		}
 	}
 }
