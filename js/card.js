@@ -3,15 +3,17 @@ import RenderObject from "./render_object.js";
 import CardData from "./card_data.js";
 import * as Easing from "./easing.js";
 import AnimationEffect from "./animation_effect.js";
+import AnimationDelay from "./animation_delay.js";
 
 export default class Card extends RenderObject {
 
 	static fragShader = null;
 	static vertShader = null;
 
-	constructor(id, code) {
+	constructor(id, code, isYours) {
 		super();
 		this.data = new CardData(id, code);
+		this.isYours = isYours;
 
 		if (!Card.fragShader || !Card.vertShader)
 			throw new Error("Could not find shaders!");
@@ -45,19 +47,43 @@ export default class Card extends RenderObject {
 		// this.rotation.y += 0.02;
 	}
 
-	moveTo(x, y, durationMs = 250) {
+	moveTo(x, y, durationMs = 250, resetRot = true) {
 
 		if (durationMs === 0) {
 			this.position.x = x;
 			this.position.y = y;
+
+			
+			if (resetRot) {
+				this.rotation.z = this.isYours ? Math.PI : 0;
+			}
 			return;
 		}
 
+		const animation = 
+		this.addAnimation().add(new AnimationEffect(Easing.easeInOutQuad, this.position, "x", x, durationMs));
+		this.addAnimation().add(new AnimationEffect(Easing.easeInOutQuad, this.position, "y", y, durationMs));
+		if (resetRot) {
+			this.addAnimation().add(new AnimationEffect(Easing.easeInOutQuad, this.rotation, "z", this.isYours ? Math.PI : 0, durationMs));
+		}
+
 		console.log(`Moving card ${this.code} to ${x}, ${y} within ${durationMs} ms.`);
-		return [
-			this.addAnimation().add(new AnimationEffect(Easing.easeInOutQuad, this.position, "x", x, durationMs)),
-			this.addAnimation().add(new AnimationEffect(Easing.easeInOutQuad, this.position, "y", y, durationMs))
-		];
+		return animation;
+	}
+
+	flip(delay = 300, durationMs = 500) {
+		
+		this.addAnimation()
+		.add(new AnimationEffect(Easing.easeInOutQuad, this.scale, "x", this.scale.x * 2, durationMs / 2))
+		.add(new AnimationEffect(Easing.easeInOutQuad, this.scale, "x", this.scale.x, durationMs / 2));
+		
+		this.addAnimation()
+		.add(new AnimationEffect(Easing.easeInOutQuad, this.scale, "y", this.scale.y * 2, durationMs / 2))
+		.add(new AnimationEffect(Easing.easeInOutQuad, this.scale, "y", this.scale.y, durationMs / 2));
+
+		return this.addAnimation()
+		.add(new AnimationDelay(delay))
+		.add(new AnimationEffect(Easing.easeInOutQuad, this.rotation, "y", this.rotation.y + Math.PI, durationMs));
 	}
 
 	static async loadThreeJSShader() {
@@ -84,6 +110,7 @@ export default class Card extends RenderObject {
 	get isRenderObject() { return true; }
 	get position() { return this.quad.position; }
 	get rotation() { return this.quad.rotation; }
+	get scale() { return this.quad.scale; }
 	get width() { return this.quad && this.quad.parameters && this.quad.geometry ? this.quad.geometry.parameters.width : 1; }
 	get height() { return this.quad && this.quad.parameters && this.quad.geometry ? this.quad.geometry.parameters.height : 1; }
 }
