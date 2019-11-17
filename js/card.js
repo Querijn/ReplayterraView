@@ -54,9 +54,10 @@ export default class Card extends RenderObject {
 		}
 
 		console.log(`Moving card ${this.code} to ${x}, ${y} within ${durationMs} ms.`);
-		return this.addAnimation()
-		.add(new AnimationEffect(Easing.easeInOutQuad, this.position, "x", x, durationMs))
-		.add(new AnimationEffect(Easing.easeInOutQuad, this.position, "y", x, durationMs));
+		return [
+			this.addAnimation().add(new AnimationEffect(Easing.easeInOutQuad, this.position, "x", x, durationMs)),
+			this.addAnimation().add(new AnimationEffect(Easing.easeInOutQuad, this.position, "y", y, durationMs))
+		];
 	}
 
 	static async loadThreeJSShader() {
@@ -83,4 +84,6 @@ export default class Card extends RenderObject {
 	get isRenderObject() { return true; }
 	get position() { return this.quad.position; }
 	get rotation() { return this.quad.rotation; }
+	get width() { return this.quad && this.quad.parameters && this.quad.geometry ? this.quad.geometry.parameters.width : 1; }
+	get height() { return this.quad && this.quad.parameters && this.quad.geometry ? this.quad.geometry.parameters.height : 1; }
 }
