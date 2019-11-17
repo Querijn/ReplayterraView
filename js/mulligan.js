@@ -21,7 +21,12 @@ export default class Mulligan {
 		for (let i = 0; i < 4; i++) {
 			const card = cards[i];
 			this.cards.push(card);	
-			const anim = card.moveTo(left + (width / 4) * i, this.y, 250 * (i + 1)) // Move to mulligan position.
+			const anim = card.moveTo(
+				left + (width / 4) * i, // x
+				this.y, 				// y
+				3, 						// z
+				250 * (i + 1)			// move duration
+			) // Move to mulligan position.
 			
 			if (!this.player.isTop) // Flip if bottom player
 				anim.onDone((anim) => { card.flip() });

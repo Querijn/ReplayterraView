@@ -41,18 +41,21 @@ export default class Card extends RenderObject {
 
 		this.position.z = 2;
 		this.rotation.z = Math.PI; // Cards are upside down because I want topleft to be 0, 0
+
+		this.scale = 1;
+		this.z = 1;
 	}
 
 	update() {
 		// this.rotation.y += 0.02;
 	}
 
-	moveTo(x, y, durationMs = 250, resetRot = true) {
+	moveTo(x, y, z = 1, durationMs = 250, resetRot = true) {
 
 		if (durationMs === 0) {
 			this.position.x = x;
 			this.position.y = y;
-
+			this.z = z;
 			
 			if (resetRot) {
 				this.rotation.z = this.isYours ? Math.PI : 0;
@@ -63,6 +66,7 @@ export default class Card extends RenderObject {
 		const animation = 
 		this.addAnimation().add(new AnimationEffect(Easing.easeInOutQuad, this.position, "x", x, durationMs));
 		this.addAnimation().add(new AnimationEffect(Easing.easeInOutQuad, this.position, "y", y, durationMs));
+		this.addAnimation().add(new AnimationEffect(Easing.easeInOutQuad, this, "z", z, durationMs));
 		if (resetRot) {
 			this.addAnimation().add(new AnimationEffect(Easing.easeInOutQuad, this.rotation, "z", this.isYours ? Math.PI : 0, durationMs));
 		}
@@ -74,12 +78,9 @@ export default class Card extends RenderObject {
 	flip(delay = 300, durationMs = 500) {
 		
 		this.addAnimation()
-		.add(new AnimationEffect(Easing.easeInOutQuad, this.scale, "x", this.scale.x * 2, durationMs / 2))
-		.add(new AnimationEffect(Easing.easeInOutQuad, this.scale, "x", this.scale.x, durationMs / 2));
-		
-		this.addAnimation()
-		.add(new AnimationEffect(Easing.easeInOutQuad, this.scale, "y", this.scale.y * 2, durationMs / 2))
-		.add(new AnimationEffect(Easing.easeInOutQuad, this.scale, "y", this.scale.y, durationMs / 2));
+		.add(new AnimationDelay(delay))
+		.add(new AnimationEffect(Easing.easeInOutQuad, this, "scale", 1.2, 2 * durationMs))
+		.add(new AnimationEffect(Easing.easeOutQuad, this, "scale", 1, 2 * durationMs));
 
 		return this.addAnimation()
 		.add(new AnimationDelay(delay))
@@ -104,13 +105,24 @@ export default class Card extends RenderObject {
 		
 		console.log("Card shader loaded.");
 	}
+	
+	updateScale() { 
+		this.quad.scale.x = this.quad.scale.y = this.scale * (1.0 + this.z * 0.03);
+
+		this.position.z = 255 - this.z;
+	}
 
 	get code() { return this.data.code; }
 	get id() { return this.data.id; }
 	get isRenderObject() { return true; }
 	get position() { return this.quad.position; }
 	get rotation() { return this.quad.rotation; }
-	get scale() { return this.quad.scale; }
 	get width() { return this.quad && this.quad.parameters && this.quad.geometry ? this.quad.geometry.parameters.width : 1; }
 	get height() { return this.quad && this.quad.parameters && this.quad.geometry ? this.quad.geometry.parameters.height : 1; }
+
+	get z() { return this._z; }
+	set z(newZ) { this._z = newZ; this.updateScale(); }
+
+	get scale() { return this._scale; }
+	set scale(newScale) { this._scale = newScale; this.updateScale(); }
 }
