@@ -17,7 +17,7 @@ export default class Mulligan {
 
 	addCards(cards, pos) {
 
-		const width = 300; // TODO: Make variable
+		const width = 600; // TODO: Make variable
 		if (!cards || cards.length == 0)
 			return;
 
@@ -41,6 +41,9 @@ export default class Mulligan {
 				250 * (index + 1)					// move duration
 			);
 			
+			card.addAnimation()
+			.add(new AnimationEffect(Easing.easeInOutQuad, card, "scale", 2.6, anim.length));
+			
 			const delay = 300;
 			const duration = 500;
 
@@ -50,8 +53,13 @@ export default class Mulligan {
 
 					card.addAnimation()
 					.add(new AnimationDelay(delay))
-					.add(new AnimationEffect(Easing.easeInOutQuad, card, "scale", 1.6, 2 * duration))
-					.add(new AnimationEffect(Easing.easeOutQuad, card, "scale", 1.2, 2 * duration));
+					.add(new AnimationEffect(Easing.easeInOutQuad, card, "scale", 3.6, duration / 2))
+					.add(new AnimationEffect(Easing.easeOutQuad, card, "scale", 2.6, duration / 2));
+					
+					card.addAnimation()
+					.add(new AnimationDelay(delay))
+					.add(new AnimationEffect(Easing.easeInOutQuad, card, "z", 5, duration / 2))
+					.add(new AnimationEffect(Easing.easeInOutQuad, card, "z", 3, duration / 2))
 				});
 			}
 			else {
