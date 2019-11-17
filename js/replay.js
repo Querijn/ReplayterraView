@@ -4,6 +4,7 @@ import ShowMulliganCards from "./actions/show_mulligan_cards.js";
 
 export default class Replay {
 
+	static speed = 1;
 	static players = [ new PlayerSide(true), new PlayerSide(false) ];
 	static lastTime = -1;
 	static lastTimer = -1;
@@ -14,10 +15,6 @@ export default class Replay {
 	static setupField(timeMs) {
 		console.log(`Reinitialising field at time ${timeMs}..`);
 		this.lastTime = timeMs;
-	}
-
-	static setTime(timeMs) {
-		this.forcedTime = timeMs;
 	}
 
 	static getAction(data) {
@@ -51,7 +48,7 @@ export default class Replay {
 
 		requestAnimationFrame(Replay.play); // Prepare next frame.
 
-		const deltaMs = performance.now() - Replay.lastTimer;
+		const deltaMs = (performance.now() - Replay.lastTimer) * Replay.speed;
 		const timeMs = Replay.lastTime >= 0 ? Replay.lastTime + deltaMs : 0;
 
 		// If time was forced
