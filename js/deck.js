@@ -35,7 +35,7 @@ export default class Deck {
 		return anim.onDone(() => {
 			card.addAnimation()
 			.add(new AnimationEffect(Easing.easeInOutQuad, card.rotation, "z", this.player.isTop ? 0 : Math.PI + (Math.random() - 0.5) * 20 * (Math.PI/180), 120)); 
-			card.moveTo(this.x, this.y, 0, 120, false);
+			card.moveTo(this.x, this.y, 0, 120, false, true);
 		});
 	}
 
