@@ -13,11 +13,11 @@ export default class Deck {
 	}
 
 	addToTop(cardData) {
-		const card = cardData.isRenderObject ? cardData : new Card(cardData.id, cardData.code);
+		const card = cardData.isRenderObject ? cardData : new Card(cardData.id, cardData.code, !this.player.isTop);
 		this.cards.push(card);
 
-		card.rotation.z += (Math.random() - 0.5) * 10 * (Math.PI/180);
-		card.moveTo(this.x, this.y, 0);
+		card.rotation.z = this.player.isTop ? 0 : Math.PI + (Math.random() - 0.5) * 10 * (Math.PI/180);
+		card.moveTo(this.x, this.y, 0, false);
 	}
 
 	prepare() {
