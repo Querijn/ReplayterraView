@@ -1,0 +1,5 @@
+{
+	"prettier.tabWidth": 4,
+	"editor.insertSpaces": false
+	"glsllint.glslangValidatorPath": "${workspaceFolder}/bin/glsl/bin/glslangValidator.exe"
+}
