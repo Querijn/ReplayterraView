@@ -47,7 +47,6 @@ export default class Card extends RenderObject {
 	}
 
 	update() {
-		// this.rotation.y += 0.02;
 	}
 
 	moveTo(x, y, z = 1, durationMs = 250, resetRot = true, resetScale = false) {
