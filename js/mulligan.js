@@ -27,6 +27,7 @@ export default class Mulligan {
 				this.resolveTime = performance.now();
 		};
 
+		let lastAnimation = null;
 		const left = this.x - width / 2.733; // TODO: This is now completely wrong but whatever.
 		for (let i = 0; i < cards.length; i++) {
 
@@ -38,8 +39,11 @@ export default class Mulligan {
 				left + (width / 4) * index,		// x
 				this.y, 						// y
 				3, 								// z
-				250 * (index + 1)					// move duration
+				250 * (index + 1)				// move duration
 			);
+
+			if (i + 1 == cards.length)
+				lastAnimation = anim;
 			
 			card.addAnimation()
 			.add(new AnimationEffect(Easing.easeInOutQuad, card, "scale", 2.6, anim.length));
@@ -68,6 +72,9 @@ export default class Mulligan {
 				.onDone(finalResolve);
 			}
 		}
+
+		return lastAnimation;
+	}
 	}
 
 	get x() { return this._x; }
