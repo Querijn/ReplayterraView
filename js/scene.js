@@ -20,10 +20,10 @@ export default class Scene {
 		this.height = 600; // window.innerHeight;
 
 		this.camera = new THREE.OrthographicCamera(0, this.width, 0, this.height, 0, 10000);
-		this.renderer = new THREE.WebGLRenderer({ antialias: true });
+		this.renderer = new THREE.WebGLRenderer({ alpha: true, antialias: true });
 		this.camera.position.z = 680;
 
-		Scene.renderer.setSize(window.innerWidth, window.innerHeight); // TODO: When the above TODO is fixed, change this to this.width and this.height
+		Scene.renderer.setSize(this.width, this.height);
 		document.body.appendChild(this.renderer.domElement);
 
 		this.textureLoader = new THREE.TextureLoader();
@@ -33,6 +33,7 @@ export default class Scene {
 
 	static _onResize() { 
 
+		return; // todo: fix this
 		if (Scene.isThreeJS) {
 			Scene.camera.right = this.width;
 			Scene.camera.bottom = this.height;
