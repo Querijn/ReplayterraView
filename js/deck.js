@@ -55,7 +55,7 @@ export default class Deck {
 
 	drawToMulliganView(cardIndex = null) {
 		const movingCards = cardIndex === null ? this.cards.splice(0, 4) : this.cards.splice(cardIndex, 1);
-		this.player.mulliganView.addCards(movingCards, cardIndex);
+		return this.player.mulliganView.addCards(movingCards, cardIndex);
 	}
 
 	get x() { return this._x; }
