@@ -13,7 +13,7 @@ export default class PlayCardToBench extends BaseAction {
 	}
 
 	isReadyToPlay(timeMs) {
-		return ReplaceMulliganCardsAction.timeSettled > 0 && timeMs - ReplaceMulliganCardsAction.timeSettled > 250;
+		return false;
 	}
 
 	play() {

@@ -42,7 +42,6 @@ export default class Hand {
 			const destX = left + (width / this.cards.length - 1) * i;
 
 			const distFromMid = (Math.abs(destX - this.x) / (width * 0.5));
-			console.log(distFromMid);
 
 			const topY = this.player.isTop ? -1 : 1;
 			const destY = this.y + topY * distFromMid * 40; // Based on distance from middle, move down 0~40 pixels.
