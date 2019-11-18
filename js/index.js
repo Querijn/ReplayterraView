@@ -54,6 +54,18 @@ async function main() {
 				{ id: "9", code: "01DE011" }, 
 			]
 		},
+		
+		{ 
+			name: "DrawCard",
+			isYou: false, 
+			card: { id: "10", code: "01DE011" }, 
+		},
+		
+		{ 
+			name: "DrawCard",
+			isYou: true, 
+			card: { id: "11", code: "01DE011" }, 
+		},
 	]
 
 	Replay.play(fakeActions);

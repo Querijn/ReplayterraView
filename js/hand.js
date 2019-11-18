@@ -39,15 +39,20 @@ export default class Hand {
 		for (let i = 0; i < this.cards.length; i++) {
 			const card = this.cards[i];
 			
+			const destX = left + (width / this.cards.length - 1) * i;
+
+			const distFromMid = (Math.abs(destX - this.x) / (width * 0.5));
+			console.log(distFromMid);
+
 			const topY = this.player.isTop ? -1 : 1;
-			const destX = left + (width / 4) * i;
-			const moveDuration = 250 - Math.min(120, 0.5 * (destX - card.position.x));
+			const destY = this.y + topY * distFromMid * 40; // Based on distance from middle, move down 0~40 pixels.
+			const moveDuration = 120;
 			// Rotate slightly based on i
 			anim = card.moveTo( // Move to hand position.
-				destX,											// x
-				this.y + topY * Math.abs(destX - this.x) * 0.2,	// y
-				3,			 									// z
-				moveDuration									// move duration
+				destX,				// x
+				destY,				// y
+				3 + i,				// z
+				moveDuration		// move duration
 			);
 
 			card.addAnimation()
