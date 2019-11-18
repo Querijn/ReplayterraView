@@ -39,7 +39,10 @@ export default class Animation {
 		for (const effect of this._effects) {
 
 			if (effect.isDoneHandler) {
-				effect.onDone(this);
+				if (effect.onDone) {
+					effect.onDone(this);
+					effect.onDone = null;
+				}
 			}
 			else {
 				effect.update(timeMs);
