@@ -82,7 +82,7 @@ export default class Card extends RenderObject {
 		return animation;
 	}
 
-	showFront(delay = 300, durationMs = 500) { 
+	showFront(delay = 0, durationMs = 500) { 
 
 		if (Math.abs(this.rotation.y) < 0.1) { // TODO: Make flip use showBack/showFront rather than this way
 			return this.flip(delay, durationMs);
@@ -91,7 +91,7 @@ export default class Card extends RenderObject {
 		return this.addAnimation(); // return empty animation
 	}
 
-	showBack(delay = 300, durationMs = 500) { 
+	showBack(delay = 0, durationMs = 500) { 
 
 		if (Math.abs(Math.PI - this.rotation.y) < 0.1) { // TODO: Make flip use showBack/showFront rather than this way
 			return this.flip(delay, durationMs);
@@ -100,11 +100,12 @@ export default class Card extends RenderObject {
 		return this.addAnimation(); // return empty animation
 	}
 
-	flip(delay = 300, durationMs = 500) {
+	flip(delay = 0, durationMs = 500) {
 
+		const newRot = this.rotation.y == 0 ? Math.PI : 0;
 		return this.addAnimation()
 		.add(new AnimationDelay(delay))
-		.add(new AnimationEffect(Easing.easeInOutQuad, this.rotation, "y", this.rotation.y + Math.PI, durationMs));
+		.add(new AnimationEffect(Easing.easeInOutQuad, this.rotation, "y", newRot, durationMs));
 	}
 
 	static async loadThreeJSShader() {
