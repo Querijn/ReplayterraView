@@ -1,6 +1,7 @@
 import BaseAction from "./base_action.js";
 import Replay from "../replay.js";
 import CardData from "../card_data.js";
+import AnimationDelay from "../animation_delay.js";
 
 export default class ReplaceMulliganCardsAction extends BaseAction {
 
@@ -37,7 +38,15 @@ export default class ReplaceMulliganCardsAction extends BaseAction {
 
 			const card = player.mulliganView.cards.splice(cardIndex, 1)[0];
 			player.deck.addToBottom(card).onDone(() => {
-				player.deck.drawToMulliganView(cardIndex + pos++);
+				player.deck.drawToMulliganView(cardIndex + pos++).onDone(() => {
+					
+					
+					card.addAnimation()
+					.add(new AnimationDelay(4000))
+					.onDone(() => { 
+						player.mulliganView.moveToHand();
+					});
+				});
 			});
 		}
 	}

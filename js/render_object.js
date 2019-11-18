@@ -25,7 +25,17 @@ export default class RenderObject {
 		for (let animation of this.animations) {
 			animation.update(timeMs);
 		}
+		
+		if (!this.isAnimationPlaying)
+			this.animations = [];
 	}
 
 	update() { throw new Error("Not implemented!"); }
+
+	get isAnimationPlaying() { 
+		for (let animation of this.animations)
+			if (animation.isDone)
+				return true;
+		return false;
+	}
 }

@@ -75,6 +75,12 @@ export default class Mulligan {
 
 		return lastAnimation;
 	}
+
+	moveToHand() {
+		const cards = this.cards.sort((c1, c2) => c1.position.x - c2.position.x);
+		this.cards = [];
+
+		this.player.hand.addCards(cards);
 	}
 
 	get x() { return this._x; }
