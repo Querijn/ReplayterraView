@@ -33,19 +33,19 @@ export default class ReplaceMulliganCardsAction extends BaseAction {
 	static settle() {
 		this.settleCount++;
 		if (this.settleCount == 2) {
-			Replay.players[0].mulliganView.moveToHand();
-			Replay.players[1].mulliganView.moveToHand();
+			Replay.opponent.mulliganView.moveToHand();
+			Replay.you.mulliganView.moveToHand();
 			this.timeSettled = performance.now();
 		}
 	}
 
 	play() {
 		console.log(`${performance.now()}: Playing ${this.name}: ${this.oldCards.length} cards will be replaced for ${this.isYou ? "you" : "them"}`)
-		const player = Replay.players[this.isYou ? 0 : 1];
+		const player = this.isYou ? Replay.you : Replay.opponent;
 		
 		let pos = 0;
 		for (const cardInfo of this.oldCards) {
-			const cardIndex = player.mulliganView.cards.findIndex((c) => c.id == c.id);
+			const cardIndex = player.mulliganView.cards.findIndex((c) => cardInfo.id == c.id);
 			if (cardIndex < 0)
 				throw new Error(`Could not find card by ID ${cardInfo.id}`);
 
@@ -65,5 +65,9 @@ export default class ReplaceMulliganCardsAction extends BaseAction {
 
 	get deckCardData() {
 		return this.newCards;
+	}
+
+	isPlayerAction(isYou) {
+		return this.isYou == isYou;
 	}
 }

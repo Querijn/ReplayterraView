@@ -16,16 +16,20 @@ export default class ShowMulliganCardsAction extends BaseAction {
 	}
 
 	isReadyToPlay(timeMs) {
-		return timeMs > 2000;
+		return timeMs > 1000;
 	}
 
 	play() {
-		const player = Replay.players[this.isYou ? 0 : 1];
+		const player = this.isYou ? Replay.you : Replay.opponent;
 
 		player.deck.drawToMulliganView(); // Draw a card (these are guaranteed at the top)
 	}
 
 	get deckCardData() {
 		return this.cards;
+	}
+
+	isPlayerAction(isYou) {
+		return this.isYou == isYou;
 	}
 }

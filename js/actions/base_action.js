@@ -21,4 +21,8 @@ export default class BaseAction {
 	get deckCardData() {
 		return [];
 	}
+
+	isPlayerAction(isYou) {
+		return false;
+	}
 }

@@ -47,6 +47,9 @@ export default class Deck {
 		for (const action of Replay.actions) {
 			const cards = action.deckCardData;
 			
+			if (!action.isPlayerAction(!this.player.isTop))
+				continue;
+				
 			for (const card of cards) {
 				this.addToTop(card);
 			}

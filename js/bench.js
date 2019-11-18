@@ -2,7 +2,7 @@ import * as Easing from "./easing.js";
 import AnimationEffect from "./animation_effect.js";
 import AnimationDelay from "./animation_delay.js";
 
-export default class Hand {
+export default class Bench {
 
 	cards = [];
 
@@ -28,7 +28,7 @@ export default class Hand {
 	fixPositions() {
 
 		const rotOffset = 60
-		const width = 300;
+		const width = 400;
 		const left = this.x - width / 2.733; // TODO: This is now completely wrong but whatever.
 
 		const botRotBase = !this.player.isTop ? Math.PI : 0;					// Bottom cards are not upside down
@@ -54,24 +54,11 @@ export default class Hand {
 				moveDuration		// move duration
 			);
 
-			// Rotate slightly based on i
 			card.addAnimation()
-			.add(new AnimationEffect(Easing.easeOutCubic, card.rotation, "z", leftRot + rotStep * i, moveDuration));
-
-			card.addAnimation()
-			.add(new AnimationEffect(Easing.easeOutCubic, card, "scale", 2.0, moveDuration));
+			.add(new AnimationEffect(Easing.easeOutCubic, card, "scale", 1.0, moveDuration));
 		}
 		
 		return anim;
-	}
-
-	addCardToBench(cardData) {
-		const cardIndex = this.cards.findIndex((c) => cardData.id == c.id);
-		if (cardIndex < 0)
-			throw new Error(`The hand can't move card ${cardData.id} to the bench because the bench does not have it!`);
-
-		const card = this.cards.splice(0, 1)[0];
-		this.player.bench.addCard(card);
 	}
 
 	get x() { return this._x; }

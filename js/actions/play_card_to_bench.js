@@ -3,10 +3,10 @@ import Replay from "../replay.js";
 import CardData from "../card_data.js";
 import ReplaceMulliganCardsAction from "./replace_mulligan_cards.js";
 
-export default class DrawCardAction extends BaseAction {
+export default class PlayCardToBench extends BaseAction {
 
 	constructor(isYou, card) {
-		super("DrawCard");
+		super("PlayCardToBench");
 
 		this.isYou = isYou;
 		this.card = card;
@@ -18,11 +18,11 @@ export default class DrawCardAction extends BaseAction {
 
 	play() {
 		const player = this.isYou ? Replay.you : Replay.opponent;
-		player.deck.drawToHand(); // Draw a card (these are guaranteed at the top)
+		player.hand.addCardToBench(this.card);
 	}
 
 	get deckCardData() {
-		return [ this.card ];
+		return [];
 	}
 
 	isPlayerAction(isYou) {

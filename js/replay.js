@@ -3,6 +3,9 @@ import Scene from "./scene.js";
 import ShowMulliganCards from "./actions/show_mulligan_cards.js";
 import ReplaceMulliganCards from "./actions/replace_mulligan_cards.js";
 import DrawCard from "./actions/draw_card.js";
+import RoundStart from "./actions/round_start.js";
+import PlayCardToBench from "./actions/play_card_to_bench.js";
+import { linear } from "./easing.js";
 
 export default class Replay {
 
@@ -32,6 +35,12 @@ export default class Replay {
 
 			case "DrawCard":
 				return new DrawCard(data.isYou, data.card);
+
+			case "RoundStart":
+				return new RoundStart(data.roundId);
+
+			case "PlayCardToBench":
+				return new PlayCardToBench(data.isYou, data.card);
 
 			default:
 				throw new Error(`Unknown action ${actionName}! Args given:`, data);
@@ -88,5 +97,13 @@ export default class Replay {
 
 	static get timeMulliganResolved() {
 		return Math.max(this.players[0].mulliganView.resolveTime, this.players[1].mulliganView.resolveTime);
+	}
+
+	static get you() {
+		return Replay.players[1];
+	}
+
+	static get opponent() {
+		return Replay.players[0];
 	}
 }
