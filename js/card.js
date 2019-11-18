@@ -41,6 +41,7 @@ export default class Card extends RenderObject {
 
 		this.position.z = 2;
 		this.rotation.z = Math.PI; // Cards are upside down because I want topleft to be 0, 0
+		// TODO: Aim camera at -z
 
 		this.scale = 1;
 		this.z = 1;
