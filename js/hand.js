@@ -19,6 +19,12 @@ export default class Hand {
 		this.fixPositions();
 	}
 
+	addCard(card) {
+		this.cards.push(card);
+
+		this.fixPositions();
+	}
+
 	fixPositions() {
 
 		const rotOffset = 60

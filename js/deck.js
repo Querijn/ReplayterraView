@@ -58,6 +58,27 @@ export default class Deck {
 		return this.player.mulliganView.addCards(movingCards, cardIndex);
 	}
 
+	drawToHand() {
+		const card = this.cards.splice(0, 1)[0]; // Take top card
+
+		// Present the card if we're the player.
+		if (!this.player.isTop) {
+			card.moveTo(400, 300, 10, 300).onDone(() => {
+				card.showFront();
+
+				card.addAnimation()
+				.add(new AnimationDelay(1000))
+				.onDone(() => this.player.hand.addCard(card));
+			});
+			
+			card.addAnimation()
+			.add(new AnimationEffect(Easing.easeOutQuint, card, "scale", 4.0, 300));
+		}
+		else {
+			this.player.hand.addCard(card);
+		}
+	}
+
 	get x() { return this._x; }
 	get y() { return this._y; }
 }

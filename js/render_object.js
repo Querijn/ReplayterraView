@@ -30,6 +30,10 @@ export default class RenderObject {
 			this.animations = [];
 	}
 
+	cancelAnimations() {
+		this.animations = [];
+	}
+
 	update() { throw new Error("Not implemented!"); }
 
 	get isAnimationPlaying() { 

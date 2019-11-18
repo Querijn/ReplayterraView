@@ -2,6 +2,7 @@ import PlayerSide from "./player_side.js";
 import Scene from "./scene.js";
 import ShowMulliganCards from "./actions/show_mulligan_cards.js";
 import ReplaceMulliganCards from "./actions/replace_mulligan_cards.js";
+import DrawCard from "./actions/draw_card.js";
 
 export default class Replay {
 
@@ -28,6 +29,9 @@ export default class Replay {
 
 			case "ReplaceMulliganCards":
 				return new ReplaceMulliganCards(data.isYou, data.oldCards, data.newCards);
+
+			case "DrawCard":
+				return new DrawCard(data.isYou, data.card);
 
 			default:
 				throw new Error(`Unknown action ${actionName}! Args given:`, data);

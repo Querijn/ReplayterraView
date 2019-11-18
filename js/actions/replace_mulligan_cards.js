@@ -11,6 +11,8 @@ export default class ReplaceMulliganCardsAction extends BaseAction {
 	constructor(isYou, oldCards, newCards) {
 		super("ReplaceMulliganCards");
 
+		ReplaceMulliganCardsAction.settleCount = 0;
+
 		this.isYou = isYou;
 		for (const cardInfo of oldCards)
 			this.oldCards.push(new CardData(cardInfo.id, cardInfo.code));
@@ -23,7 +25,18 @@ export default class ReplaceMulliganCardsAction extends BaseAction {
 		if (Replay.timeMulliganResolved < 0)
 			return false;
 
-		return timeMs - Replay.timeMulliganResolved > 2000;
+		return timeMs - Replay.timeMulliganResolved > 1000;
+	}
+
+	static settleCount = 0;
+	static timeSettled = -1;
+	static settle() {
+		this.settleCount++;
+		if (this.settleCount == 2) {
+			Replay.players[0].mulliganView.moveToHand();
+			Replay.players[1].mulliganView.moveToHand();
+			this.timeSettled = performance.now();
+		}
 	}
 
 	play() {
@@ -39,12 +52,11 @@ export default class ReplaceMulliganCardsAction extends BaseAction {
 			const card = player.mulliganView.cards.splice(cardIndex, 1)[0];
 			player.deck.addToBottom(card).onDone(() => {
 				player.deck.drawToMulliganView(cardIndex + pos++).onDone(() => {
-					
-					
+
 					card.addAnimation()
-					.add(new AnimationDelay(4000))
+					.add(new AnimationDelay(2000))
 					.onDone(() => { 
-						player.mulliganView.moveToHand();
+						ReplaceMulliganCardsAction.settle();
 					});
 				});
 			});
