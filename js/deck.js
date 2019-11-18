@@ -25,7 +25,7 @@ export default class Deck {
 
 	addToBottom(cardData) {
 		const card = cardData.isRenderObject ? cardData : new Card(cardData.id, cardData.code, !this.player.isTop);
-		this.cards.push(card);
+		this.cards.unshift(card);
 
 		const anim = card.showBack(300, 500);
 		if (anim.length == 0) {
