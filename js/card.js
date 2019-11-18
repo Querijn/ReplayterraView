@@ -51,7 +51,7 @@ export default class Card extends RenderObject {
 
 	moveTo(x, y, z = 1, durationMs = 250, resetRot = true, resetScale = false) {
 
-		console.log(`Card ${this.data.id} is moving to ${x}, ${y}, ${z}. ${durationMs === 0 ? "This will happen immediately" : `This will take ${durationMs} ms.`}`);
+		// console.log(`Card ${this.data.id} is moving to ${x}, ${y}, ${z}. ${durationMs === 0 ? "This will happen immediately" : `This will take ${durationMs} ms.`}`);
 		if (durationMs === 0) {
 			this.position.x = x;
 			this.position.y = y;
