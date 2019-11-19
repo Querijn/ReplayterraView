@@ -1,8 +1,10 @@
 import Scene from "./scene.js";
 import Replay from "./replay.js";
 
+console.warn = () => {};
+
 async function main() {
-	console.log("ReplayterraView opened.");
+	debug.log("ReplayterraView opened.");
 
 	await Scene.loadAsThreeJS();
 
@@ -11,10 +13,10 @@ async function main() {
 			name: "ShowMulliganCards",
 			isYou: true, 
 			cards: [
-				{ id: "0", code: "01DE001" },
-				{ id: "1", code: "01DE002" },
-				{ id: "2", code: "01DE003" },
-				{ id: "3", code: "01DE004" }, 
+				{ id: "1_0", code: "01DE001" },
+				{ id: "1_1", code: "01DE002" },
+				{ id: "1_2", code: "01DE003" },
+				{ id: "1_3", code: "01DE004" }, 
 			]
 		},
 		
@@ -22,10 +24,10 @@ async function main() {
 			name: "ShowMulliganCards",
 			isYou: false, 
 			cards: [
-				{ id: "4", code: "01DE001" },
-				{ id: "5", code: "01DE001" },
-				{ id: "6", code: "01DE001" },
-				{ id: "7", code: "01DE001" }, 
+				{ id: "2_0", code: "01DE001" },
+				{ id: "2_1", code: "01DE002" },
+				{ id: "2_2", code: "01DE003" },
+				{ id: "2_3", code: "01DE004" }, 
 			]
 		},
 
@@ -33,12 +35,12 @@ async function main() {
 			name: "ReplaceMulliganCards",
 			isYou: true, 
 			oldCards: [
-				{ id: "2", code: "01DE003" },
-				{ id: "3", code: "01DE004" }, 
+				{ id: "1_2", code: "01DE003" },
+				{ id: "1_3", code: "01DE004" }, 
 			],
 			newCards: [
-				{ id: "8", code: "01DE010" },
-				{ id: "9", code: "01DE011" }, 
+				{ id: "1_4", code: "01DE010" },
+				{ id: "1_5", code: "01DE011" }, 
 			]
 		},
 		
@@ -46,25 +48,25 @@ async function main() {
 			name: "ReplaceMulliganCards",
 			isYou: false, 
 			oldCards: [
-				{ id: "5", code: "01DE001" },
-				{ id: "7", code: "01DE001" }, 
+				{ id: "2_0", code: "01DE001" },
+				{ id: "2_1", code: "01DE001" }, 
 			],
 			newCards: [
-				{ id: "8", code: "01DE010" },
-				{ id: "9", code: "01DE011" }, 
+				{ id: "2_4", code: "01DE010" },
+				{ id: "2_5", code: "01DE011" }, 
 			]
 		},
 		
 		{ 
 			name: "DrawCard",
 			isYou: false, 
-			card: { id: "10", code: "01DE011" }, 
+			card: { id: "2_6", code: "01DE011" }, 
 		},
 		
 		{ 
 			name: "DrawCard",
 			isYou: true, 
-			card: { id: "11", code: "01DE011" }, 
+			card: { id: "1_6", code: "01DE011" }, 
 		},
 		
 		{ 
@@ -75,7 +77,7 @@ async function main() {
 		{ 
 			name: "PlayCardToBench",
 			isYou: true, 
-			card: { id: "0", code: "01DE011" }, 
+			card: { id: "1_0", code: "01DE001" }, 
 		},
 	]
 

@@ -13,20 +13,12 @@ export default class Scene {
 		window.onresize = Scene._onResize;
 
 		this.isThreeJS = true;
+		this.reset();
 
-		this.scene = new THREE.Scene();
-
-		this.width = 800; // window.innerWidth; // TODO: Fix this
-		this.height = 600; // window.innerHeight;
-
-		this.camera = new THREE.OrthographicCamera(0, this.width, 0, this.height, 0, 10000);
 		this.renderer = new THREE.WebGLRenderer({ alpha: true, antialias: true });
-		this.camera.position.z = 680;
 
 		Scene.renderer.setSize(this.width, this.height);
 		document.body.appendChild(this.renderer.domElement);
-
-		this.textureLoader = new THREE.TextureLoader();
 
 		await Card.loadThreeJSShader();
 	}
@@ -62,6 +54,19 @@ export default class Scene {
 
 		if (Scene.isThreeJS) {
 			Scene.renderer.render(Scene.scene, Scene.camera);
+		}
+	}
+
+	static reset() {
+		if (this.isThreeJS) {
+			this.scene = new THREE.Scene();
+
+			this.width = 800; // window.innerWidth; // TODO: Fix this
+			this.height = 600; // window.innerHeight;
+
+			this.camera = new THREE.OrthographicCamera(0, this.width, 0, this.height, 0, 10000);
+			this.camera.position.z = 680;
+			this.textureLoader = new THREE.TextureLoader();
 		}
 	}
 

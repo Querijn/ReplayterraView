@@ -7,15 +7,15 @@ export default class BaseAction {
 	}
 
 	play() {
-		throw new Error("play not implemented for this action!");
+		throw new Error("play is not implemented for this action!");
 	}
 
 	isReadyToPlay(timeMs) {
-		throw new Error("isReadyToPlay not implemented for this action!");
+		throw new Error("isReadyToPlay is not implemented for this action!");
 	}
 
-	destroy() { // Default destroy action
-		Replay.actions.splice(0, 1);
+	resolveImmediately() {
+		throw new Error("resolveImmediately is not implemented for this action!");
 	}
 
 	get deckCardData() {

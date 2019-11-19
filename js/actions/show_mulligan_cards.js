@@ -20,9 +20,23 @@ export default class ShowMulliganCardsAction extends BaseAction {
 	}
 
 	play() {
-		const player = this.isYou ? Replay.you : Replay.opponent;
+		this._playInternal(false);
+	}
 
-		player.deck.drawToMulliganView(); // Draw a card (these are guaranteed at the top)
+	resolveImmediately() {
+		this._playInternal(true);
+	}
+	
+	_playInternal(skipAnimations) {
+		const player = this.isYou ? Replay.you : Replay.opponent;
+		debug.log(`${performance.now()}: Playing ${this.name} for ${this.isYou ? "you" : "them"}: deck card count: ${player.deck.cards.length}, mull card count: ${player.mulliganView.cards.length} ${skipAnimations ? "(skipping animations)" : ""}`);
+
+		for (let i = 0; i < 4; i++) {
+			debug.log(`- Drawing card ${player.deck.cards[i].data.id} to mulligan`);
+		}
+		player.deck.drawToMulliganView(null, skipAnimations); // Draw 4 cards (these are guaranteed at the top)
+		debug.log(`${player.mulliganView.cards.length} cards in ${this.isYou ? "player" : "opponent"} mulligan`);
+		debug.log(`${player.deck.cards.length} cards in ${this.isYou ? "player" : "opponent"} deck`);
 	}
 
 	get deckCardData() {

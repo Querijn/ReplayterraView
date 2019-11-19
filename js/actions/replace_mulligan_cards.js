@@ -30,18 +30,26 @@ export default class ReplaceMulliganCardsAction extends BaseAction {
 
 	static settleCount = 0;
 	static timeSettled = -1;
-	static settle() {
+	static settle(skipAnimations) {
 		this.settleCount++;
 		if (this.settleCount == 2) {
-			Replay.opponent.mulliganView.moveToHand();
-			Replay.you.mulliganView.moveToHand();
+			Replay.opponent.mulliganView.moveToHand(skipAnimations);
+			Replay.you.mulliganView.moveToHand(skipAnimations);
 			this.timeSettled = performance.now();
 		}
 	}
 
 	play() {
-		console.log(`${performance.now()}: Playing ${this.name}: ${this.oldCards.length} cards will be replaced for ${this.isYou ? "you" : "them"}`)
+		this._playInternal(false);
+	}
+
+	resolveImmediately() {
+		this._playInternal(true);
+	}
+
+	_playInternal(skipAnimations) {
 		const player = this.isYou ? Replay.you : Replay.opponent;
+		debug.log(`${performance.now()}: Playing ${this.name} for ${this.isYou ? "you" : "them"}: deck card count: ${player.deck.cards.length}, mull card count: ${player.mulliganView.cards.length} ${skipAnimations ? "(skipping animations)" : ""}`);
 		
 		let pos = 0;
 		for (const cardInfo of this.oldCards) {
@@ -50,13 +58,14 @@ export default class ReplaceMulliganCardsAction extends BaseAction {
 				throw new Error(`Could not find card by ID ${cardInfo.id}`);
 
 			const card = player.mulliganView.cards.splice(cardIndex, 1)[0];
-			player.deck.addToBottom(card).onDone(() => {
-				player.deck.drawToMulliganView(cardIndex + pos++).onDone(() => {
+			const cardPos = cardIndex + pos++;
+			player.deck.addToBottom(card, skipAnimations).onDone(() => {
+				player.deck.drawToMulliganView(cardPos, skipAnimations).onDone(() => {
 
 					card.addAnimation()
-					.add(new AnimationDelay(2000))
+					.add(new AnimationDelay(skipAnimations ? 0 : 2000))
 					.onDone(() => { 
-						ReplaceMulliganCardsAction.settle();
+						ReplaceMulliganCardsAction.settle(skipAnimations);
 					});
 				});
 			});

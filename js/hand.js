@@ -13,19 +13,25 @@ export default class Hand {
 		this._y = y;
 	}
 
-	addCards(cards) {
+	addCards(cards, skipAnimations) {
 		this.cards.push(...cards);
 
-		this.fixPositions();
+		const playerName = this.player.isTop ? "opponent" : "player";
+		debug.log(`${cards.length} cards were moved to ${playerName} hand. We now have ${this.cards.length} cards in here.`);
+
+		this.fixPositions(skipAnimations);
 	}
 
-	addCard(card) {
+	addCard(card, skipAnimations) {
 		this.cards.push(card);
 
-		this.fixPositions();
+		const playerName = this.player.isTop ? "opponent" : "player";
+		debug.log(`A card was moved to ${playerName} hand. We now have ${this.cards.length} cards in here.`);
+
+		this.fixPositions(skipAnimations);
 	}
 
-	fixPositions() {
+	fixPositions(skipAnimations) {
 
 		const rotOffset = 60
 		const width = 300;
@@ -45,7 +51,7 @@ export default class Hand {
 
 			const topY = this.player.isTop ? -1 : 1;
 			const destY = this.y + topY * distFromMid * 40; // Based on distance from middle, move down 0~40 pixels.
-			const moveDuration = 120;
+			const moveDuration = skipAnimations ? 0 : 120;
 			anim = card.moveTo( // Move to hand position.
 				destX,				// x
 				destY,				// y
@@ -53,24 +59,33 @@ export default class Hand {
 				moveDuration		// move duration
 			);
 
-			// Rotate slightly based on i
-			card.addAnimation()
-			.add(new AnimationEffect(Easing.easeOutCubic, card.rotation, "z", leftRot + rotStep * i, moveDuration));
 
-			card.addAnimation()
-			.add(new AnimationEffect(Easing.easeOutCubic, card, "scale", 2.0, moveDuration));
+			card.showFront(0, moveDuration);
+
+			if (skipAnimations) {
+				card.rotation.z = leftRot + rotStep * i;
+				card.scale = 2.0;
+			}
+			else {
+				// Rotate slightly based on i
+				card.addAnimation()
+				.add(new AnimationEffect(Easing.easeOutCubic, card.rotation, "z", leftRot + rotStep * i, moveDuration));
+
+				card.addAnimation()
+				.add(new AnimationEffect(Easing.easeOutCubic, card, "scale", 2.0, moveDuration));
+			}
 		}
 		
 		return anim;
 	}
 
-	addCardToBench(cardData) {
+	addCardToBench(cardData, skipAnimations) {
 		const cardIndex = this.cards.findIndex((c) => cardData.id == c.id);
 		if (cardIndex < 0)
 			throw new Error(`The hand can't move card ${cardData.id} to the bench because the bench does not have it!`);
 
 		const card = this.cards.splice(0, 1)[0];
-		this.player.bench.addCard(card);
+		this.player.bench.addCard(card, skipAnimations);
 	}
 
 	get x() { return this._x; }

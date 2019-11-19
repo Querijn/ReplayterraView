@@ -17,8 +17,18 @@ export default class DrawCardAction extends BaseAction {
 	}
 
 	play() {
+		this._playInternal(false);
+	}
+
+	resolveImmediately() {
+		this._playInternal(true);
+	}
+
+	_playInternal(skipAnimations) {
+		debug.log(`${performance.now()}: Playing ${this.name} for ${this.isYou ? "you" : "them"}: ${skipAnimations ? "(skipping animations)" : ""}`);
+		
 		const player = this.isYou ? Replay.you : Replay.opponent;
-		player.deck.drawToHand(); // Draw a card (these are guaranteed at the top)
+		player.deck.drawToHand(skipAnimations); // Draw a card (these are guaranteed at the top)
 	}
 
 	get deckCardData() {

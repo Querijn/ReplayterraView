@@ -27,9 +27,9 @@ export default class PlayerSide {
 		const benchY = isTop ? 100 : resY - 100;
 		this.bench = new Bench(this, benchX, benchY);
 		
-		console.log(`${isTop ? "Top" : "Bottom"} player's deck is at ${deckX}, ${deckY}.`);
-		console.log(`${isTop ? "Top" : "Bottom"} player's mulligan is at ${mullX}, ${mullY}.`);
-		console.log(`${isTop ? "Top" : "Bottom"} player's hand is at ${handX}, ${handY}.`);
-		console.log(`${isTop ? "Top" : "Bottom"} player's bench is at ${benchX}, ${benchY}.`);
+		// debug.log(`${isTop ? "Top" : "Bottom"} player's deck is at ${deckX}, ${deckY}.`);
+		// debug.log(`${isTop ? "Top" : "Bottom"} player's mulligan is at ${mullX}, ${mullY}.`);
+		// debug.log(`${isTop ? "Top" : "Bottom"} player's hand is at ${handX}, ${handY}.`);
+		// debug.log(`${isTop ? "Top" : "Bottom"} player's bench is at ${benchX}, ${benchY}.`);
 	}
 }

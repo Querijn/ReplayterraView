@@ -5,7 +5,7 @@ import ReplaceMulliganCards from "./actions/replace_mulligan_cards.js";
 import DrawCard from "./actions/draw_card.js";
 import RoundStart from "./actions/round_start.js";
 import PlayCardToBench from "./actions/play_card_to_bench.js";
-import { linear } from "./easing.js";
+import AnimationEffect from "./animation_effect.js";
 
 export default class Replay {
 
@@ -14,13 +14,33 @@ export default class Replay {
 	static players = [ new PlayerSide(true), new PlayerSide(false) ];
 	static lastTime = -1;
 	static lastTimer = -1;
-	static forcedTime = -1;
 	static timeSinceLastAction = 0;
 	static _currentActionIterator = 0;
+	static _sleepFrames = 0;
 
-	static setupField(timeMs) {
-		console.log(`Reinitialising field at time ${timeMs}..`);
-		this.lastTime = timeMs;
+	static skipToAction(actionIterator) {
+		debug.log(`Reinitialising field until action ${actionIterator}..`);
+		AnimationEffect.skippingToPoint = true; // Let it know that we're not accepting any animations with a duration > 0
+
+		this.players = [ new PlayerSide(true), new PlayerSide(false) ];
+		this.lastTime = -1;
+		this.lastTimer = -1;
+		this.timeSinceLastAction = 0;
+
+		Scene.reset();
+
+		Replay.players[0].deck.prepare();
+		Replay.players[1].deck.prepare();
+
+		// For each action until this one, play it immediately at full speed.
+		for (let i = 0; i < actionIterator; i++) {
+			Replay.actions[i].resolveImmediately();
+		}
+
+		this._currentActionIterator = actionIterator;
+		AnimationEffect.skippingToPoint = false;
+		
+		this._sleepFrames = 20;
 	}
 
 	static getAction(data) {
@@ -50,7 +70,7 @@ export default class Replay {
 	static play(actions) {
 		
 		if (typeof actions !== 'number') { // Add new actions
-			console.log(`Adding ${actions.length} new actions..`);
+			debug.log(`Adding ${actions.length} new actions..`);
 			for (let actionData of actions) {
 				const action = Replay.getAction(actionData);
 				Replay.actions.push(action);
@@ -58,6 +78,8 @@ export default class Replay {
 
 			Replay.players[0].deck.prepare();
 			Replay.players[1].deck.prepare();
+
+			Replay.skipToAction(5);
 		}
 
 		requestAnimationFrame(Replay.play); // Prepare next frame.
@@ -65,22 +87,13 @@ export default class Replay {
 		const deltaMs = (performance.now() - Replay.lastTimer) * Replay.speed;
 		const timeMs = Replay.lastTime >= 0 ? Replay.lastTime + deltaMs : 0;
 
-		// If time was forced
-		if (Replay.forcedTime >= 0) {
-			timeMs = Replay.forcedTime;
-			Replay.forcedTime = -1;
-		}
-
-		if (Replay.lastTime < 0 || Math.abs(timeMs - Replay.lastTime) > 1000) { // First time playing or difference in time is longer than a second, reinit.
-			Replay.setupField(timeMs);
-		}
-		else while (Replay.currentAction && Replay.currentAction.isReadyToPlay(timeMs)) {
+		while (Replay.currentAction && Replay.currentAction.isReadyToPlay(timeMs)) {
 			Replay.currentAction.play();
 			Replay._currentActionIterator++;
 			Replay.timeSinceLastAction = performance.now();
 			
 			if (Replay.actions.length == Replay._currentActionIterator) {
-				console.log("Replay is done!");
+				debug.log("Replay is done!");
 				break;
 			}
 		}

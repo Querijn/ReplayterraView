@@ -23,19 +23,23 @@ export default class Deck {
 		return card.moveTo(this.x, this.y, this.cards.length, 0, false);
 	}
 
-	addToBottom(cardData) {
+	addToBottom(cardData, skipAnimations) {
 		const card = cardData.isRenderObject ? cardData : new Card(cardData.id, cardData.code, !this.player.isTop);
 		this.cards.unshift(card);
 
-		const anim = card.showBack(300, 500);
+		const delay = skipAnimations ? 0 : 300;
+		const duration = skipAnimations ? 0 : 500;
+		const anim = card.showBack(delay, duration);
 		if (anim.length == 0) {
-			anim.add(new AnimationDelay(800));
+			anim.add(new AnimationDelay(delay + duration));
 		}
 
 		return anim.onDone(() => {
+			const moveDuration = skipAnimations ? 0 : 120;
+			const rotate = this.player.isTop ? 0 : Math.PI + (Math.random() - 0.5) * 20 * (Math.PI/180);
 			card.addAnimation()
-			.add(new AnimationEffect(Easing.easeInOutQuad, card.rotation, "z", this.player.isTop ? 0 : Math.PI + (Math.random() - 0.5) * 20 * (Math.PI/180), 120)); 
-			card.moveTo(this.x, this.y, 0, 120, false, true);
+			.add(new AnimationEffect(Easing.easeInOutQuad, card.rotation, "z", rotate, moveDuration)); 
+			card.moveTo(this.x, this.y, 0, moveDuration, false, true);
 		});
 	}
 
@@ -43,6 +47,8 @@ export default class Deck {
 		
 		// At this point, all the actions are ordered.
 		// TODO: Delete all cards, start over with new ones in current positions.
+		this.cards = [];
+		debug.log(`Preparing deck..`);
 
 		for (const action of Replay.actions) {
 			const cards = action.deckCardData;
@@ -52,17 +58,24 @@ export default class Deck {
 				
 			for (const card of cards) {
 				this.addToTop(card);
+				debug.log(`- Adding card ${card.id} to ${!this.player.isTop ? "player" : "opponent"} deck.`);
 			}
 		}
 	}
 
-	drawToMulliganView(cardIndex = null) {
-		const movingCards = cardIndex === null ? this.cards.splice(0, 4) : this.cards.splice(cardIndex, 1);
-		return this.player.mulliganView.addCards(movingCards, cardIndex);
+	drawToMulliganView(cardIndex = null, skipAnimations = false) {
+		const movingCards = cardIndex === null ? this.cards.splice(0, 4) : this.cards.splice(0, 1);
+		return this.player.mulliganView.addCards(movingCards, cardIndex, skipAnimations);
 	}
 
-	drawToHand() {
+	drawToHand(skipAnimations) {
+
 		const card = this.cards.splice(0, 1)[0]; // Take top card
+		if (skipAnimations) {
+			this.player.hand.addCard(card, skipAnimations);
+			return;
+		}
+
 
 		// Present the card if we're the player.
 		if (!this.player.isTop) {
