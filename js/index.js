@@ -79,6 +79,12 @@ async function main() {
 			isYou: true, 
 			card: { id: "1_0", code: "01DE001" }, 
 		},
+		
+		{ 
+			name: "PlayCardToBench",
+			isYou: false, 
+			card: { id: "2_0", code: "01DE001" }, 
+		},
 	]
 
 	Replay.play(fakeActions);
