@@ -27,8 +27,8 @@ export default class Bench {
 
 	fixPositions(skipAnimations) {
 		const width = 400;
-		const left = this.x - width / 2; // TODO: This is now completely wrong but whatever.
-
+		const left = this.x - width / 2;
+		
 		let anim = null;
 		for (let i = 0; i < this.cards.length; i++) {
 			const card = this.cards[i];
@@ -42,6 +42,8 @@ export default class Bench {
 				0,					// z
 				moveDuration		// move duration
 			);
+
+			card.showFront(0, moveDuration);
 
 			if (skipAnimations) {
 				card.scale = 1.5;

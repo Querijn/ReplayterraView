@@ -31,7 +31,7 @@ export default class Mulligan {
 		};
 
 		let anim = null;
-		const left = this.x - width / 2.733; // TODO: This is now completely wrong but whatever.
+		const left = this.x - width / 2;
 		for (let i = 0; i < cards.length; i++) {
 
 			const index = pos != null ? pos : i;
@@ -40,10 +40,10 @@ export default class Mulligan {
 			this.cards.push(card);
 			const moveDuration = skipAnimations ? 0 : 250 * (index + 1);
 			anim = card.moveTo( // Move to mulligan position.
-				left + (width / 4) * index,		// x
-				this.y, 						// y
-				3, 								// z
-				moveDuration					// move duration
+				left + (width / (this.cards.length + 1)) * (index + 1),		// x
+				this.y, 													// y
+				3, 															// z
+				moveDuration												// move duration
 			);
 			
 			if (skipAnimations) {

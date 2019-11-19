@@ -35,7 +35,7 @@ export default class Hand {
 
 		const rotOffset = 60
 		const width = 300;
-		const left = this.x - width / 2.733; // TODO: This is now completely wrong but whatever.
+		const left = this.x - width / 2;
 
 		const botRotBase = !this.player.isTop ? Math.PI : 0;					// Bottom cards are not upside down
 		const leftRot = botRotBase + rotOffset * 0.5 * Math.PI / 180; 			// Most left rotation (i = 0)
@@ -45,7 +45,7 @@ export default class Hand {
 		for (let i = 0; i < this.cards.length; i++) {
 			const card = this.cards[i];
 			
-			const destX = left + (width / this.cards.length - 1) * i;
+			const destX = left + (width / (this.cards.length + 1)) * (i + 1);
 
 			const distFromMid = (Math.abs(destX - this.x) / (width * 0.5));
 
@@ -86,6 +86,7 @@ export default class Hand {
 
 		const card = this.cards.splice(0, 1)[0];
 		this.player.bench.addCard(card, skipAnimations);
+		this.fixPositions();
 	}
 
 	get x() { return this._x; }
