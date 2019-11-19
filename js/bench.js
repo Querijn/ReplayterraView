@@ -26,26 +26,15 @@ export default class Bench {
 	}
 
 	fixPositions() {
-
-		const rotOffset = 60
 		const width = 400;
 		const left = this.x - width / 2.733; // TODO: This is now completely wrong but whatever.
-
-		const botRotBase = !this.player.isTop ? Math.PI : 0;					// Bottom cards are not upside down
-		const leftRot = botRotBase + rotOffset * 0.5 * Math.PI / 180; 			// Most left rotation (i = 0)
-		const rotStep = (-rotOffset * Math.PI / 180) / (this.cards.length - 1); // How many degrees to add per i
 
 		let anim = null;
 		for (let i = 0; i < this.cards.length; i++) {
 			const card = this.cards[i];
 			
 			const destX = left + (width / this.cards.length - 1) * i;
-
-			const distFromMid = (Math.abs(destX - this.x) / (width * 0.5));
-			console.log(distFromMid);
-
-			const topY = this.player.isTop ? -1 : 1;
-			const destY = this.y + topY * distFromMid * 40; // Based on distance from middle, move down 0~40 pixels.
+			const destY = this.y;
 			const moveDuration = 120;
 			anim = card.moveTo( // Move to hand position.
 				destX,				// x
@@ -55,7 +44,7 @@ export default class Bench {
 			);
 
 			card.addAnimation()
-			.add(new AnimationEffect(Easing.easeOutCubic, card, "scale", 1.0, moveDuration));
+			.add(new AnimationEffect(Easing.easeOutCubic, card, "scale", 1.5, moveDuration));
 		}
 		
 		return anim;

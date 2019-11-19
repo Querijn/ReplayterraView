@@ -85,7 +85,6 @@ export default class Replay {
 			}
 		}
 
-
 		Replay.lastTime = timeMs;
 		Replay.lastTimer = performance.now();
 		Scene.update(timeMs);

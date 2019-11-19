@@ -26,8 +26,8 @@ export default class RenderObject {
 			animation.update(timeMs);
 		}
 		
-		if (!this.isAnimationPlaying)
-			this.animations = [];
+		//if (this.animations.length > 0)
+		//	this.animations = this.animations.filter((a) => a.isDone === false);
 	}
 
 	cancelAnimations() {
@@ -38,7 +38,7 @@ export default class RenderObject {
 
 	get isAnimationPlaying() { 
 		for (let animation of this.animations)
-			if (animation.isDone)
+			if (animation.isDone === false)
 				return true;
 		return false;
 	}

@@ -64,4 +64,11 @@ export default class Scene {
 			Scene.renderer.render(Scene.scene, Scene.camera);
 		}
 	}
+
+	static get areAnimationsPlaying() {
+
+		for (const renderObject of Scene.renderObjects)
+			if (renderObject.isAnimationPlaying)
+				return true;
+	}
 }

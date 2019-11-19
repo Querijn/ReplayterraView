@@ -18,7 +18,7 @@ export default class Animation {
 		return this;
 	}
 
-	isDone() {
+	get isDone() {
 		const timeMs = performance.now();
 		for (const effect of this._effects)
 			if (effect.isDoneAt(timeMs) == false)

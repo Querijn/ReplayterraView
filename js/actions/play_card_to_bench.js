@@ -1,7 +1,6 @@
 import BaseAction from "./base_action.js";
 import Replay from "../replay.js";
-import CardData from "../card_data.js";
-import ReplaceMulliganCardsAction from "./replace_mulligan_cards.js";
+import Scene from "../scene.js";
 
 export default class PlayCardToBench extends BaseAction {
 
@@ -10,10 +9,27 @@ export default class PlayCardToBench extends BaseAction {
 
 		this.isYou = isYou;
 		this.card = card;
+
+		this.time = -1;
 	}
 
 	isReadyToPlay(timeMs) {
-		return false;
+
+		// Wait for animations to finish
+		const player = this.isYou ? Replay.you : Replay.opponent;
+		if (Scene.areAnimationsPlaying) {
+			this.time = -1;
+			return false;
+		}
+
+		// Init timer
+		if (this.time < 0) {
+			this.time = performance.now();
+			return false;
+		}
+
+		// Wait 1 sec
+		return performance.now() - this.time > 1000;
 	}
 
 	play() {
