@@ -1,5 +1,7 @@
 export default class AnimationEffect {
 
+	static isSkippingToPoint = false;
+
 	constructor(effectFunction, target, propertyName, targetValue, duration) {
 		this.effectFunction = effectFunction;
 
@@ -10,8 +12,15 @@ export default class AnimationEffect {
 		this.targetValue = targetValue;
 		this.valueRange = this.targetValue - this.startValue;
 
+		if (AnimationEffect.isSkippingToPoint && duration !== 0) {
+			debug.warn(`We're playing an animation with a duration of ${duration} while we're skipping! This needs to be fixed!`);
+			duration = 0;
+		}
+
 		this.startTime = -1;
 		this.duration = duration;
+
+		this.wasDone = false;
 	}
 
 	getUnboundProgress(time) {
@@ -47,5 +56,7 @@ export default class AnimationEffect {
 		const t = this.getProgress(timeMs);
 		const coeff = this.effectFunction(t);
 		this.target[this.propertyName] = this.valueRange * coeff + this.startValue;
+		
+		this.wasDone = t >= 1;
 	}
 }

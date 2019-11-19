@@ -52,20 +52,21 @@ export default class Card extends RenderObject {
 
 	moveTo(x, y, z = 1, durationMs = 250, resetRot = true, resetScale = false) {
 
-		// console.log(`Card ${this.data.id} is moving to ${x}, ${y}, ${z}. ${durationMs === 0 ? "This will happen immediately" : `This will take ${durationMs} ms.`}`);
+		// debug.log(`Card ${this.data.id} is moving to ${x}, ${y}, ${z}. ${durationMs === 0 ? "This will happen immediately" : `This will take ${durationMs} ms.`}`);
 		if (durationMs === 0) {
 			this.position.x = x;
 			this.position.y = y;
 			this.z = z;
 
 			if (resetScale) {
-				this.scale = scale;
+				this.scale = 1.0;
 			}
 			
 			if (resetRot) {
 				this.rotation.z = this.isYours ? Math.PI : 0;
 			}
-			return;
+			
+			return this.addAnimation(); // return empty animation
 		}
 
 		const animation = 
@@ -83,7 +84,11 @@ export default class Card extends RenderObject {
 		return animation;
 	}
 
-	showFront(delay = 0, durationMs = 500) { 
+	showFront(delay = 0, durationMs = 500) {
+
+		if (delay + durationMs < 0.001) {
+			this.rotation.y = 0;
+		}
 
 		if (Math.abs(this.rotation.y) < 0.1) { // TODO: Make flip use showBack/showFront rather than this way
 			return this.flip(delay, durationMs);
@@ -92,7 +97,11 @@ export default class Card extends RenderObject {
 		return this.addAnimation(); // return empty animation
 	}
 
-	showBack(delay = 0, durationMs = 500) { 
+	showBack(delay = 0, durationMs = 500) {
+
+		if (delay + durationMs < 0.001) {
+			this.rotation.y = Math.PI;
+		}
 
 		if (Math.abs(Math.PI - this.rotation.y) < 0.1) { // TODO: Make flip use showBack/showFront rather than this way
 			return this.flip(delay, durationMs);
@@ -104,6 +113,10 @@ export default class Card extends RenderObject {
 	flip(delay = 0, durationMs = 500) {
 
 		const newRot = this.rotation.y == 0 ? Math.PI : 0;
+		if (delay + durationMs < 0.001) {
+			this.rotation.y = newRot;
+		}
+
 		return this.addAnimation()
 		.add(new AnimationDelay(delay))
 		.add(new AnimationEffect(Easing.easeInOutQuad, this.rotation, "y", newRot, durationMs));
@@ -125,13 +138,13 @@ export default class Card extends RenderObject {
 		this.fragShader = await fragResponse.text();
 		this.vertShader = await vertResponse.text();
 		
-		console.log("Card shader loaded.");
+		debug.log("Card shader loaded.");
 	}
 	
 	updateScale() { 
 		this.quad.scale.x = this.quad.scale.y = this.scale * (1.0 - (this.z * 0.03));
 
-		this.position.z = 255 - this.z;
+		this.position.z = this.z;
 	}
 
 	get code() { return this.data.code; }

@@ -15,6 +15,10 @@ export default class Animation {
 	add(e) {
 		this._effects.push(e);
 		
+		// This makes sure we call on done callbacks on animations that are already done, or have a duration of 0.
+		if (this.length == 0)
+			this.update(performance.now());
+
 		return this;
 	}
 
@@ -38,6 +42,10 @@ export default class Animation {
 		let isDone = true;
 		for (const effect of this._effects) {
 
+			// Skip effects that we've already played
+			if (effect.isDoneAt(timeMs) && effect.wasDone)
+				continue;
+				
 			if (effect.isDoneHandler) {
 				if (effect.onDone) {
 					effect.onDone(this);
@@ -55,7 +63,6 @@ export default class Animation {
 		}
 
 		if (isDone && this._effects.length > 0) {
-			const onDoneFuncs = this._onDoneFuncs;
 			this.reset();
 		}
 	}
