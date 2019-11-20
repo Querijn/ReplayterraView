@@ -2,23 +2,23 @@ import Scene from "./scene.js";
 import RenderObject from "./render_object.js";
 import CardData from "./card_data.js";
 import * as Easing from "./easing.js";
-import AnimationEffect from "./animation_effect.js";
-import AnimationDelay from "./animation_delay.js";
+import AnimationEffect from "./animation/animation_effect.js/index.js";
+import AnimationDelay from "./animation/animation_delay.js/index.js";
 
 export default class Card extends RenderObject {
 
 	static fragShader = null;
 	static vertShader = null;
 
-	constructor(id, code, isYours) {
+	constructor(cardData, isYours) {
 		super();
-		this.data = new CardData(id, code);
+		this.data = cardData;
 		this.isYours = isYours;
 
 		if (!Card.fragShader || !Card.vertShader)
 			throw new Error("Could not find shaders!");
 
-		const frontTexture = Scene.textureLoader.load(`assets/en_us/img/cards/${code}.png`);
+		const frontTexture = Scene.textureLoader.load(`assets/en_us/img/cards/${cardData.code}.png`);
 		const backTexture = Scene.textureLoader.load("assets/card_back.png");
 		// backTexture.anisotropy = frontTexture.anisotropy = Scene.renderer.getMaxAnisotropy();
 
@@ -142,7 +142,7 @@ export default class Card extends RenderObject {
 	}
 	
 	updateScale() { 
-		this.quad.scale.x = this.quad.scale.y = this.scale * (1.0 - (this.z * 0.03));
+		this.quad.scale.x = this.quad.scale.y = this.scale;
 
 		this.position.z = this.z;
 	}

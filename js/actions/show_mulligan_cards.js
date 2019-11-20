@@ -6,17 +6,42 @@ export default class ShowMulliganCardsAction extends BaseAction {
 
 	cards = [];
 
-	constructor(isYou, cards) {
+	constructor(isYou, oldCardCodes) {
 		super("ShowMulliganCards");
 
 		this.isYou = isYou;
 
-		for (const cardInfo of cards)
-			this.cards.push(new CardData(cardInfo.id, cardInfo.code));
+		for (const oldCardCode of oldCardCodes)
+			this.cards.push(new CardData("", oldCardCode));
 	}
 
 	isReadyToPlay(timeMs) {
 		return timeMs > 1000;
+	}
+
+	isDone(timeMs) {
+		return this.animation && this.animation.isDone;
+	}
+
+	identifyCard(code, id) {
+		for (const card of this.cards) {
+			if (card.id === "" && code === card.code) {
+				debug.log(`${this.name}: Identified ${code} -> ${id}..`);
+				card.id = id;
+				return;
+			}
+		}
+
+		// ShowMulliganCards can't identify them all, just ignore.
+		// debug.warn(`${this.name}: Could not find card for code ${code}? I wanted to assign ID ${id}..`);
+	}
+
+	get isIdentified() {
+		
+		for (const card of this.cards)
+			if (card.id === "")
+				return false;
+		return true;
 	}
 
 	play() {
@@ -34,7 +59,8 @@ export default class ShowMulliganCardsAction extends BaseAction {
 		for (let i = 0; i < 4; i++) {
 			debug.log(`- Drawing card ${player.deck.cards[i].data.id} to mulligan`);
 		}
-		player.deck.drawToMulliganView(null, skipAnimations); // Draw 4 cards (these are guaranteed at the top)
+		
+		this.animation = player.deck.drawToMulliganView(null, skipAnimations); // Draw 4 cards (these are guaranteed at the top)
 		debug.log(`${player.mulliganView.cards.length} cards in ${this.isYou ? "player" : "opponent"} mulligan`);
 		debug.log(`${player.deck.cards.length} cards in ${this.isYou ? "player" : "opponent"} deck`);
 	}

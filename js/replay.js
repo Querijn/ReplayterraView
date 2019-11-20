@@ -5,7 +5,7 @@ import ReplaceMulliganCards from "./actions/replace_mulligan_cards.js";
 import DrawCard from "./actions/draw_card.js";
 import RoundStart from "./actions/round_start.js";
 import PlayCardToBench from "./actions/play_card_to_bench.js";
-import AnimationEffect from "./animation_effect.js";
+import AnimationEffect from "./animation/animation_effect.js/index.js";
 
 export default class Replay {
 
@@ -17,6 +17,7 @@ export default class Replay {
 	static timeSinceLastAction = 0;
 	static _currentActionIterator = 0;
 	static _sleepFrames = 0;
+	static _mulliganCardsDrawn = 0;
 
 	static skipToAction(actionIterator) {
 		debug.log(`Reinitialising field until action ${actionIterator}..`);
@@ -26,6 +27,7 @@ export default class Replay {
 		this.lastTime = -1;
 		this.lastTimer = -1;
 		this.timeSinceLastAction = 0;
+		this._mulliganCardsDrawn = 0;
 
 		Scene.reset();
 
@@ -78,20 +80,41 @@ export default class Replay {
 				];
 
 			case "draw":
+				const show = Replay.getExistingAction("ShowMulliganCards");
+				const replace = Replay.getExistingAction("ReplaceMulliganCards");
+
+				if (!show || !replace) {
+					debug.error("Can't find the show or replace mulligan card actions, but we're drawing a card? Huh?!");
+				}
+				else if (!replace.isIdentified) {
+					show.identifyCard(data.code, data.id);
+					replace.identifyCard(data.code, data.id);
+
+					return [];
+				}
+
 				return [ 
-					new DrawCard(isYou, { code: data.code, id: data.id}),
-					new DrawCard(!isYou, { code: data.code, id: data.id}), // TODO: Make it real.
+					new DrawCard(isYou, { code: data.code, id: data.id})
 				];
 
 			case "place":
-			case "enemy_place":
+			// case "enemy_place":
 				return [ 
 					new PlayCardToBench(isYou, { code: data.code, id: data.id}),
 				];
 
 			default:
-				throw new Error(`Unknown action '${actionName}'! Args given:`, data);
+				debug.error(`Unknown action '${actionName}'! Args given:`, data);
+				return [];
 		}
+	}
+
+	static getExistingAction(name) {
+		for (let actionData of this.actions)
+			if (actionData.name == name)
+				return actionData;
+
+		return null;
 	}
 	
 	static play(actions) {
@@ -112,16 +135,25 @@ export default class Replay {
 		const deltaMs = (performance.now() - Replay.lastTimer) * Replay.speed;
 		const timeMs = Replay.lastTime >= 0 ? Replay.lastTime + deltaMs : 0;
 
-		while (Replay.currentAction && Replay.currentAction.isReadyToPlay(timeMs)) {
-			Replay.currentAction.play();
-			Replay._currentActionIterator++;
-			Replay.timeSinceLastAction = performance.now();
-			
-			if (Replay.actions.length == Replay._currentActionIterator) {
-				debug.log("Replay is done!");
-				break;
+		if (Replay.currentAction) {
+
+			// If we started and we're done too.
+			if (Replay.currentAction.hasStarted) {
+				if (Replay.currentAction.isDone(timeMs)) {
+					Replay._currentActionIterator++; // Go to next action
+					debug.log(`Current action done. Will start ${Replay.currentAction.name} soon.`);
+				}
+			}
+			else if (Replay.currentAction.isReadyToPlay(timeMs)) {
+				Replay.currentAction.startPlay();
+				Replay.timeSinceLastAction = performance.now();
+				
+				if (Replay.actions.length == Replay._currentActionIterator) {
+					debug.log("Replay is done!");
+				}
 			}
 		}
+		
 
 		Replay.lastTime = timeMs;
 		Replay.lastTimer = performance.now();

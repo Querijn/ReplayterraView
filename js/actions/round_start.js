@@ -15,6 +15,10 @@ export default class RoundStartAction extends BaseAction {
 		return true;
 	}
 
+	isDone(timeMs) {
+		return true;
+	}
+
 	play() {
 		this._playInternal(false);
 	}
