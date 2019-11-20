@@ -1,5 +1,5 @@
 import Scene from "./scene.js";
-import Animation from "./animation/animation.js/index.js";
+import Animation from "./animation/animation.js";
 
 export default class RenderObject {
 

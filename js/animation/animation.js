@@ -1,4 +1,4 @@
-import AnimationDoneHandler from "./animation/animation_done.js/index.js";
+import AnimationDoneHandler from "./animation/animation_done.js";
 
 export default class Animation {
 

@@ -1,7 +1,7 @@
 import BaseAction from "./base_action.js";
 import Replay from "../replay.js";
 import CardData from "../card_data.js";
-import AnimationDelay from "../animation/animation_delay.js/index.js";
+import AnimationDelay from "../animation/animation_delay.js";
 
 export default class ReplaceMulliganCardsAction extends BaseAction {
 

@@ -2,8 +2,9 @@ import Scene from "./scene.js";
 import RenderObject from "./render_object.js";
 import CardData from "./card_data.js";
 import * as Easing from "./easing.js";
-import AnimationEffect from "./animation/animation_effect.js/index.js";
-import AnimationDelay from "./animation/animation_delay.js/index.js";
+import AnimationEffect from "./animation/animation_effect.js";
+import AnimationDelay from "./animation/animation_delay.js";
+import Animation from "./animation/animation_delay.js";
 
 export default class Card extends RenderObject {
 
@@ -50,38 +51,19 @@ export default class Card extends RenderObject {
 	update() {
 	}
 
-	moveTo(x, y, z = 1, durationMs = 250, resetRot = true, resetScale = false) {
+	moveTo(x, y, z = 1, durationMs = 250) {
 
 		// debug.log(`Card ${this.data.id} is moving to ${x}, ${y}, ${z}. ${durationMs === 0 ? "This will happen immediately" : `This will take ${durationMs} ms.`}`);
 		if (durationMs === 0) {
 			this.position.x = x;
 			this.position.y = y;
 			this.z = z;
-
-			if (resetScale) {
-				this.scale = 1.0;
-			}
-			
-			if (resetRot) {
-				this.rotation.z = this.isYours ? Math.PI : 0;
-			}
-			
-			return this.addAnimation(); // return empty animation
+			return new Animation(); // return empty animation
 		}
 
-		const animation = 
-		this.addAnimation().add(new AnimationEffect(Easing.easeInOutQuad, this.position, "x", x, durationMs));
+		return this.addAnimation().add(new AnimationEffect(Easing.easeInOutQuad, this.position, "x", x, durationMs));
 		this.addAnimation().add(new AnimationEffect(Easing.easeInOutQuad, this.position, "y", y, durationMs));
 		this.addAnimation().add(new AnimationEffect(Easing.easeInOutQuad, this, "z", z, durationMs));
-		if (resetRot) {
-			this.addAnimation().add(new AnimationEffect(Easing.easeInOutQuad, this.rotation, "z", this.isYours ? Math.PI : 0, durationMs));
-		}
-
-		if (resetScale) {
-			this.addAnimation().add(new AnimationEffect(Easing.easeInOutQuad, this, "scale", 1, durationMs));
-		}
-
-		return animation;
 	}
 
 	showFront(delay = 0, durationMs = 500) {

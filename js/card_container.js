@@ -13,6 +13,8 @@ export default class CardContainer {
 
 	addToTop(card, skipAnimations) {
 		this.cards.push(card);
+		
+		card.moveTo(x, y, z, )
 	}
 
 	get x() {

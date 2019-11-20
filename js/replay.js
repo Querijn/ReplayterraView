@@ -5,7 +5,7 @@ import ReplaceMulliganCards from "./actions/replace_mulligan_cards.js";
 import DrawCard from "./actions/draw_card.js";
 import RoundStart from "./actions/round_start.js";
 import PlayCardToBench from "./actions/play_card_to_bench.js";
-import AnimationEffect from "./animation/animation_effect.js/index.js";
+import AnimationEffect from "./animation/animation_effect.js";
 
 export default class Replay {
 
