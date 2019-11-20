@@ -43,27 +43,54 @@ export default class Replay {
 		this._sleepFrames = 20;
 	}
 
-	static getAction(data) {
+	static getActions(data) {
 
-		const actionName = data.name;
+		// type V3Action = {
+		// 	type: "mulligan",
+		// 	initialCards: string[];
+		// 	finalCards: string[];
+		// }
+
+		// {
+		// 	type: "fight";
+		// 	matchups: {
+		// 		ourCardID: string | null;
+		// 		enemyCardID: string | null;
+		// 		survivorCardIDs: string[];
+		// 	}[];
+		// }
+
+		// {
+		// 	type: "draw" | "place" | "place_spell" | "enemy_place" | "enemy_place_spell" 
+		// 			| "place_died" | "enemy_place_died" | "spell_remove" | "enemy_spell_remove" 
+		//			| "play" | "enemy_play";
+		// 	code: string;
+		// 	id: string;
+		// };
+
+		const actionName = data.type;
+		const isYou = data.type.indexOf("enemy") < 0; // If action starts with enemy, it's not you.
 		switch (actionName) {
-			case "ShowMulliganCards":
-				return new ShowMulliganCards(data.isYou, data.cards);
+			case "mulligan":
+				return [
+					new ShowMulliganCards(isYou, data.initialCards, data.finalCards),
+					new ReplaceMulliganCards(isYou, data.initialCards, data.finalCards),
+				];
 
-			case "ReplaceMulliganCards":
-				return new ReplaceMulliganCards(data.isYou, data.oldCards, data.newCards);
+			case "draw":
+				return [ 
+					new DrawCard(isYou, { code: data.code, id: data.id}),
+					new DrawCard(!isYou, { code: data.code, id: data.id}), // TODO: Make it real.
+				];
 
-			case "DrawCard":
-				return new DrawCard(data.isYou, data.card);
-
-			case "RoundStart":
-				return new RoundStart(data.roundId);
-
-			case "PlayCardToBench":
-				return new PlayCardToBench(data.isYou, data.card);
+			case "place":
+			case "enemy_place":
+				return [ 
+					new PlayCardToBench(isYou, { code: data.code, id: data.id}),
+				];
 
 			default:
-				throw new Error(`Unknown action ${actionName}! Args given:`, data);
+				throw new Error(`Unknown action '${actionName}'! Args given:`, data);
 		}
 	}
 	
@@ -72,8 +99,8 @@ export default class Replay {
 		if (typeof actions !== 'number') { // Add new actions
 			debug.log(`Adding ${actions.length} new actions..`);
 			for (let actionData of actions) {
-				const action = Replay.getAction(actionData);
-				Replay.actions.push(action);
+				const actions = Replay.getActions(actionData);
+				Replay.actions.push(...actions);
 			}
 
 			Replay.players[0].deck.prepare();

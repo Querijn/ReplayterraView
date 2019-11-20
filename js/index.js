@@ -1,90 +1,74 @@
 import Scene from "./scene.js";
 import Replay from "./replay.js";
 
-console.warn = () => {};
-
 async function main() {
 	debug.log("ReplayterraView opened.");
 
 	await Scene.loadAsThreeJS();
 
+	// type V3Action = {
+	// 	type: "mulligan",
+	// 	initialCards: string[];
+	// 	finalCards: string[];
+	// }
+
+	// {
+	// 	type: "fight";
+	// 	matchups: {
+	// 		ourCardID: string | null;
+	// 		enemyCardID: string | null;
+	// 		survivorCardIDs: string[];
+	// 	}[];
+	// }
+
+	// {
+	// 	type: "draw" | "place" | "place_spell" | "enemy_place" | "enemy_place_spell" 
+	// 			| "place_died" | "enemy_place_died" | "spell_remove" | "enemy_spell_remove" 
+	//			| "play" | "enemy_play";
+	// 	code: string;
+	// 	id: string;
+	// };
+
 	const fakeActions = [
 		{ 
-			name: "ShowMulliganCards",
-			isYou: true, 
-			cards: [
+			type: "mulligan",
+			initialCards: [
 				{ id: "1_0", code: "01DE001" },
 				{ id: "1_1", code: "01DE002" },
 				{ id: "1_2", code: "01DE003" },
 				{ id: "1_3", code: "01DE004" }, 
-			]
+			],
+			finalCards: [
+				"1_0",
+				"1_1", 
+				"1_4", 
+				"1_5", 
+			],
 		},
 		
 		{ 
-			name: "ShowMulliganCards",
-			isYou: false, 
-			cards: [
-				{ id: "2_0", code: "01DE001" },
-				{ id: "2_1", code: "01DE002" },
-				{ id: "2_2", code: "01DE003" },
-				{ id: "2_3", code: "01DE004" }, 
-			]
+			type: "draw",
+			id: "1_6", 
+			code: "01DE011", 
 		},
 
 		{ 
-			name: "ReplaceMulliganCards",
-			isYou: true, 
-			oldCards: [
-				{ id: "1_2", code: "01DE003" },
-				{ id: "1_3", code: "01DE004" }, 
-			],
-			newCards: [
-				{ id: "1_4", code: "01DE010" },
-				{ id: "1_5", code: "01DE011" }, 
-			]
+			type: "place",
+			id: "1_0", 
+			code: "01DE001", 
 		},
 		
 		{ 
-			name: "ReplaceMulliganCards",
-			isYou: false, 
-			oldCards: [
-				{ id: "2_0", code: "01DE001" },
-				{ id: "2_1", code: "01DE001" }, 
-			],
-			newCards: [
-				{ id: "2_4", code: "01DE010" },
-				{ id: "2_5", code: "01DE011" }, 
-			]
+			type: "enemy_place",
+			id: "2_0", 
+			code: "01DE001", 
 		},
 		
-		{ 
-			name: "DrawCard",
-			isYou: false, 
-			card: { id: "2_6", code: "01DE011" }, 
-		},
-		
-		{ 
-			name: "DrawCard",
-			isYou: true, 
-			card: { id: "1_6", code: "01DE011" }, 
-		},
-		
-		{ 
-			name: "RoundStart",
-			roundId: 0
-		},
-		
-		{ 
-			name: "PlayCardToBench",
-			isYou: true, 
-			card: { id: "1_0", code: "01DE001" }, 
-		},
-		
-		{ 
-			name: "PlayCardToBench",
-			isYou: false, 
-			card: { id: "2_0", code: "01DE001" }, 
-		},
+		// { 
+		// 	type: "play",
+		// 	id: "1_0", 
+		// 	code: "01DE001", 
+		// },
 	]
 
 	Replay.play(fakeActions);
