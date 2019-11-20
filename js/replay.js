@@ -78,8 +78,6 @@ export default class Replay {
 
 			Replay.players[0].deck.prepare();
 			Replay.players[1].deck.prepare();
-
-			Replay.skipToAction(5);
 		}
 
 		requestAnimationFrame(Replay.play); // Prepare next frame.
