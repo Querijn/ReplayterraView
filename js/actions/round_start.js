@@ -19,18 +19,8 @@ export default class RoundStartAction extends BaseAction {
 		return true;
 	}
 
-	play() {
-		this._playInternal(false);
-	}
-
-	resolveImmediately() {
-		this._playInternal(true);
-	}
-
-	_playInternal(skipAnimations) {
-		debug.log(`${performance.now()}: Playing ${this.name} for ${this.isYou ? "you" : "them"}: ${skipAnimations ? "(skipping animations)" : ""}`);
-
-		// Show round text.
+	play(skipAnimations) {
+		
 	}
 
 	get deckCardData() {

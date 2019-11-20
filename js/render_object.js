@@ -10,7 +10,7 @@ export default class RenderObject {
 	}
 
 	addAnimation() {
-		const anim = new Animation();
+		const anim = new Animation(this);
 		this.animations.push(anim);
 
 		return anim;
@@ -36,9 +36,9 @@ export default class RenderObject {
 
 	update() { throw new Error("Not implemented!"); }
 
-	get isAnimationPlaying() { 
+	isAnimationPlayingAt(timeMs) { 
 		for (let animation of this.animations)
-			if (animation.isDone === false)
+			if (animation.isDoneAt(timeMs) === false)
 				return true;
 		return false;
 	}

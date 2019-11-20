@@ -27,6 +27,9 @@ export default class AnimationEffect {
 		if (this.startTime < 0)
 			return 0;
 
+		if (this.endTime - this.startTime == 0)
+			return 1;
+
 		return (time - this.startTime) / (this.endTime - this.startTime); // 0 ~ 1 (not boundchecked)
 	}
 
@@ -46,7 +49,7 @@ export default class AnimationEffect {
 
 	update(timeMs) {
 		if (this.startTime < 0) {
-			this.startTime = performance.now();
+			this.startTime = timeMs;
 			this.endTime = this.startTime + this.duration;
 			
 			this.startValue = this.target[this.propertyName];
@@ -54,7 +57,7 @@ export default class AnimationEffect {
 		}
 
 		const t = this.getProgress(timeMs);
-		const coeff = this.effectFunction(t);
+		const coeff = this.effectFunction(t) || 0;
 		this.target[this.propertyName] = this.valueRange * coeff + this.startValue;
 		
 		this.wasDone = t >= 1;

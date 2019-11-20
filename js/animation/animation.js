@@ -1,8 +1,10 @@
-import AnimationDoneHandler from "./animation/animation_done.js";
+import AnimationDoneHandler from "./animation_done.js";
 
 export default class Animation {
 
-	constructor(effects) {
+	constructor(owner, effects) {
+
+		this.owner = owner;
 		this.reset();
 		this._effects = (effects && effects.length != 0) ? effects : [];
 	}
@@ -17,13 +19,12 @@ export default class Animation {
 		
 		// This makes sure we call on done callbacks on animations that are already done, or have a duration of 0.
 		if (this.length == 0)
-			this.update(performance.now());
+			this.update(0);
 
 		return this;
 	}
 
-	get isDone() {
-		const timeMs = performance.now();
+	isDoneAt(timeMs) {
 		for (const effect of this._effects)
 			if (effect.isDoneAt(timeMs) == false)
 				return false;
@@ -40,12 +41,9 @@ export default class Animation {
 	update(timeMs) {
 
 		let isDone = true;
-		for (const effect of this._effects) {
-
-			// Skip effects that we've already played
-			if (effect.isDoneAt(timeMs) && effect.wasDone)
-				continue;
-				
+		
+		while (this._effects.length) {
+			const effect = this._effects[0];
 			if (effect.isDoneHandler) {
 				if (effect.onDone) {
 					effect.onDone(this);
@@ -56,14 +54,12 @@ export default class Animation {
 				effect.update(timeMs);
 			}
 
-			if (!effect.isDoneAt(timeMs)) {
-				isDone = false;
+			if (effect.isDoneAt(timeMs)) {
+				this._effects.splice(0, 1);
+			}
+			else {
 				break;
 			}
-		}
-
-		if (isDone && this._effects.length > 0) {
-			this.reset();
 		}
 	}
 

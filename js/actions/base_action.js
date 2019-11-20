@@ -4,23 +4,21 @@ export default class BaseAction {
 
 	constructor(name) {
 		this.name = name;
+		this._hasStarted = false;
 	}
 
-	startPlay() {
-		this.play();
+	startPlay(skipAnimations) {
+		console.log(`Starting ${this.name} action:`, this);
+		this.play(skipAnimations);
 		this._hasStarted = true;
 	}
 
-	play() {
+	play(skipAnimations) {
 		throw new Error("play is not implemented for this action!");
 	}
 
 	isReadyToPlay(timeMs) {
 		throw new Error("isReadyToPlay is not implemented for this action!");
-	}
-
-	resolveImmediately() {
-		throw new Error("resolveImmediately is not implemented for this action!");
 	}
 
 	isDone(timeMs) {

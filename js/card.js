@@ -53,55 +53,31 @@ export default class Card extends RenderObject {
 
 	moveTo(x, y, z = 1, durationMs = 250) {
 
-		// debug.log(`Card ${this.data.id} is moving to ${x}, ${y}, ${z}. ${durationMs === 0 ? "This will happen immediately" : `This will take ${durationMs} ms.`}`);
-		if (durationMs === 0) {
-			this.position.x = x;
-			this.position.y = y;
-			this.z = z;
-			return new Animation(); // return empty animation
-		}
+		debug.log(`Card ${this.data.id} is moving to ${x}, ${y}, ${z}. ${durationMs === 0 ? "This will happen immediately" : `This will take ${durationMs} ms.`}`);
+		
 
-		return this.addAnimation().add(new AnimationEffect(Easing.easeInOutQuad, this.position, "x", x, durationMs));
+		this.addAnimation().add(new AnimationEffect(Easing.easeInOutQuad, this.position, "x", x, durationMs));
 		this.addAnimation().add(new AnimationEffect(Easing.easeInOutQuad, this.position, "y", y, durationMs));
-		this.addAnimation().add(new AnimationEffect(Easing.easeInOutQuad, this, "z", z, durationMs));
+		return this.addAnimation().add(new AnimationEffect(Easing.easeInOutQuad, this, "z", z, durationMs));
 	}
 
-	showFront(delay = 0, durationMs = 500) {
-
-		if (delay + durationMs < 0.001) {
-			this.rotation.y = 0;
-		}
-
-		if (Math.abs(this.rotation.y) < 0.1) { // TODO: Make flip use showBack/showFront rather than this way
-			return this.flip(delay, durationMs);
-		}
-
-		return this.addAnimation(); // return empty animation
+	showFront(delay = 0, durationMs = 250) {
+		return this._setRot(Math.PI, delay, durationMs);
 	}
 
-	showBack(delay = 0, durationMs = 500) {
-
-		if (delay + durationMs < 0.001) {
-			this.rotation.y = Math.PI;
-		}
-
-		if (Math.abs(Math.PI - this.rotation.y) < 0.1) { // TODO: Make flip use showBack/showFront rather than this way
-			return this.flip(delay, durationMs);
-		}
-
-		return this.addAnimation(); // return empty animation
+	showBack(delay = 0, durationMs = 250) {
+		return this._setRot(0, delay, durationMs);
 	}
 
-	flip(delay = 0, durationMs = 500) {
-
-		const newRot = this.rotation.y == 0 ? Math.PI : 0;
+	_setRot(y, delay = 0, durationMs = 500) {
 		if (delay + durationMs < 0.001) {
-			this.rotation.y = newRot;
+			this.rotation.y = y;
+			return new Animation(this);
 		}
 
 		return this.addAnimation()
 		.add(new AnimationDelay(delay))
-		.add(new AnimationEffect(Easing.easeInOutQuad, this.rotation, "y", newRot, durationMs));
+		.add(new AnimationEffect(Easing.easeInOutQuad, this.rotation, "y", y, durationMs));
 	}
 
 	static async loadThreeJSShader() {
@@ -142,4 +118,6 @@ export default class Card extends RenderObject {
 
 	get scale() { return this._scale; }
 	set scale(newScale) { this._scale = newScale; this.updateScale(); }
+
+	get showingFront() { return Math.abs(Math.PI - this.rotation.y) < Math.abs(this.rotation.y); }
 }

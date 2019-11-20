@@ -14,7 +14,6 @@ export default class PlayCardToBench extends BaseAction {
 	}
 
 	isReadyToPlay(timeMs) {
-
 		// Wait for animations to finish
 		const player = this.isYou ? Replay.you : Replay.opponent;
 		if (Scene.areAnimationsPlaying) {
@@ -24,32 +23,19 @@ export default class PlayCardToBench extends BaseAction {
 
 		// Init timer
 		if (this.time < 0) {
-			this.time = performance.now();
+			this.time = timeMs;
 			return false;
 		}
 
 		// Wait 1 sec
-		return performance.now() - this.time > 1000;
+		return timeMs - this.time > 1000;
 	}
 
-	play() {
-		this._playInternal(false);
-	}
-
-	resolveImmediately() {
-		this._playInternal(true);
-	}
-
-	_playInternal(skipAnimations) {
-		debug.log(`${performance.now()}: Playing ${this.name} for ${this.isYou ? "you" : "them"}: ${skipAnimations ? "(skipping animations)" : ""}`);
+	play(timeMs, skipAnimations) {
+		debug.log(`${timeMs}: Playing ${this.name} for ${this.isYou ? "you" : "them"}: ${skipAnimations ? "(skipping animations)" : ""}`);
 		
 		const player = this.isYou ? Replay.you : Replay.opponent;
 		player.hand.addCardToBench(this.card);
-	}
-
-	resolveImmediately() {
-		const player = this.isYou ? Replay.you : Replay.opponent;
-		player.hand.addCardToBench(this.card, true);
 	}
 
 	get deckCardData() {

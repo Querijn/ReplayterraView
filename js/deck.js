@@ -4,7 +4,7 @@ import CardContainer from "./card_container.js";
 export default class Deck extends CardContainer {
 
 	constructor(player, x, y) {
-		super(player, x, y);
+		super("deck", player, x, y);
 	}
 
 	prepare() {
@@ -22,14 +22,20 @@ export default class Deck extends CardContainer {
 				
 			for (const card of cards) {
 				this.addToBottom(card, true);
-				debug.log(`- Adding card ${card.code}/${card.id || "(no id)"} to ${!this.player.isTop ? "player" : "opponent"} deck.`);
 			}
 		}
 
-		debug.log(`${!this.player.isTop ? "player" : "opponent"}'s deck currently looks like this: `, this.cards.map(c => c.data ));
+		debug.log(`${!this.player.isTop ? "Player" : "Opponent"}'s deck currently looks like this: `, this.cards.map(c => c.data ));
 	}
 
-	drawCard() {
-		return this.cards.pop();
+	drawCard(cardContainer, skipAnimations) {
+		const card = this.cards.pop();
+		debug.log(`${!this.player.isTop ? "Player" : "Opponent"}'s deck is drawing a card to ${cardContainer.name} (${skipAnimations ? "skipping anims" : "with anims"})`);
+
+		return cardContainer.addToTop(card, skipAnimations);
+	}
+	
+	fixPositions(skipAnimations) {
+		debugger;
 	}
 }

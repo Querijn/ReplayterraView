@@ -5,6 +5,7 @@ import CardData from "../card_data.js";
 export default class ShowMulliganCardsAction extends BaseAction {
 
 	cards = [];
+	animations = [];
 
 	constructor(isYou, oldCardCodes) {
 		super("ShowMulliganCards");
@@ -16,11 +17,15 @@ export default class ShowMulliganCardsAction extends BaseAction {
 	}
 
 	isReadyToPlay(timeMs) {
-		return timeMs > 1000;
+
+		if (Replay.timeLastAction < 0 || timeMs <= 0)
+			return false;
+
+		return timeMs - Replay.timeLastAction > 2000;
 	}
 
 	isDone(timeMs) {
-		return this.animation && this.animation.isDone;
+		return this.animations.length == 4 && this.animations.every((a) => a.isDoneAt(timeMs));
 	}
 
 	identifyCard(code, id) {
@@ -44,25 +49,29 @@ export default class ShowMulliganCardsAction extends BaseAction {
 		return true;
 	}
 
-	play() {
-		this._playInternal(false);
-	}
-
-	resolveImmediately() {
-		this._playInternal(true);
-	}
-	
-	_playInternal(skipAnimations) {
-		const player = this.isYou ? Replay.you : Replay.opponent;
-		debug.log(`${performance.now()}: Playing ${this.name} for ${this.isYou ? "you" : "them"}: deck card count: ${player.deck.cards.length}, mull card count: ${player.mulliganView.cards.length} ${skipAnimations ? "(skipping animations)" : ""}`);
-
-		for (let i = 0; i < 4; i++) {
-			debug.log(`- Drawing card ${player.deck.cards[i].data.id} to mulligan`);
-		}
+	play(skipAnimations) {
 		
-		this.animation = player.deck.drawToMulliganView(null, skipAnimations); // Draw 4 cards (these are guaranteed at the top)
-		debug.log(`${player.mulliganView.cards.length} cards in ${this.isYou ? "player" : "opponent"} mulligan`);
-		debug.log(`${player.deck.cards.length} cards in ${this.isYou ? "player" : "opponent"} deck`);
+		const player = this.isYou ? Replay.you : Replay.opponent;
+		const drawCard = () => {
+			this.animations.push(player.deck.drawCard(player.mulligan, skipAnimations)
+			.onDone((anim) => {
+				anim.owner.showFront();
+			}));
+		}
+
+		drawCard();
+
+		// fuck it
+		if (!skipAnimations) {
+			setTimeout(drawCard, 250);
+			setTimeout(drawCard, 500);
+			setTimeout(drawCard, 750);
+		}
+		else {
+			drawCard();
+			drawCard();
+			drawCard();
+		}
 	}
 
 	get deckCardData() {

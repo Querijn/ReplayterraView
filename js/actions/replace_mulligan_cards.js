@@ -41,51 +41,11 @@ export default class ReplaceMulliganCardsAction extends BaseAction {
 	}
 
 	isDone(timeMs) {
-		return ReplaceMulliganCardsAction.settleCount == 2;
+		return false;
 	}
+	
+	play(skipAnimations) {
 
-	static settleCount = 0;
-	static timeSettled = -1;
-	static settle(skipAnimations) {
-		this.settleCount++;
-		if (this.settleCount == 2) {
-			Replay.opponent.mulliganView.moveToHand(skipAnimations);
-			Replay.you.mulliganView.moveToHand(skipAnimations);
-			this.timeSettled = performance.now();
-		}
-	}
-
-	play() {
-		this._playInternal(false);
-	}
-
-	resolveImmediately() {
-		this._playInternal(true);
-	}
-
-	_playInternal(skipAnimations) {
-		const player = this.isYou ? Replay.you : Replay.opponent;
-		debug.log(`${performance.now()}: Playing ${this.name} for ${this.isYou ? "you" : "them"}: deck card count: ${player.deck.cards.length}, mull card count: ${player.mulliganView.cards.length} ${skipAnimations ? "(skipping animations)" : ""}`);
-		
-		let pos = 0;
-		for (const i of this.indicesToRemove) {
-			const cardIndex = player.mulliganView.cards[i];
-			if (cardIndex < 0)
-				throw new Error(`Could not find a removed card!`);
-
-			const card = player.mulliganView.cards.splice(cardIndex, 1)[0];
-			const cardPos = i;
-			player.deck.addToBottom(card, skipAnimations).onDone(() => {
-				player.deck.drawToMulliganView(cardPos, skipAnimations).onDone(() => {
-
-					card.addAnimation()
-					.add(new AnimationDelay(skipAnimations ? 0 : 2000))
-					.onDone(() => { 
-						ReplaceMulliganCardsAction.settle(skipAnimations);
-					});
-				});
-			});
-		}
 	}
 
 	get deckCardData() {
@@ -112,8 +72,6 @@ export default class ReplaceMulliganCardsAction extends BaseAction {
 				return;
 			}
 		}
-
-		debug.warn(`${this.name}: Could not find card for code ${code}? I wanted to assign ID ${id}..`);
 	}
 
 	get isIdentified() {

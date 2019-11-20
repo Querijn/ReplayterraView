@@ -14,7 +14,7 @@ export default class Replay {
 	static players = [ new PlayerSide(true), new PlayerSide(false) ];
 	static lastTime = -1;
 	static lastTimer = -1;
-	static timeSinceLastAction = 0;
+	static timeLastAction = 0;
 	static _currentActionIterator = 0;
 	static _sleepFrames = 0;
 	static _mulliganCardsDrawn = 0;
@@ -26,7 +26,7 @@ export default class Replay {
 		this.players = [ new PlayerSide(true), new PlayerSide(false) ];
 		this.lastTime = -1;
 		this.lastTimer = -1;
-		this.timeSinceLastAction = 0;
+		this.timeLastAction = 0;
 		this._mulliganCardsDrawn = 0;
 
 		Scene.reset();
@@ -36,7 +36,7 @@ export default class Replay {
 
 		// For each action until this one, play it immediately at full speed.
 		for (let i = 0; i < actionIterator; i++) {
-			Replay.actions[i].resolveImmediately();
+			Replay.actions[i].startPlay(true);
 		}
 
 		this._currentActionIterator = actionIterator;
@@ -83,17 +83,18 @@ export default class Replay {
 				const show = Replay.getExistingAction("ShowMulliganCards");
 				const replace = Replay.getExistingAction("ReplaceMulliganCards");
 
+				// The first 4 draws are actually mulligans moving to hand. Intercept this.
 				if (!show || !replace) {
 					debug.error("Can't find the show or replace mulligan card actions, but we're drawing a card? Huh?!");
 				}
 				else if (!replace.isIdentified) {
 					show.identifyCard(data.code, data.id);
 					replace.identifyCard(data.code, data.id);
-
 					return [];
 				}
 
-				return [ 
+				// It's a real draw.
+				return [
 					new DrawCard(isYou, { code: data.code, id: data.id})
 				];
 
@@ -104,7 +105,7 @@ export default class Replay {
 				];
 
 			default:
-				debug.error(`Unknown action '${actionName}'! Args given:`, data);
+				// debug.error(`Unknown action '${actionName}'! Args given:`, data); // TODO: re-enable this.
 				return [];
 		}
 	}
@@ -118,6 +119,10 @@ export default class Replay {
 	}
 	
 	static play(actions) {
+		requestAnimationFrame(Replay.play); // Prepare next frame.
+
+		const deltaMs = (performance.now() - Replay.lastTimer) * Replay.speed;
+		const timeMs = Replay.lastTime >= 0 ? Replay.lastTime + deltaMs : 0;
 		
 		if (typeof actions !== 'number') { // Add new actions
 			debug.log(`Adding ${actions.length} new actions..`);
@@ -128,32 +133,28 @@ export default class Replay {
 
 			Replay.players[0].deck.prepare();
 			Replay.players[1].deck.prepare();
+			
+			Replay.timeLastAction = timeMs;
 		}
-
-		requestAnimationFrame(Replay.play); // Prepare next frame.
-
-		const deltaMs = (performance.now() - Replay.lastTimer) * Replay.speed;
-		const timeMs = Replay.lastTime >= 0 ? Replay.lastTime + deltaMs : 0;
 
 		if (Replay.currentAction) {
 
 			// If we started and we're done too.
 			if (Replay.currentAction.hasStarted) {
 				if (Replay.currentAction.isDone(timeMs)) {
+					Replay.timeLastAction = timeMs;
 					Replay._currentActionIterator++; // Go to next action
 					debug.log(`Current action done. Will start ${Replay.currentAction.name} soon.`);
 				}
 			}
 			else if (Replay.currentAction.isReadyToPlay(timeMs)) {
-				Replay.currentAction.startPlay();
-				Replay.timeSinceLastAction = performance.now();
+				Replay.currentAction.startPlay(/* skipAnimations = */false);
 				
 				if (Replay.actions.length == Replay._currentActionIterator) {
 					debug.log("Replay is done!");
 				}
 			}
 		}
-		
 
 		Replay.lastTime = timeMs;
 		Replay.lastTimer = performance.now();
@@ -165,7 +166,7 @@ export default class Replay {
 	}
 
 	static get timeMulliganResolved() {
-		return Math.max(this.players[0].mulliganView.resolveTime, this.players[1].mulliganView.resolveTime);
+		return Math.max(this.players[0].mulligan.resolveTime, this.players[1].mulligan.resolveTime);
 	}
 
 	static get you() {
