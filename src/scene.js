@@ -1,4 +1,4 @@
-import Card from "./card";
+import Card from "./card.js";
 
 export default class Scene {
 
@@ -40,8 +40,6 @@ export default class Scene {
 		this.renderer = new THREE.WebGLRenderer({ alpha: true, antialias: true });
 
 		Scene.renderer.setSize(this.width, this.height);
-		document.body.appendChild(this.renderer.domElement);
-
 		await Card.loadThreeJSShader();
 	}
 
@@ -102,8 +100,7 @@ export default class Scene {
 
 			this.textureLoader = new THREE.TextureLoader();
 			const background = new THREE.PlaneGeometry(this.width, this.height);
-			const material = new THREE.MeshBasicMaterial({
-				side: THREE.DoubleSide,  map: this.textureLoader.load('assets/background.png')});
+			const material = new THREE.MeshBasicMaterial({ side: THREE.DoubleSide,  map: this.textureLoader.load('assets/background.png')});
 			const quad = new THREE.Mesh(background, material);
 			this.scene.add(quad);
 			quad.rotation.z = Math.PI;
