@@ -39,4 +39,22 @@ export default class PlayerSide {
 		// debug.log(`${isTop ? "Top" : "Bottom"} player's bench is at ${benchX}, ${benchY}.`);
 		// debug.log(`${isTop ? "Top" : "Bottom"} player's field is at ${fieldX}, ${fieldY}.`);
 	}
+
+	findCard(cardId) {
+		const containers = [
+			this.deck,
+			this.hand,
+			this.bench,
+			this.field,
+			this.mulligan
+		];
+
+		for (const container of containers) {
+			let card = container.cards.find(c => c.id == cardId);
+			if (card) 
+				return [ container, card ];
+		}
+
+		return [ null, null ];
+	}
 }
