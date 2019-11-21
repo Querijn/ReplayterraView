@@ -60,8 +60,15 @@ export default class CardContainer {
 
 	addAtIndex(card, index, skipAnimations) {
 
-		if (!card.isRenderObject)
+		if (!card.isRenderObject) { // If card data
 			card = new Card(card, !this._player.isTop);
+		}
+
+		else { // If we already had this card
+			const existing = this.cards.findIndex(c => c === card);
+			if (existing >= 0) // Remove it to avoid dupes
+				this.card.splice(existing, 1);
+		}
 
 		const moveDuration = skipAnimations ? 0 : 250;
 		const playerName = this.player.isTop ? "opponent's" : "your";
@@ -139,10 +146,23 @@ export default class CardContainer {
 		return lastAnim;
 	}
 
-	destroyCardAtIndex(i, skipAnimations) {
+	destroyCard(card, skipAnimations) {
 
-		const card = this.cards.splice(i, 1)[0]; // Single out card
+		const i = this.cards.findIndex(c => c === card);
+		if (i < 0)
+			throw new Error("Cannot find this card in this container!");
+
+		this.cards.splice(i, 1); // Single out card
 		return card.destroy(skipAnimations);
+	}
+
+	pruneDummies() {
+		const oldSize = this.cards.length;
+		this.cards = this.cards.filter(c => !c.isDummy);
+
+		// if (oldSize == this.cards.length)
+		// 	return null;
+		// return this.fixPositions();
 	}
 
 	get x() { return this._x; }

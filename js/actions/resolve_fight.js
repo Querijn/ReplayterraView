@@ -29,7 +29,7 @@ export default class ResolveFight extends BaseAction {
 		if (Replay.lastTimeAnyAction < 0 || timeMs <= 0)
 			return false;
 
-		return timeMs - Replay.lastTimeAnyAction > 2000;
+		return timeMs - Replay.lastTimeAnyAction > 200;
 	}
 
 	isDone(timeMs) {
@@ -38,82 +38,104 @@ export default class ResolveFight extends BaseAction {
 
 	play(skipAnimations) {
 
+		let fixPosAnim = null;
 		for (let i = 0; i < this.matchUps.length; i++) {
 			let match = this.matchUps[i];
-			const yourCard = match.ourCardID ? Replay.you.field.cards.find(c => c.id == match.ourCardID) : new DummyCard();
-			const theirCard = match.enemyCardID ? Replay.opponent.field.cards.find(c => c.id == match.enemyCardID) : new DummyCard();
+			const yourCard = match.ourCardID ? Replay.you.field.cards.find(c => c.id == match.ourCardID) : new DummyCard(true);
+			const theirCard = match.enemyCardID ? Replay.opponent.field.cards.find(c => c.id == match.enemyCardID) : new DummyCard(false);
 
 			if (!match.ourCardID) { // Make sure dummy cards are in our field
-				Replay.you.field.addAtIndex(yourCard, i, skipAnimations);
+				fixPosAnim = Replay.you.field.addAtIndex(yourCard, i, skipAnimations);
 			}
+			else if (!yourCard) {
+				debugger;
+			}
+
 			if (!match.enemyCardID) {
-				Replay.you.field.addAtIndex(theirCard, i, skipAnimations);
+				fixPosAnim = Replay.opponent.field.addAtIndex(theirCard, i, skipAnimations);
+			}
+			else if (!theirCard) {
+				debugger;
 			}
 		}
 
-		const onFightDone = () => {
-			for (let i =  this.matchUps.length - 1; i >= 0; i--) {
-				
-				const match = this.matchUps[i];
-				const weSurvived = match.ourCardID ? match.survivorCardIDs.some(id => id == match.ourCardID) : false;
-				const theySurvived = match.enemyCardID ? match.survivorCardIDs.some(id => id == match.enemyCardID) : false;
-
-				if (!weSurvived) {
-					Replay.you.field.destroyCardAtIndex(i, skipAnimations);
-				}
-				if (!theySurvived) {
-					Replay.opponent.field.destroyCardAtIndex(i, skipAnimations);
-				}
-			}
-
-			const moveAnim2 = Replay.you.field.moveAllToContainer(Replay.you.bench, skipAnimations);
-			const moveAnim1 = Replay.opponent.field.moveAllToContainer(Replay.opponent.bench, skipAnimations);
-
-			if (moveAnim1) {
-				moveAnim1.onDone(() => this.done = true);
-			}
-			else if (moveAnim2) {
-				moveAnim2.onDone(() => this.done = true);
-			}
-			else {
-				this.done = true;
-			}
-		};
-
-		if (skipAnimations || this.animations.length == 0) {
-			onFightDone();
+		if (skipAnimations) {
+			this.onFightDone(skipAnimations);
+		}
+		else if (fixPosAnim) {
+			fixPosAnim
+			.add(new AnimationDelay(500))
+			.onDone(() => { // Fight
+				this.doFightAnimation();
+			});
 		}
 		else {
-			this.animations[this.animations.length - 1].onDone(() => { // Fight
-				
-				let lastAnim = null;
-				for (let i = 0; i < Replay.you.field.cards.length; i++) {
-					const cards = [
-						Replay.you.field.cards[i],
-						Replay.opponent.field.cards[i] 
-					];
+			this.doFightAnimation();
+		}
+		
+	}
 
-					for (let j = 0; j < cards.length; j++) {
-						const card = cards[j];
-						const up = j == 0 ? 1 : -1;
+	doFightAnimation() {
+		let lastAnim = null;
+		for (let i = 0; i < Replay.you.field.cards.length; i++) {
+			const cards = [
+				Replay.you.field.cards[i],
+				Replay.opponent.field.cards[i] 
+			];
 
-						const anim = card.addAnimation()
-						.add(new AnimationDelay(i * 320))
-						.add(new AnimationEffect(Easing.linear, card.position, "y", card.y - up * 30,	240))
-						.add(new AnimationEffect(Easing.linear, card.position, "y", card.y + up * 70,	80))
-						.add(new AnimationEffect(Easing.linear, card.position, "y", card.y, 			120));
+			for (let j = 0; j < cards.length; j++) {
+				const card = cards[j];
+				const up = j == 1 ? 1 : -1;
 
-						lastAnim = anim;
-					}
-				}
+				const anim = card.addAnimation()
+				.add(new AnimationDelay(i * 320))
+				.add(new AnimationEffect(Easing.linear, card.position, "y", card.position.y - up * 30,	240))
+				.add(new AnimationEffect(Easing.linear, card.position, "y", card.position.y + up * 70,	80))
+				.add(new AnimationEffect(Easing.linear, card.position, "y", card.position.y, 			120));
 
-				// If all our animations have been played, end the fight
-				if (!lastAnim)
-					onFightDone();
-				else
-					lastAnim.onDone(onFightDone);
-			});
-		}		
+				lastAnim = anim;
+			}
+		}
+
+		// If all our animations have been played, end the fight
+		lastAnim.onDone(() => {
+			this.onFightDone(false);
+		});
+	}
+
+	onFightDone(skipAnimations) {
+		for (let i =  this.matchUps.length - 1; i >= 0; i--) {
+			const match = this.matchUps[i];
+			const weSurvived = match.ourCardID ? match.survivorCardIDs.some(id => id == match.ourCardID) : true;
+			const theySurvived = match.enemyCardID ? match.survivorCardIDs.some(id => id == match.enemyCardID) : true;
+
+			if (!weSurvived && match.ourCardID) {
+				const yourCard = Replay.you.field.cards.find(c => c.id == match.ourCardID);
+				if (!yourCard)
+					throw new Error("Could not find our card to destroy!");
+				Replay.you.field.destroyCard(yourCard, skipAnimations);
+			}
+			if (!theySurvived && match.enemyCardID) {
+				const theirCard = Replay.opponent.field.cards.find(c => c.id == match.enemyCardID);
+				if (!theirCard)
+					throw new Error("Could not find their card to destroy!");
+
+				Replay.opponent.field.destroyCard(theirCard, skipAnimations);
+			}
+		}
+
+		Replay.you.field.pruneDummies();
+		Replay.opponent.field.pruneDummies();
+
+		const backupMoveAnim = Replay.you.field.moveAllToContainer(Replay.you.bench, skipAnimations);
+		const moveAnim = Replay.opponent.field.moveAllToContainer(Replay.opponent.bench, skipAnimations) || backupMoveAnim;
+
+		if (moveAnim) {
+			moveAnim.onDone(() => this.done = true);
+		}
+		else {
+			this.done = true;
+		}
 	}
 
 	get deckCardData() {
