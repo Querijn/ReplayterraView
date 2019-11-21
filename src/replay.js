@@ -23,7 +23,7 @@ export default class Replay {
 	static _sleepFrames = 0;
 	static _mulliganCardsDrawn = 0;
 
-	static skipToAction(actionIterator) {
+	static skipToActionIndex(actionIterator) {
 		console.log(`Reinitialising field until action ${actionIterator}..`);
 		AnimationEffect.skippingToPoint = true; // Let it know that we're not accepting any animations with a duration > 0
 
@@ -211,6 +211,14 @@ export default class Replay {
 
 	static get currentAction() {
 		return this.actions[this._currentActionIterator];
+	}
+
+	static get currentActionIndex() {
+		return this._currentActionIterator;
+	}
+
+	static get actionCount() {
+		return this.actions.length;
 	}
 
 	static get you() {

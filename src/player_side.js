@@ -10,7 +10,7 @@ export default class PlayerSide {
 		const resY = 600;
 
 		const deckX = isTop ? resX - 50 : 50;
-		const deckY = isTop ? 75 :	resY - 75;
+		const deckY = isTop ? 75 :	resY - 50;
 		const deckScale = 1.5;
 		this.deck = new Deck(this, deckX, deckY, deckScale);
 		
