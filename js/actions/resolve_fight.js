@@ -47,15 +47,29 @@ export default class ResolveFight extends BaseAction {
 			if (!match.ourCardID) { // Make sure dummy cards are in our field
 				fixPosAnim = Replay.you.field.addAtIndex(yourCard, i, skipAnimations);
 			}
-			else if (!yourCard) {
-				debugger;
+			else if (!yourCard) { // well shit we can't find this card
+				const [ container, card ] = Replay.you.findCard(match.ourCardID);
+				if (container && card) {
+					debug.warn(`Could not find card ${match.ourCardID} in your hand, but we found it in the ${container.name}.`);
+					fixPosAnim = container.moveToContainer(card, Replay.you.field, skipAnimations);
+				}
+				else {
+					debug.error(`Could not find card ${match.ourCardID} anywhere...`);
+				}
 			}
 
 			if (!match.enemyCardID) {
 				fixPosAnim = Replay.opponent.field.addAtIndex(theirCard, i, skipAnimations);
 			}
-			else if (!theirCard) {
-				debugger;
+			else if (!theirCard) { // well shit we can't find this card
+				const [ container, card ] = Replay.opponent.findCard(match.enemyCardID);
+				if (container && card) {
+					debug.warn(`Could not find card ${match.enemyCardID} in their hand, but we found it in the ${container.name}.`);
+					fixPosAnim = container.moveToContainer(card, Replay.opponent.field, skipAnimations);
+				}
+				else {
+					debug.error(`Could not find card ${match.enemyCardID} anywhere...`);
+				}
 			}
 		}
 
