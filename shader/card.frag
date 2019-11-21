@@ -13,6 +13,6 @@ void main()
 	else
 		text = texture2D(texture2, vUv);
 
-	text.a = 1.0 - destroyAmount;
+	text.a = text.a - destroyAmount;
 	gl_FragColor = text;
 }
