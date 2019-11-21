@@ -28,12 +28,12 @@ Other actions:
 
 For Merk:
 	✔ Remove debug @high @done (11/21/2019, 11:37:03 PM)
-	☐ Add callback on frame
+	✔ Add callback on frame @done (11/22/2019, 12:03:31 AM)
 
 Low prio:
 	✔ Cards turn around during Mulligan @done (11/21/2019, 9:37:21 AM)
 	✔ Last card drawn in test is not sized correctly @done (11/21/2019, 9:37:21 AM)
-	☐ Re-add scale (per container) @low
+	✔ Re-add scale (per container) @low @done (11/22/2019, 12:03:25 AM)
 	☐ Hand card bow @low
 	☐ Any resolution @low
 	☐ Round text @low
