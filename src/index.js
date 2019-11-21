@@ -1,4 +1,4 @@
-// import regeneratorRuntime from "regenerator-runtime.js";
+import regeneratorRuntime from "regenerator-runtime.js";
 import Scene from "./scene.js";
 import Replay from "./replay.js";
 
