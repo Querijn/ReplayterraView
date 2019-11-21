@@ -8,6 +8,7 @@ import PlayCardToBench from "./actions/play_card_to_bench.js";
 import AnimationEffect from "./animation/animation_effect.js";
 import CardData from "./card_data.js";
 import ResolveFight from "./actions/resolve_fight.js";
+import KillUnitAction from "./actions/kill_unit.js";
 
 export default class Replay {
 
@@ -109,13 +110,16 @@ export default class Replay {
 				// }
 				return [
 					new ResolveFight(true, true, data.matchups),
-				]
-
-			case "enemy_place_spell":
-			case "place_spell":
+				];
 			
 			case "place_died":
 			case "enemy_place_died":
+				return [
+					new KillUnitAction(defaultIsYou, { code: data.code, id: data.id}),
+				];
+
+			case "enemy_place_spell":
+			case "place_spell":
 			
 			case "spell_remove":
 			case "enemy_spell_remove":
