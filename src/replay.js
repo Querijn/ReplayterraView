@@ -14,7 +14,7 @@ export default class Replay {
 
 	static speed = 1;
 	static actions = [];
-	static players = [ new PlayerSide(true), new PlayerSide(false) ];
+	static players = null;
 	static lastTime = -1;
 	static lastTimer = -1;
 	static timeLastYourAction = 0;
@@ -27,6 +27,8 @@ export default class Replay {
 		console.log(`Reinitialising field until action ${actionIterator}..`);
 		AnimationEffect.skippingToPoint = true; // Let it know that we're not accepting any animations with a duration > 0
 
+		Scene.reset();
+
 		this.players = [ new PlayerSide(true), new PlayerSide(false) ];
 		this.lastTime = -1;
 		this.lastTimer = -1;
@@ -34,7 +36,6 @@ export default class Replay {
 		this.timeLastTheirAction = 0;
 		this._mulliganCardsDrawn = 0;
 
-		Scene.reset();
 
 		Replay.players[0].deck.prepare();
 		Replay.players[1].deck.prepare();
@@ -150,6 +151,9 @@ export default class Replay {
 				const actions = Replay.getActions(actionData);
 				Replay.actions.push(...actions);
 			}
+
+			Scene.reset();
+			Replay.players = Replay.players || [ new PlayerSide(true), new PlayerSide(false) ];
 
 			Replay.players[0].deck.prepare();
 			Replay.players[1].deck.prepare();
