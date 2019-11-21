@@ -4,8 +4,14 @@ import Animation from "./animation/animation.js";
 
 export default class CardContainer {
 
+	static ShowSide = {
+		NoPreference: 0,
+		ShowFront: 1,
+		ShowBack: 2
+	};
+
 	cards = [];
-	constructor (name, player, x, y, width = 0.5, shouldAddToTop = true) {
+	constructor (name, player, x, y, width = 0.5, shouldAddToTop = true, showSide = CardContainer.ShowSide.NoPreference) {
 		
 		this.name = name;
 		this._player = player;
@@ -13,6 +19,7 @@ export default class CardContainer {
 		this._y = y;
 		this.width = width;
 		this.shouldAddToTop = shouldAddToTop;
+		this.showSide = showSide;
 	}
 
 	addCardsToBottom(cards, skipAnimations) {
@@ -111,6 +118,16 @@ export default class CardContainer {
 
 			const card = this.cards[i];
 			let distFromMiddleIndex = this.cards.length > 1 ? (this.cards.length - 1) / 2 - i : 0;
+
+			switch (this.showSide) {
+				case CardContainer.ShowSide.ShowFront:
+					card.showFront(0, skipAnimations ? 0 : 250);
+					break;
+
+				case CardContainer.ShowSide.ShowBack:
+					card.ShowBack(0, skipAnimations ? 0 : 250);
+					break;
+			}
 
 			lastAnim = card.moveTo(
 				this.x + distFromMiddleIndex * stepX,
