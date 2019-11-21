@@ -12,12 +12,13 @@ export default class CardContainer {
 	};
 
 	cards = [];
-	constructor (name, player, x, y, width = 0.5, shouldAddToTop = true, showSide = CardContainer.ShowSide.NoPreference) {
+	constructor (name, player, x, y, scale = 1.0, width = 0.5, shouldAddToTop = true, showSide = CardContainer.ShowSide.NoPreference) {
 		
 		this.name = name;
 		this._player = player;
 		this._x = x;
 		this._y = y;
+		this.scale = scale;
 		this.width = width;
 		this.shouldAddToTop = shouldAddToTop;
 		this.showSide = showSide;
@@ -136,6 +137,9 @@ export default class CardContainer {
 					card.ShowBack(0, skipAnimations ? 0 : 250);
 					break;
 			}
+
+			card.addAnimation()
+			.add(new AnimationEffect(Easing.easeInOutQuad, card, "scale", this.scale, skipAnimations ? 0 : 250));
 
 			lastAnim = card.moveTo(
 				this.x + distFromMiddleIndex * stepX,
