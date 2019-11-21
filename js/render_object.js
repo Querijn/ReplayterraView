@@ -33,6 +33,8 @@ export default class RenderObject {
 		for (let animation of this.animations) {
 			animation.update(timeMs);
 		}
+
+		this.animations = this.animations.filter(a => !a.isDoneAt(timeMs));
 	}
 
 	cancelAnimations() {
