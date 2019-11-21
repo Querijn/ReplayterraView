@@ -8,9 +8,9 @@ import Animation from "./animation/animation.js";
 
 export default class DummyCard extends RenderObject {
 
-	constructor(cardData, isYours) {
+	constructor(isYours) {
 		super();
-		this.data = cardData;
+		this.data = new CardData(null, null);
 		this.isYours = isYours;
 
 		this.position = { x: 0, y: 0, z: 0 };
@@ -45,7 +45,7 @@ export default class DummyCard extends RenderObject {
 	}
 
 	get code() { return "DummyCard"; }
-	get id() { return "-1"; }
+	get id() { return ""; }
 	get isRenderObject() { return true; }
 	get isDummy() { return true; }
 	get width() { return this.quad && this.quad.parameters && this.quad.geometry ? this.quad.geometry.parameters.width : 1; }
