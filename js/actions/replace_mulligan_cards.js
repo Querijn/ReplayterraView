@@ -25,8 +25,8 @@ export default class ReplaceMulliganCardsAction extends BaseAction {
 			}
 		}
 
-		console.log("old cards: ", this.oldCards);
-		console.log("new cards: ", this.newCards);
+		debug.log("old cards: ", this.oldCards);
+		debug.log("new cards: ", this.newCards);
 	}
 	
 	isReadyToPlay(timeMs) {

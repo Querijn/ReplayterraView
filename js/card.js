@@ -26,18 +26,19 @@ export default class Card extends RenderObject {
 		const cardWidth = 680 / 12;
 		const cardHeight = 1024 / 12;
 		const cardPlane = new THREE.PlaneGeometry(cardWidth, cardHeight);
-		const material = new THREE.ShaderMaterial({
+		this.material = new THREE.ShaderMaterial({
 			side: THREE.DoubleSide, 
 			transparent: true,
 			fragmentShader: Card.fragShader,
 			vertexShader: Card.vertShader,
 			uniforms: {
 				texture: { type: "t", value: frontTexture },
-				texture2: { type: "t", value: backTexture }
+				texture2: { type: "t", value: backTexture },
+				destroyAmount: { type: "f", value: 0 },
 			},
 		});
 
-		this.quad = new THREE.Mesh(cardPlane, material);
+		this.quad = new THREE.Mesh(cardPlane, this.material);
 		Scene._add(this.quad);
 
 		this.position.z = 2;
@@ -46,6 +47,7 @@ export default class Card extends RenderObject {
 
 		this.scale = 1;
 		this.z = 1;
+		this.destroyAmount = 0;
 	}
 
 	update() {
@@ -64,7 +66,7 @@ export default class Card extends RenderObject {
 	showFront(delay = 0, durationMs = 250) {
 
 		if (this.data.code == "")
-			return new Animation(this); // If we can't show the front, don't.
+			return this.addAnimation(); // If we can't show the front, don't.
 
 		return this._setRot(Math.PI, delay, durationMs);
 	}
@@ -76,7 +78,7 @@ export default class Card extends RenderObject {
 	_setRot(y, delay = 0, durationMs = 500) {
 		if (delay + durationMs < 0.001) {
 			this.rotation.y = y;
-			return new Animation(this);
+			return this.addAnimation();
 		}
 
 		return this.addAnimation()
@@ -109,6 +111,20 @@ export default class Card extends RenderObject {
 		this.position.z = this.z;
 	}
 
+	destroy(skipAnimations) {
+
+		const doneTask = () => {
+			super.destroy();
+		};
+
+		if (!skipAnimations)
+			return this.addAnimation().add(new AnimationEffect(Easing.easeInCubic, this, "destroyAmount", 1, 1000)).onDone(doneTask);
+		else {
+			doneTask();
+			return this.addAnimation();
+		}
+	}
+
 	get code() { return this.data.code; }
 	get id() { return this.data.id; }
 	get isRenderObject() { return true; }
@@ -124,4 +140,7 @@ export default class Card extends RenderObject {
 	set scale(newScale) { this._scale = newScale; this.updateScale(); }
 
 	get showingFront() { return Math.abs(Math.PI - this.rotation.y) < Math.abs(this.rotation.y); }
+
+	get destroyAmount() { return this.material.uniforms.destroyAmount.value; }
+	set destroyAmount(value) { this.material.uniforms.destroyAmount.value = value; }
 }

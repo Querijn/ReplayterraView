@@ -9,7 +9,7 @@ export default class BaseAction {
 	}
 
 	startPlay(skipAnimations) {
-		console.log(`Starting ${this.name} action:`, this);
+		debug.log(`Starting ${this.name} action:`, this);
 		this.play(skipAnimations);
 		this._hasStarted = true;
 	}

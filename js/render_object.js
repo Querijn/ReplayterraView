@@ -4,9 +4,17 @@ import Animation from "./animation/animation.js";
 export default class RenderObject {
 
 	animations = [];
+	quad = null;
 
 	constructor() {
 		Scene._addRenderObject(this);
+	}
+
+	destroy() {
+		Scene._removeRenderObject(this);
+
+		if (this.quad)
+			Scene._remove(this.quad);
 	}
 
 	addAnimation() {
@@ -25,9 +33,6 @@ export default class RenderObject {
 		for (let animation of this.animations) {
 			animation.update(timeMs);
 		}
-		
-		//if (this.animations.length > 0)
-		//	this.animations = this.animations.filter((a) => a.isDone === false);
 	}
 
 	cancelAnimations() {

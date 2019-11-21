@@ -14,7 +14,7 @@ export default class SetupCardsForAttackAction extends BaseAction {
 		if (Replay.lastTimeAnyAction < 0 || timeMs <= 0)
 			return false;
 
-		return timeMs - Replay.lastTimeAnyAction > 2000;
+		return timeMs - Replay.lastTimeAnyAction > 500;
 	}
 
 	isDone(timeMs) {
@@ -25,8 +25,11 @@ export default class SetupCardsForAttackAction extends BaseAction {
 
 		const player = this.isYou ? Replay.you : Replay.opponent;
 		const benchedCard = player.bench.cards.find(c => c.id == this.card.id);
-		if (benchedCard == null)
-			throw new Error(`Could not find card ${this.card.id}!`);
+		if (benchedCard == null) {
+			debug.warn(`Could not find card ${this.card.id}! We're adding it to the field from thin air.`);
+			this.animation = player.bench.addCardsToTop([ this.card ], skipAnimations);
+			return;
+		}
 		
 		this.animation = player.bench.moveToContainer(benchedCard, player.field, skipAnimations);
 	}

@@ -28,9 +28,12 @@ export default class PlayCardToBench extends BaseAction {
 		
 		const player = this.isYou ? Replay.you : Replay.opponent;
 		const card = player.hand.cards.find(c => c.id == this.card.id);
-		if (!card)
-			throw new Error(`Tried to place a card on the bench that ${this.isYou ? "you" : "they"} don't have (${this.card.id}/${this.card.code})!`);
-
+		if (!card) {
+			debug.warn(`Tried to place a card on the bench that ${this.isYou ? "you" : "they"} don't have (${this.card.id}/${this.card.code})! We're adding it to the bench from thin air.`);
+			this.animation = player.bench.addCardsToTop([ this.card ], skipAnimations);
+			return;
+		}
+			
 		this.animation = player.hand.moveToContainer(card, player.bench, skipAnimations);
 	}
 

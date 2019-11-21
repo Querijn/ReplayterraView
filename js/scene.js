@@ -42,8 +42,22 @@ export default class Scene {
 		this.scene.add(mesh);
 	}
 
+	static _remove(mesh) {
+		if (!this.isThreeJS)
+			throw new Error("Not implemented");
+
+		this.scene.remove(mesh);
+	}
+
 	static _addRenderObject(obj) {
 		this.renderObjects.push(obj);
+	}
+
+	static _removeRenderObject(obj) {
+		const index = this.renderObjects.findIndex(o => o === obj);
+		if (index < 0)
+			throw new Error("Could not find Render Object to remove!");
+		this.renderObjects.splice(index, 1)[0];
 	}
 
 	static update(timeMs) {

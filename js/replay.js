@@ -7,6 +7,7 @@ import SetupCardsForAttackAction from "./actions/setup_cards_for_attack.js";
 import PlayCardToBench from "./actions/play_card_to_bench.js";
 import AnimationEffect from "./animation/animation_effect.js";
 import CardData from "./card_data.js";
+import ResolveFight from "./actions/resolve_fight.js";
 
 export default class Replay {
 
@@ -50,21 +51,6 @@ export default class Replay {
 
 	static getActions(data) {
 
-		// type V3Action = {
-		// 	type: "mulligan",
-		// 	initialCards: string[];
-		// 	finalCards: string[];
-		// }
-
-		// {
-		// 	type: "fight";
-		// 	matchups: {
-		// 		ourCardID: string | null;
-		// 		enemyCardID: string | null;
-		// 		survivorCardIDs: string[];
-		// 	}[];
-		// }
-
 		// {
 		// 	type: "draw" | "place" | "place_spell" | "enemy_place" | "enemy_place_spell" 
 		// 			| "place_died" | "enemy_place_died" | "spell_remove" | "enemy_spell_remove" 
@@ -74,37 +60,27 @@ export default class Replay {
 		// };
 
 		const actionName = data.type;
-		const isYou = data.type.indexOf("enemy") < 0; // If action starts with enemy, it's not you.
+		const defaultIsYou = data.type.indexOf("enemy") < 0; // If action starts with enemy, it's not you.
+		const defaultIsThem = !defaultIsYou; // TODO: The one does not exclude the other, unfortunately.
 		switch (actionName) {
 			case "mulligan":
 				const fakeCards = [ "", "", "", "" ];
 				return [
-					new ShowMulliganCards(isYou, data.initialCards, data.finalCards),
-					new ReplaceMulliganCards(isYou, data.initialCards, data.finalCards),
-
-					// Fake mulligans for opponent
-					new ShowMulliganCards(!isYou, fakeCards, fakeCards),
-					new ReplaceMulliganCards(!isYou, fakeCards, fakeCards),
+					new ShowMulliganCards(defaultIsYou, data.initialCards, data.finalCards),
+					new ShowMulliganCards(!defaultIsYou, fakeCards, fakeCards), // Fake mulligans for opponent
+					new ReplaceMulliganCards(defaultIsYou, data.initialCards, data.finalCards),
+					new ReplaceMulliganCards(!defaultIsYou, fakeCards, fakeCards),
 				];
 
 			case "draw":
-				const show = Replay.getExistingAction("ShowMulliganCards");
-				const replace = Replay.getExistingAction("ReplaceMulliganCards");
-
 				// The first 4 draws are actually mulligans moving to hand. Intercept this.
-				if (!show || !replace) {
-					debug.error("Can't find the show or replace mulligan card actions, but we're drawing a card? Huh?!");
-				}
-				else if (!replace.isIdentified) {
-					show.identifyCard(data.code, data.id);
-					replace.identifyCard(data.code, data.id);
+				if (this.resolveFirstDraws(data))
 					return [];
-				}
 
 				// It's a real draw.
 				return [
-					new DrawCard(isYou, { code: data.code, id: data.id }),
-					new DrawCard(!isYou, new CardData("", "")), // Bring in a fake draw for the opponent
+					new DrawCard(defaultIsYou, { code: data.code, id: data.id }),
+					new DrawCard(!defaultIsYou, new CardData("", "")), // Bring in a fake draw for the opponent
 				];
 
 			case "enemy_place":
@@ -113,17 +89,37 @@ export default class Replay {
 
 			case "place":
 				return [ 
-					new PlayCardToBench(isYou, { code: data.code, id: data.id}),
+					new PlayCardToBench(defaultIsYou, { code: data.code, id: data.id}),
 				];
 
 			case "play":
 			case "enemy_play":
 				return [
-					new SetupCardsForAttackAction(isYou, { code: data.code, id: data.id}),
+					new SetupCardsForAttackAction(defaultIsYou, { code: data.code, id: data.id}),
 				];
+
+			case "fight":
+				// {
+				// 	type: "fight";
+				// 	matchups: {
+				// 		ourCardID: string | null;
+				// 		enemyCardID: string | null;
+				// 		survivorCardIDs: string[];
+				// 	}[];
+				// }
+				return [
+					new ResolveFight(true, true, data.matchups),
+				]
 
 			case "enemy_place_spell":
 			case "place_spell":
+			
+			case "place_died":
+			case "enemy_place_died":
+			
+			case "spell_remove":
+			case "enemy_spell_remove":
+
 			default:
 				debug.error(`Unknown action '${actionName}'! Args given:`, data); // TODO: re-enable this.
 				return [];
@@ -192,7 +188,7 @@ export default class Replay {
 		let cards = [].concat.apply([], cardArrays); // flatten array
 		cards = cards.filter(c => c.code == "");
 
-		// const card = cards[Math.floor(Math.random() * cards.length)];
+		// const card = cards[Math.floor(Math.random() * cards.length)]; // TODO: Turn this back on. It's currently turned off because for some reason, it sometimes can't find the card..
 		const card = cards[0];
 
 		card.id = cardIdent.id;
@@ -202,10 +198,6 @@ export default class Replay {
 
 	static get currentAction() {
 		return this.actions[this._currentActionIterator];
-	}
-
-	static get timeMulliganResolved() {
-		return Math.max(this.players[0].mulligan.resolveTime, this.players[1].mulligan.resolveTime);
 	}
 
 	static get you() {
@@ -222,5 +214,21 @@ export default class Replay {
 	
 	static get lastTimeAnyAction() {
 		return Math.max(this.timeLastYourAction, this.timeLastTheirAction);
+	}
+
+	static resolveFirstDraws(data) {
+		const show = Replay.getExistingAction("ShowMulliganCards");
+		const replace = Replay.getExistingAction("ReplaceMulliganCards");
+
+		if (!show || !replace) {
+			debug.error("Can't find the show or replace mulligan card actions, but we're drawing a card? Huh?!");
+		}
+		else if (!replace.isIdentified) {
+			show.identifyCard(data.code, data.id);
+			replace.identifyCard(data.code, data.id);
+			return true;
+		}
+
+		return false;
 	}
 }

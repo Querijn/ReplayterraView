@@ -37,5 +37,6 @@ export default class PlayerSide {
 		// debug.log(`${isTop ? "Top" : "Bottom"} player's mulligan is at ${mullX}, ${mullY}.`);
 		// debug.log(`${isTop ? "Top" : "Bottom"} player's hand is at ${handX}, ${handY}.`);
 		// debug.log(`${isTop ? "Top" : "Bottom"} player's bench is at ${benchX}, ${benchY}.`);
+		// debug.log(`${isTop ? "Top" : "Bottom"} player's field is at ${fieldX}, ${fieldY}.`);
 	}
 }

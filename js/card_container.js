@@ -17,14 +17,14 @@ export default class CardContainer {
 
 	addCardsToBottom(cards, skipAnimations) {
 
-		let lastAnim = new Animation(null);
+		let lastAnim = null;
 		for (let card of cards) {
 			if (!card.isRenderObject)
 				card = new Card(card, !this._player.isTop);
 
 			const moveDuration = skipAnimations ? 0 : 250;
 			const playerName = this.player.isTop ? "opponent's" : "your";
-			console.log (`Adding card ${card.id} to top of ${playerName} ${this.name} ${skipAnimations ? "immediately." : `in ${moveDuration}ms`}.`);
+			debug.log (`Adding card ${card.id} to top of ${playerName} ${this.name} ${skipAnimations ? "immediately." : `in ${moveDuration}ms`}.`);
 
 			this.cards.unshift(card);
 			lastAnim = this.fixPositions(skipAnimations, card);
@@ -35,20 +35,33 @@ export default class CardContainer {
 
 	addCardsToTop(cards, skipAnimations) {
 
-		let lastAnim = new Animation(null);
+		let lastAnim = null;
 		for (let card of cards) {
 			if (!card.isRenderObject)
 				card = new Card(card, !this._player.isTop);
 
 			const moveDuration = skipAnimations ? 0 : 250;
 			const playerName = this.player.isTop ? "opponent's" : "your";
-			console.log (`Adding card ${card.id} to bottom of ${playerName} ${this.name} ${skipAnimations ? "immediately." : `in ${moveDuration}ms`}.`);
+			debug.log (`Adding card ${card.id} to bottom of ${playerName} ${this.name} ${skipAnimations ? "immediately." : `in ${moveDuration}ms`}.`);
 
 			this.cards.push(card);
 			lastAnim = this.fixPositions(skipAnimations, card); // This will move the card towards the container too.
 		}
 		
 		return lastAnim;
+	}
+
+	addAtIndex(card, index, skipAnimations) {
+
+		if (!card.isRenderObject)
+			card = new Card(card, !this._player.isTop);
+
+		const moveDuration = skipAnimations ? 0 : 250;
+		const playerName = this.player.isTop ? "opponent's" : "your";
+		debug.log (`Adding card ${card.id} to index ${index} of ${playerName} ${this.name} ${skipAnimations ? "immediately." : `in ${moveDuration}ms`}.`);
+
+		this.cards.splice(index, 0, card);
+		return this.fixPositions(skipAnimations, card); // This will move the card towards the container too.
 	}
 
 	drawFromTop(cardContainer, skipAnimations) {
@@ -93,7 +106,7 @@ export default class CardContainer {
 		const width = this.width * Scene.width;
 		const stepX = width / (this.cards.length || 1);
 
-		let lastAnim = new Animation(null);
+		let lastAnim = null;
 		for (let i = 0; i < this.cards.length; i++) {
 
 			const card = this.cards[i];
@@ -107,6 +120,12 @@ export default class CardContainer {
 			);
 		}
 		return lastAnim;
+	}
+
+	destroyCardAtIndex(i, skipAnimations) {
+
+		const card = this.cards.splice(i, 1)[0]; // Single out card
+		return card.destroy(skipAnimations);
 	}
 
 	get x() { return this._x; }
