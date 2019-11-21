@@ -1,10 +1,12 @@
 import Replay from "./replay.js";
 import CardContainer from "./card_container.js";
+import * as Easing from "./easing.js";
+import AnimationEffect from "./animation/animation_effect.js";
 
 export default class Deck extends CardContainer {
 
-	constructor(player, x, y) {
-		super("deck", player, x, y, 0.01, false);
+	constructor(player, x, y, deckScale) {
+		super("deck", player, x, y, deckScale, 0.01, false);
 	}
 
 	prepare() {
@@ -29,6 +31,9 @@ export default class Deck extends CardContainer {
 	}
 	
 	fixPositions(skipAnimations, card) {
+
+		card.addAnimation()
+		.add(new AnimationEffect(Easing.easeInOutQuad, card, "scale", this.scale, skipAnimations ? 0 : 250));
 		card.moveTo(this.x, this.y, 0, skipAnimations ? 0 : 250);
 	}
 }
