@@ -164,7 +164,13 @@ export default class Replay {
 					else 
 						Replay.timeLastTheirAction = timeMs;
 					Replay._currentActionIterator++; // Go to next action
-					debug.log(`Current action done. Will start ${Replay.currentAction.name} soon.`);
+					
+					if (Replay.currentAction) {
+						debug.log(`Current action done. Will start ${Replay.currentAction.name} soon.`);
+					}
+					else {
+						debug.log(`All replay actions played..`);
+					}
 				}
 			}
 			else if (Replay.currentAction.isReadyToPlay(timeMs)) {
