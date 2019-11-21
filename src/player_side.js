@@ -10,9 +10,9 @@ export default class PlayerSide {
 		const resY = 600;
 
 		const deckX = isTop ? resX - 50 : 50;
-		const deckY = isTop ? 50 :	resY - 50;
-		const deckScale = 1.2;
-		this.deck = new Deck(this, deckX, deckY);
+		const deckY = isTop ? 75 :	resY - 75;
+		const deckScale = 1.5;
+		this.deck = new Deck(this, deckX, deckY, deckScale);
 		
 		const mullX = resX / 2;
 		const mullY = resY / 4 * (isTop ? 1 : 3);
@@ -35,7 +35,7 @@ export default class PlayerSide {
 		const fieldX = resX / 2;
 		const fieldY = isTop ? 225 : resY - 225;
 		const fieldWidth = 0.5;
-		const fieldScale = 1.0;
+		const fieldScale = 1.4;
 		this.field = new CardContainer("field", this, fieldX, fieldY, fieldScale, fieldWidth, true, CardContainer.ShowSide.ShowFront);
 		
 		// console.log(`${isTop ? "Top" : "Bottom"} player's deck is at ${deckX}, ${deckY}.`);
