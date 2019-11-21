@@ -23,7 +23,8 @@ export default class KillUnitAction extends BaseAction {
 
 	play(skipAnimations) {
 
-		const [ container, card ] = Replay.opponent.findCard(this.card.id);
+		const player = this.isYou ? Replay.you : Replay.opponent;
+		const [ container, card ] = player.findCard(this.card.id);
 		if (container && card) {
 			container.destroyCard(card, skipAnimations).onDone(() => {
 				this.done = true;
