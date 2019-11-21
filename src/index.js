@@ -1,8 +1,9 @@
-import Scene from "./scene.js";
-import Replay from "./replay.js";
+import regeneratorRuntime from "regenerator-runtime";
+import Scene from "./scene";
+import Replay from "./replay";
 
 async function main() {
-	debug.log("ReplayterraView opened.");
+	console.log("ReplayterraView opened.");
 
 	await Scene.loadAsThreeJS();
 

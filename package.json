@@ -1,0 +1,45 @@
+{
+	"name": "replayterraview",
+	"version": "1.0.0",
+	"description": "Replayterra's board in which a replay takes place",
+	"main": "dist/bundle.js",
+	"scripts": {
+		"test": "echo \"Error: no test specified\" && exit 1"
+	},
+	"repository": {
+		"type": "git",
+		"url": "git+https://github.com/Querijn/ReplayterraView.git"
+	},
+	"author": "Querijn Heijmans",
+	"license": "MIT",
+	"bugs": {
+		"url": "https://github.com/Querijn/ReplayterraView/issues"
+	},
+	"homepage": "https://github.com/Querijn/ReplayterraView#readme",
+	"devDependencies": {
+		"@babel/core": "^7.7.2",
+		"@babel/plugin-proposal-class-properties": "^7.7.0",
+		"@babel/plugin-transform-runtime": "^7.6.2",
+		"@babel/preset-env": "^7.7.1",
+		"babel-core": "^6.26.3",
+		"babel-loader": "^8.0.6",
+		"babel-plugin-transform-runtime": "^6.23.0",
+		"babel-polyfill": "^6.26.0",
+		"regenerator-runtime": "^0.13.3",
+		"three": "^0.110.0",
+		"webpack": "^4.41.2",
+		"webpack-cli": "^3.3.10"
+	},
+	"babel": {
+		"presets": [
+			"@babel/preset-env"
+		],
+		"plugins": [
+			"@babel/plugin-proposal-class-properties",
+			"@babel/transform-runtime"
+		]
+	},
+	"dependencies": {
+		"@babel/runtime": "^7.7.2"
+	}
+}

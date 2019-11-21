@@ -1,6 +1,6 @@
-import BaseAction from "./base_action.js";
-import Replay from "../replay.js";
-import CardData from "../card_data.js";
+import BaseAction from "./base_action";
+import Replay from "../replay";
+import CardData from "../card_data";
 
 export default class RoundStartAction extends BaseAction {
 

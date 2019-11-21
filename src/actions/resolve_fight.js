@@ -1,10 +1,10 @@
-import BaseAction from "./base_action.js";
-import Replay from "../replay.js";
-import DummyCard from "../dummy_card.js";
-import Animation from "../animation/animation.js";
-import AnimationEffect from "../animation/animation_effect.js";
-import AnimationDelay from "../animation/animation_delay.js";
-import * as Easing from "../easing.js";
+import BaseAction from "./base_action";
+import Replay from "../replay";
+import DummyCard from "../dummy_card";
+import Animation from "../animation/animation";
+import AnimationEffect from "../animation/animation_effect";
+import AnimationDelay from "../animation/animation_delay";
+import * as Easing from "../easing";
 
 export default class ResolveFight extends BaseAction {
 
@@ -50,11 +50,11 @@ export default class ResolveFight extends BaseAction {
 			else if (!yourCard) { // well shit we can't find this card
 				const [ container, card ] = Replay.you.findCard(match.ourCardID);
 				if (container && card) {
-					debug.warn(`Could not find card ${match.ourCardID} in your hand, but we found it in the ${container.name}.`);
+					console.warn(`Could not find card ${match.ourCardID} in your hand, but we found it in the ${container.name}.`);
 					fixPosAnim = container.moveToContainer(card, Replay.you.field, skipAnimations);
 				}
 				else {
-					debug.error(`Could not find card ${match.ourCardID} anywhere...`);
+					console.error(`Could not find card ${match.ourCardID} anywhere...`);
 				}
 			}
 
@@ -64,11 +64,11 @@ export default class ResolveFight extends BaseAction {
 			else if (!theirCard) { // well shit we can't find this card
 				const [ container, card ] = Replay.opponent.findCard(match.enemyCardID);
 				if (container && card) {
-					debug.warn(`Could not find card ${match.enemyCardID} in their hand, but we found it in the ${container.name}.`);
+					console.warn(`Could not find card ${match.enemyCardID} in their hand, but we found it in the ${container.name}.`);
 					fixPosAnim = container.moveToContainer(card, Replay.opponent.field, skipAnimations);
 				}
 				else {
-					debug.error(`Could not find card ${match.enemyCardID} anywhere...`);
+					console.error(`Could not find card ${match.enemyCardID} anywhere...`);
 				}
 			}
 		}

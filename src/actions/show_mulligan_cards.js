@@ -29,14 +29,14 @@ export default class ShowMulliganCardsAction extends BaseAction {
 	identifyCard(code, id) {
 		for (const card of this.cards) {
 			if (card.id === "" && code === card.code) {
-				debug.log(`${this.name}: Identified ${code} -> ${id}..`);
+				console.log(`${this.name}: Identified ${code} -> ${id}..`);
 				card.id = id;
 				return;
 			}
 		}
 
 		// ShowMulliganCards can't identify them all, just ignore.
-		// debug.warn(`${this.name}: Could not find card for code ${code}? I wanted to assign ID ${id}..`);
+		// console.warn(`${this.name}: Could not find card for code ${code}? I wanted to assign ID ${id}..`);
 	}
 
 	get isIdentified() {

@@ -1,6 +1,6 @@
-import BaseAction from "./base_action.js";
-import Replay from "../replay.js";
-import Scene from "../scene.js";
+import BaseAction from "./base_action";
+import Replay from "../replay";
+import Scene from "../scene";
 
 export default class PlayCardToBench extends BaseAction {
 
@@ -24,12 +24,12 @@ export default class PlayCardToBench extends BaseAction {
 	}
 
 	play(skipAnimations) {
-		debug.log(`Playing ${this.name} for ${this.isYou ? "you" : "them"}: CardID = ${this.card.id} ${skipAnimations ? "(skipping animations)" : ""}`);
+		console.log(`Playing ${this.name} for ${this.isYou ? "you" : "them"}: CardID = ${this.card.id} ${skipAnimations ? "(skipping animations)" : ""}`);
 		
 		const player = this.isYou ? Replay.you : Replay.opponent;
 		const card = player.hand.cards.find(c => c.id == this.card.id);
 		if (!card) {
-			debug.warn(`Tried to place a card on the bench that ${this.isYou ? "you" : "they"} don't have (${this.card.id}/${this.card.code})! We're adding it to the bench from thin air.`);
+			console.warn(`Tried to place a card on the bench that ${this.isYou ? "you" : "they"} don't have (${this.card.id}/${this.card.code})! We're adding it to the bench from thin air.`);
 			this.animation = player.bench.addCardsToTop([ this.card ], skipAnimations);
 			return;
 		}

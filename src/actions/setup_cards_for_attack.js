@@ -26,7 +26,7 @@ export default class SetupCardsForAttackAction extends BaseAction {
 		const player = this.isYou ? Replay.you : Replay.opponent;
 		const benchedCard = player.bench.cards.find(c => c.id == this.card.id);
 		if (benchedCard == null) {
-			debug.warn(`Could not find card ${this.card.id}! We're adding it to the field from thin air.`);
+			console.warn(`Could not find card ${this.card.id}! We're adding it to the field from thin air.`);
 			this.animation = player.bench.addCardsToTop([ this.card ], skipAnimations);
 			return;
 		}

@@ -1,4 +1,4 @@
-import Card from "./card.js";
+import Card from "./card";
 
 export default class Scene {
 
@@ -8,7 +8,29 @@ export default class Scene {
 	static textureLoader = null;
 	static renderObjects = [];
 
+	static async _getThreeJS() {
+		return new Promise((resolve, reject) => {
+
+			const name = "ReplayterraEngine";
+			let script = document.getElementById(name);
+			if (script) {
+				resolve(script);
+				return;
+			}
+
+			script = document.createElement('script');
+			script.type = 'text/javascript';
+			script.src = "three.min.js";
+			script.id = name;
+			script.addEventListener('load', () => resolve(script), false);
+			script.addEventListener('error', () => reject(script), false);
+			document.body.appendChild(script);
+		});
+	}
+
 	static async loadAsThreeJS() {
+
+		await this._getThreeJS();
 
 		window.onresize = Scene._onResize;
 

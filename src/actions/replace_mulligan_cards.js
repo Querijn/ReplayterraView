@@ -25,8 +25,8 @@ export default class ReplaceMulliganCardsAction extends BaseAction {
 			}
 		}
 
-		debug.log("old cards: ", this.oldCards);
-		debug.log("new cards: ", this.newCards);
+		console.log("old cards: ", this.oldCards);
+		console.log("new cards: ", this.newCards);
 	}
 	
 	isReadyToPlay(timeMs) {
@@ -83,7 +83,7 @@ export default class ReplaceMulliganCardsAction extends BaseAction {
 	identifyCard(code, id) {
 		for (const card of this.oldCards) {
 			if (card.id === "" && code === card.code) {
-				debug.log(`${this.name}: Identified old card ${code} -> ${id}..`);
+				console.log(`${this.name}: Identified old card ${code} -> ${id}..`);
 				card.id = id;
 				break;
 			}
@@ -91,7 +91,7 @@ export default class ReplaceMulliganCardsAction extends BaseAction {
 
 		for (const card of this.newCards) {
 			if (card.id === "" && code === card.code) {
-				debug.log(`${this.name}: Identified new card ${code} -> ${id}..`);
+				console.log(`${this.name}: Identified new card ${code} -> ${id}..`);
 				card.id = id;
 				return;
 			}

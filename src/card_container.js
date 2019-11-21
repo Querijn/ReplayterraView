@@ -31,7 +31,7 @@ export default class CardContainer {
 
 			const moveDuration = skipAnimations ? 0 : 250;
 			const playerName = this.player.isTop ? "opponent's" : "your";
-			debug.log (`Adding card ${card.id} to top of ${playerName} ${this.name} ${skipAnimations ? "immediately." : `in ${moveDuration}ms`}.`);
+			console.log (`Adding card ${card.id} to top of ${playerName} ${this.name} ${skipAnimations ? "immediately." : `in ${moveDuration}ms`}.`);
 
 			this.cards.unshift(card);
 			lastAnim = this.fixPositions(skipAnimations, card);
@@ -49,7 +49,7 @@ export default class CardContainer {
 
 			const moveDuration = skipAnimations ? 0 : 250;
 			const playerName = this.player.isTop ? "opponent's" : "your";
-			debug.log (`Adding card ${card.id} to bottom of ${playerName} ${this.name} ${skipAnimations ? "immediately." : `in ${moveDuration}ms`}.`);
+			console.log (`Adding card ${card.id} to bottom of ${playerName} ${this.name} ${skipAnimations ? "immediately." : `in ${moveDuration}ms`}.`);
 
 			this.cards.push(card);
 			lastAnim = this.fixPositions(skipAnimations, card); // This will move the card towards the container too.
@@ -72,7 +72,7 @@ export default class CardContainer {
 
 		const moveDuration = skipAnimations ? 0 : 250;
 		const playerName = this.player.isTop ? "opponent's" : "your";
-		debug.log (`Adding card ${card.id} to index ${index} of ${playerName} ${this.name} ${skipAnimations ? "immediately." : `in ${moveDuration}ms`}.`);
+		console.log (`Adding card ${card.id} to index ${index} of ${playerName} ${this.name} ${skipAnimations ? "immediately." : `in ${moveDuration}ms`}.`);
 
 		this.cards.splice(index, 0, card);
 		return this.fixPositions(skipAnimations, card); // This will move the card towards the container too.
@@ -93,7 +93,7 @@ export default class CardContainer {
 			throw new Error(`moveToContainer: Could not find ${card.id} in ${!this.player.isTop ? "player" : "opponent"}'s ${this.name}!`);
 
 		card = this.cards.splice(cardIndex, 1)[0];
-		debug.log(`${!this.player.isTop ? "Player" : "Opponent"}'s ${this.name} is moving a card to ${cardContainer.name}'s ${cardContainer.shouldAddToTop ? "top" : "bottom"} (${skipAnimations ? "skipping anims" : "with anims"})`);
+		console.log(`${!this.player.isTop ? "Player" : "Opponent"}'s ${this.name} is moving a card to ${cardContainer.name}'s ${cardContainer.shouldAddToTop ? "top" : "bottom"} (${skipAnimations ? "skipping anims" : "with anims"})`);
 
 		this.fixPositions(skipAnimations, card);
 		if (cardContainer.shouldAddToTop)
@@ -107,7 +107,7 @@ export default class CardContainer {
 		const cards = this.cards;
 		this.cards = [];
 
-		debug.log(`${!this.player.isTop ? "Player" : "Opponent"}'s ${this.name} is moving all its cards to ${cardContainer.name}'s ${cardContainer.shouldAddToTop ? "top" : "bottom"} (${skipAnimations ? "skipping anims" : "with anims"})`);
+		console.log(`${!this.player.isTop ? "Player" : "Opponent"}'s ${this.name} is moving all its cards to ${cardContainer.name}'s ${cardContainer.shouldAddToTop ? "top" : "bottom"} (${skipAnimations ? "skipping anims" : "with anims"})`);
 
 		if (cardContainer.shouldAddToTop)
 			return cardContainer.addCardsToTop(cards, skipAnimations);

@@ -1,10 +1,10 @@
-import Scene from "./scene.js";
-import RenderObject from "./render_object.js";
-import CardData from "./card_data.js";
-import * as Easing from "./easing.js";
-import AnimationEffect from "./animation/animation_effect.js";
-import AnimationDelay from "./animation/animation_delay.js";
-import Animation from "./animation/animation_delay.js";
+import Scene from "./scene";
+import RenderObject from "./render_object";
+import CardData from "./card_data";
+import * as Easing from "./easing";
+import AnimationEffect from "./animation/animation_effect";
+import AnimationDelay from "./animation/animation_delay";
+import Animation from "./animation/animation_delay";
 
 export default class Card extends RenderObject {
 
@@ -55,7 +55,7 @@ export default class Card extends RenderObject {
 
 	moveTo(x, y, z = 1, durationMs = 250) {
 
-		debug.log(`Card ${this.data.id || "(no id)"}/${this.data.code} is moving to ${x}, ${y}, ${z}. ${durationMs === 0 ? "This will happen immediately" : `This will take ${durationMs} ms.`}`);
+		console.log(`Card ${this.data.id || "(no id)"}/${this.data.code} is moving to ${x}, ${y}, ${z}. ${durationMs === 0 ? "This will happen immediately" : `This will take ${durationMs} ms.`}`);
 		
 
 		this.addAnimation().add(new AnimationEffect(Easing.easeInOutQuad, this.position, "x", x, durationMs));
@@ -102,7 +102,7 @@ export default class Card extends RenderObject {
 		this.fragShader = await fragResponse.text();
 		this.vertShader = await vertResponse.text();
 		
-		debug.log("Card shader loaded.");
+		console.log("Card shader loaded.");
 	}
 	
 	updateScale() { 

@@ -1,5 +1,5 @@
-import Replay from "./replay.js";
-import CardContainer from "./card_container.js";
+import Replay from "./replay";
+import CardContainer from "./card_container";
 
 export default class Deck extends CardContainer {
 
@@ -12,7 +12,7 @@ export default class Deck extends CardContainer {
 		// At this point, all the actions are ordered.
 		// TODO: Delete all cards, start over with new ones in current positions.
 		this.cards = [];
-		debug.log(`Preparing deck..`);
+		console.log(`Preparing deck..`);
 
 		for (const action of Replay.actions) {
 			const cards = action.deckCardData;
@@ -25,7 +25,7 @@ export default class Deck extends CardContainer {
 			}
 		}
 
-		debug.log(`${!this.player.isTop ? "Player" : "Opponent"}'s deck currently looks like this: `, this.cards.map(c => c.data ));
+		console.log(`${!this.player.isTop ? "Player" : "Opponent"}'s deck currently looks like this: `, this.cards.map(c => c.data ));
 	}
 	
 	fixPositions(skipAnimations, card) {

@@ -1,7 +1,7 @@
-import BaseAction from "./base_action.js";
-import Replay from "../replay.js";
-import Scene from "../scene.js";
-import ReplaceMulliganCardsAction from "./replace_mulligan_cards.js";
+import BaseAction from "./base_action";
+import Replay from "../replay";
+import Scene from "../scene";
+import ReplaceMulliganCardsAction from "./replace_mulligan_cards";
 
 export default class DrawCardAction extends BaseAction {
 
@@ -24,7 +24,7 @@ export default class DrawCardAction extends BaseAction {
 
 	play(skipAnimations) {
 		const player = this.isYou ? Replay.you : Replay.opponent;
-		debug.log(`Playing ${this.name} for ${this.isYou ? "you" : "them"}: ${player.deck.cards[0].code}/${player.deck.cards[0].id} ${skipAnimations ? "(skipping animations)" : ""}`);
+		console.log(`Playing ${this.name} for ${this.isYou ? "you" : "them"}: ${player.deck.cards[0].code}/${player.deck.cards[0].id} ${skipAnimations ? "(skipping animations)" : ""}`);
 		
 		player.deck.drawFromTop(player.hand, skipAnimations)
 		.onDone((anim) => {

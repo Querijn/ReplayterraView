@@ -1,0 +1,41 @@
+Original tasks:
+	✔ Mulligan to hand animation @today @done (11/18/2019, 6:14:00 PM)
+	✔ Single draw animation @today @done (11/18/2019, 8:16:53 PM)
+	✔ Hand to bench animation @today @done (11/19/2019, 1:09:06 AM)
+	✔ Fix bug with last mull card not getting replaced. @today @done (11/19/2019, 12:51:48 AM)
+	✔ Start at arbitrary position @high @done (11/19/2019, 9:21:10 PM)
+	✔ Put preview version online @done (11/21/2019, 12:15:16 AM)
+	✔ Use molen's types @high @done (11/20/2019, 7:36:13 PM)
+	✔ Make fake draws for opponent @done (11/21/2019, 9:20:10 AM)
+	✔ Bench to field animation @done (11/21/2019, 9:20:13 AM)
+	✔ Fix animation isDone bug @low @done (11/20/2019, 7:55:50 AM)
+	☐ Make webpack work again @high 
+	☐ Test (and potentially fix) skipping to point in replay
+
+Fight:
+	✔ Attack resolving animation @done (11/21/2019, 4:11:55 PM)
+	✔ Die animation @done (11/21/2019, 8:45:51 PM)
+
+Other actions:
+	☐ Action enemy_place_spell
+	☐ Action place_spell
+	
+	☐ Action place_died
+	☐ Action enemy_place_died
+
+	☐ Action spell_remove
+	☐ Action enemy_spell_remove
+
+For Merk:
+	☐ Remove debug @high
+	☐ Add callback on frame
+
+Low prio:
+	✔ Cards turn around during Mulligan @done (11/21/2019, 9:37:21 AM)
+	✔ Last card drawn in test is not sized correctly @done (11/21/2019, 9:37:21 AM)
+	☐ Re-add scale (per container) @low
+	☐ Hand card bow @low
+	☐ Any resolution @low
+	☐ Round text @low
+	☐ Nexuses + nexus health @low
+	☐ Victory/defeat @low

@@ -1,13 +1,13 @@
-import PlayerSide from "./player_side.js";
-import Scene from "./scene.js";
-import ShowMulliganCards from "./actions/show_mulligan_cards.js";
-import ReplaceMulliganCards from "./actions/replace_mulligan_cards.js";
-import DrawCard from "./actions/draw_card.js";
-import SetupCardsForAttackAction from "./actions/setup_cards_for_attack.js";
-import PlayCardToBench from "./actions/play_card_to_bench.js";
-import AnimationEffect from "./animation/animation_effect.js";
-import CardData from "./card_data.js";
-import ResolveFight from "./actions/resolve_fight.js";
+import PlayerSide from "./player_side";
+import Scene from "./scene";
+import ShowMulliganCards from "./actions/show_mulligan_cards";
+import ReplaceMulliganCards from "./actions/replace_mulligan_cards";
+import DrawCard from "./actions/draw_card";
+import SetupCardsForAttackAction from "./actions/setup_cards_for_attack";
+import PlayCardToBench from "./actions/play_card_to_bench";
+import AnimationEffect from "./animation/animation_effect";
+import CardData from "./card_data";
+import ResolveFight from "./actions/resolve_fight";
 
 export default class Replay {
 
@@ -23,7 +23,7 @@ export default class Replay {
 	static _mulliganCardsDrawn = 0;
 
 	static skipToAction(actionIterator) {
-		debug.log(`Reinitialising field until action ${actionIterator}..`);
+		console.log(`Reinitialising field until action ${actionIterator}..`);
 		AnimationEffect.skippingToPoint = true; // Let it know that we're not accepting any animations with a duration > 0
 
 		this.players = [ new PlayerSide(true), new PlayerSide(false) ];
@@ -121,7 +121,7 @@ export default class Replay {
 			case "enemy_spell_remove":
 
 			default:
-				debug.error(`Unknown action '${actionName}'! Args given:`, data); // TODO: re-enable this.
+				console.error(`Unknown action '${actionName}'! Args given:`, data); // TODO: re-enable this.
 				return [];
 		}
 	}
@@ -141,7 +141,7 @@ export default class Replay {
 		const timeMs = Replay.lastTime >= 0 ? Replay.lastTime + deltaMs : 0;
 		
 		if (typeof actions !== 'number') { // Add new actions
-			debug.log(`Adding ${actions.length} new actions..`);
+			console.log(`Adding ${actions.length} new actions..`);
 			for (let actionData of actions) {
 				const actions = Replay.getActions(actionData);
 				Replay.actions.push(...actions);
@@ -166,10 +166,10 @@ export default class Replay {
 					Replay._currentActionIterator++; // Go to next action
 					
 					if (Replay.currentAction) {
-						debug.log(`Current action done. Will start ${Replay.currentAction.name} soon.`);
+						console.log(`Current action done. Will start ${Replay.currentAction.name} soon.`);
 					}
 					else {
-						debug.log(`All replay actions played..`);
+						console.log(`All replay actions played..`);
 					}
 				}
 			}
@@ -177,7 +177,7 @@ export default class Replay {
 				Replay.currentAction.startPlay(/* skipAnimations = */false);
 				
 				if (Replay.actions.length == Replay._currentActionIterator) {
-					debug.log("Replay is done!");
+					console.log("Replay is done!");
 				}
 			}
 		}
@@ -199,7 +199,7 @@ export default class Replay {
 
 		card.id = cardIdent.id;
 		card.code = cardIdent.code;
-		debug.log(`Identified card in enemy hand`, cardIdent);
+		console.log(`Identified card in enemy hand`, cardIdent);
 	}
 
 	static get currentAction() {
@@ -227,7 +227,7 @@ export default class Replay {
 		const replace = Replay.getExistingAction("ReplaceMulliganCards");
 
 		if (!show || !replace) {
-			debug.error("Can't find the show or replace mulligan card actions, but we're drawing a card? Huh?!");
+			console.error("Can't find the show or replace mulligan card actions, but we're drawing a card? Huh?!");
 		}
 		else if (!replace.isIdentified) {
 			show.identifyCard(data.code, data.id);

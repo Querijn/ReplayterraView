@@ -1,3 +1,5 @@
 assets/
 bin/glsl/include/
 bin/glsl/lib/
+node_modules/
+dist/

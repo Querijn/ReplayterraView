@@ -1,5 +1,5 @@
-import CardContainer from "./card_container.js";
-import Deck from "./deck.js";
+import CardContainer from "./card_container";
+import Deck from "./deck";
 
 export default class PlayerSide {
 
@@ -33,11 +33,11 @@ export default class PlayerSide {
 		const fieldWidth = 0.5;
 		this.field = new CardContainer("field", this, fieldX, fieldY, fieldWidth, true, CardContainer.ShowSide.ShowFront);
 		
-		// debug.log(`${isTop ? "Top" : "Bottom"} player's deck is at ${deckX}, ${deckY}.`);
-		// debug.log(`${isTop ? "Top" : "Bottom"} player's mulligan is at ${mullX}, ${mullY}.`);
-		// debug.log(`${isTop ? "Top" : "Bottom"} player's hand is at ${handX}, ${handY}.`);
-		// debug.log(`${isTop ? "Top" : "Bottom"} player's bench is at ${benchX}, ${benchY}.`);
-		// debug.log(`${isTop ? "Top" : "Bottom"} player's field is at ${fieldX}, ${fieldY}.`);
+		// console.log(`${isTop ? "Top" : "Bottom"} player's deck is at ${deckX}, ${deckY}.`);
+		// console.log(`${isTop ? "Top" : "Bottom"} player's mulligan is at ${mullX}, ${mullY}.`);
+		// console.log(`${isTop ? "Top" : "Bottom"} player's hand is at ${handX}, ${handY}.`);
+		// console.log(`${isTop ? "Top" : "Bottom"} player's bench is at ${benchX}, ${benchY}.`);
+		// console.log(`${isTop ? "Top" : "Bottom"} player's field is at ${fieldX}, ${fieldY}.`);
 	}
 
 	findCard(cardId) {
