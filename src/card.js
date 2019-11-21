@@ -19,8 +19,8 @@ export default class Card extends RenderObject {
 		if (!Card.fragShader || !Card.vertShader)
 			throw new Error("Could not find shaders!");
 
-		const frontTexture = Scene.textureLoader.load(`assets/en_us/img/cards/${cardData.code}.png`);
 		const backTexture = Scene.textureLoader.load("assets/card_back.png");
+		const frontTexture = cardData.code ? Scene.textureLoader.load(`assets/en_us/img/cards/${cardData.code}.png`) : backTexture;
 		// backTexture.anisotropy = frontTexture.anisotropy = Scene.renderer.getMaxAnisotropy();
 
 		const cardWidth = 680 / 12;
