@@ -5,7 +5,7 @@ import CardData from "../card_data.js";
 export default class RoundStartAction extends BaseAction {
 
 	constructor(roundId, isYou) {
-		super("RoundStart");
+		super("RoundStart", isYou);
 
 		this.firstPlayer = isYou ? 0 : 1;
 		this.roundId = roundId;
@@ -25,9 +25,5 @@ export default class RoundStartAction extends BaseAction {
 
 	get deckCardData() {
 		return [];
-	}
-
-	isPlayerAction(isYou) {
-		return this.isYou == isYou;
 	}
 }

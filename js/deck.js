@@ -17,7 +17,7 @@ export default class Deck extends CardContainer {
 		for (const action of Replay.actions) {
 			const cards = action.deckCardData;
 			
-			if (!action.isPlayerAction(!this.player.isTop))
+			if (action.isYou != !this.player.isTop)
 				continue;
 				
 			for (const card of cards) {

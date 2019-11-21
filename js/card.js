@@ -62,6 +62,10 @@ export default class Card extends RenderObject {
 	}
 
 	showFront(delay = 0, durationMs = 250) {
+
+		if (this.data.code == "")
+			return new Animation(this); // If we can't show the front, don't.
+
 		return this._setRot(Math.PI, delay, durationMs);
 	}
 

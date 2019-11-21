@@ -27,6 +27,11 @@ export default class PlayerSide {
 		const benchY = isTop ? 100 : resY - 100;
 		const benchWidth = 0.5;
 		this.bench = new CardContainer("bench", this, benchX, benchY, benchWidth);
+
+		const fieldX = resX / 2;
+		const fieldY = isTop ? 200 : resY - 200;
+		const fieldWidth = 0.5;
+		this.field = new CardContainer("field", this, fieldX, fieldY, fieldWidth);
 		
 		// debug.log(`${isTop ? "Top" : "Bottom"} player's deck is at ${deckX}, ${deckY}.`);
 		// debug.log(`${isTop ? "Top" : "Bottom"} player's mulligan is at ${mullX}, ${mullY}.`);

@@ -6,17 +6,16 @@ import ReplaceMulliganCardsAction from "./replace_mulligan_cards.js";
 export default class DrawCardAction extends BaseAction {
 
 	constructor(isYou, card) {
-		super("DrawCard");
-
-		this.isYou = isYou;
+		super("DrawCard", isYou);
+		
 		this.card = card;
 	}
 
 	isReadyToPlay(timeMs) {
-		if (Replay.timeLastAction < 0)
+		if (Replay.lastTimeAction(this.isYou) < 0)
 			return false;
 
-		return timeMs - Replay.timeLastAction > 1000;
+		return timeMs - Replay.lastTimeAction(this.isYou) > 1000;
 	}
 
 	isDone(timeMs) {
@@ -35,9 +34,5 @@ export default class DrawCardAction extends BaseAction {
 
 	get deckCardData() {
 		return [ this.card ];
-	}
-
-	isPlayerAction(isYou) {
-		return this.isYou == isYou;
 	}
 }

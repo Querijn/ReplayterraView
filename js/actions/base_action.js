@@ -2,8 +2,9 @@ import Replay from "../replay.js";
 
 export default class BaseAction {
 
-	constructor(name) {
+	constructor(name, isYou) {
 		this.name = name;
+		this.isYou = isYou;
 		this._hasStarted = false;
 	}
 
@@ -27,10 +28,6 @@ export default class BaseAction {
 
 	get deckCardData() {
 		return [];
-	}
-
-	isPlayerAction(isYou) {
-		return false;
 	}
 
 	get hasStarted() {

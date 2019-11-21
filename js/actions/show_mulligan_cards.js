@@ -8,9 +8,7 @@ export default class ShowMulliganCardsAction extends BaseAction {
 	animations = [];
 
 	constructor(isYou, oldCardCodes) {
-		super("ShowMulliganCards");
-
-		this.isYou = isYou;
+		super("ShowMulliganCards", isYou);
 
 		for (const oldCardCode of oldCardCodes)
 			this.cards.push(new CardData("", oldCardCode));
@@ -18,10 +16,10 @@ export default class ShowMulliganCardsAction extends BaseAction {
 
 	isReadyToPlay(timeMs) {
 
-		if (Replay.timeLastAction < 0 || timeMs <= 0)
+		if (Replay.lastTimeAction(this.isYou) < 0 || timeMs <= 0)
 			return false;
 
-		return timeMs - Replay.timeLastAction > 2000;
+		return timeMs - Replay.lastTimeAction(this.isYou) > 2000;
 	}
 
 	isDone(timeMs) {
@@ -76,9 +74,5 @@ export default class ShowMulliganCardsAction extends BaseAction {
 
 	get deckCardData() {
 		return this.cards;
-	}
-
-	isPlayerAction(isYou) {
-		return this.isYou == isYou;
 	}
 }

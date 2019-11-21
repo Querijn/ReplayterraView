@@ -10,13 +10,8 @@ export default class ReplaceMulliganCardsAction extends BaseAction {
 	finalAnimation = null;
 
 	constructor(isYou, oldCardCodes, finalCards) {
-		super("ReplaceMulliganCards");
-
-		ReplaceMulliganCardsAction.settleCount = 0;
-
-		this.isYou = isYou;
-
-
+		super("ReplaceMulliganCards", isYou);
+		
 		this.indicesToRemove = [];
 		for (let i = 0; i < oldCardCodes.length; i++) {
 
@@ -35,10 +30,10 @@ export default class ReplaceMulliganCardsAction extends BaseAction {
 	}
 	
 	isReadyToPlay(timeMs) {
-		if (Replay.timeLastAction < 0)
+		if (Replay.lastTimeAction(this.isYou) < 0)
 			return false;
 
-		return timeMs - Replay.timeLastAction > 3000;
+		return timeMs - Replay.lastTimeAction(this.isYou) > 3000;
 	}
 
 	isDone(timeMs) {
@@ -83,10 +78,6 @@ export default class ReplaceMulliganCardsAction extends BaseAction {
 
 	get deckCardData() {
 		return this.newCards;
-	}
-
-	isPlayerAction(isYou) {
-		return this.isYou == isYou;
 	}
 	
 	identifyCard(code, id) {
