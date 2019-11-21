@@ -1,5 +1,5 @@
-import CardContainer from "./card_container";
-import Deck from "./deck";
+import CardContainer from "./card_container.js";
+import Deck from "./deck.js";
 
 export default class PlayerSide {
 

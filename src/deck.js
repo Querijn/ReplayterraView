@@ -1,5 +1,5 @@
-import Replay from "./replay";
-import CardContainer from "./card_container";
+import Replay from "./replay.js";
+import CardContainer from "./card_container.js";
 
 export default class Deck extends CardContainer {
 

@@ -1,6 +1,7 @@
 import Card from "./card.js";
 import Scene from "./scene.js";
-import Animation from "./animation/animation.js";
+import AnimationEffect from "./animation/animation_effect.js";
+import * as Easing from "./easing.js";
 
 export default class CardContainer {
 

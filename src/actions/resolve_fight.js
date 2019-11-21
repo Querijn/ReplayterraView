@@ -1,10 +1,10 @@
-import BaseAction from "./base_action";
-import Replay from "../replay";
-import DummyCard from "../dummy_card";
-import Animation from "../animation/animation";
-import AnimationEffect from "../animation/animation_effect";
-import AnimationDelay from "../animation/animation_delay";
-import * as Easing from "../easing";
+import BaseAction from "./base_action.js";
+import Replay from "../replay.js";
+import DummyCard from "../dummy_card.js";
+import Animation from "../animation/animation.js";
+import AnimationEffect from "../animation/animation_effect.js";
+import AnimationDelay from "../animation/animation_delay.js";
+import * as Easing from "../easing.js";
 
 export default class ResolveFight extends BaseAction {
 

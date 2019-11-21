@@ -1,6 +1,6 @@
-import BaseAction from "./base_action";
-import Replay from "../replay";
-import Scene from "../scene";
+import BaseAction from "./base_action.js";
+import Replay from "../replay.js";
+import Scene from "../scene.js";
 
 export default class PlayCardToBench extends BaseAction {
 

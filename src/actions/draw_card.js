@@ -1,7 +1,7 @@
-import BaseAction from "./base_action";
-import Replay from "../replay";
-import Scene from "../scene";
-import ReplaceMulliganCardsAction from "./replace_mulligan_cards";
+import BaseAction from "./base_action.js";
+import Replay from "../replay.js";
+import Scene from "../scene.js";
+import ReplaceMulliganCardsAction from "./replace_mulligan_cards.js";
 
 export default class DrawCardAction extends BaseAction {
 

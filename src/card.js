@@ -1,10 +1,10 @@
-import Scene from "./scene";
-import RenderObject from "./render_object";
-import CardData from "./card_data";
-import * as Easing from "./easing";
-import AnimationEffect from "./animation/animation_effect";
-import AnimationDelay from "./animation/animation_delay";
-import Animation from "./animation/animation_delay";
+import Scene from "./scene.js";
+import RenderObject from "./render_object.js";
+import CardData from "./card_data.js";
+import * as Easing from "./easing.js";
+import AnimationEffect from "./animation/animation_effect.js";
+import AnimationDelay from "./animation/animation_delay.js";
+import Animation from "./animation/animation_delay.js";
 
 export default class Card extends RenderObject {
 

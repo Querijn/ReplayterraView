@@ -1,13 +1,13 @@
-import PlayerSide from "./player_side";
-import Scene from "./scene";
-import ShowMulliganCards from "./actions/show_mulligan_cards";
-import ReplaceMulliganCards from "./actions/replace_mulligan_cards";
-import DrawCard from "./actions/draw_card";
-import SetupCardsForAttackAction from "./actions/setup_cards_for_attack";
-import PlayCardToBench from "./actions/play_card_to_bench";
-import AnimationEffect from "./animation/animation_effect";
-import CardData from "./card_data";
-import ResolveFight from "./actions/resolve_fight";
+import PlayerSide from "./player_side.js";
+import Scene from "./scene.js";
+import ShowMulliganCards from "./actions/show_mulligan_cards.js";
+import ReplaceMulliganCards from "./actions/replace_mulligan_cards.js";
+import DrawCard from "./actions/draw_card.js";
+import SetupCardsForAttackAction from "./actions/setup_cards_for_attack.js";
+import PlayCardToBench from "./actions/play_card_to_bench.js";
+import AnimationEffect from "./animation/animation_effect.js";
+import CardData from "./card_data.js";
+import ResolveFight from "./actions/resolve_fight.js";
 
 export default class Replay {
 
