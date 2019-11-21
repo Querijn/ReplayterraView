@@ -77,7 +77,7 @@ export default class ResolveFight extends BaseAction {
 
 	doFightAnimation() {
 		let lastAnim = null;
-		for (let i = 0; i < Replay.you.field.cards.length; i++) {
+		for (let i = Replay.you.field.cards.length - 1; i >= 0; i--) {
 			const cards = [
 				Replay.you.field.cards[i],
 				Replay.opponent.field.cards[i] 
@@ -88,12 +88,13 @@ export default class ResolveFight extends BaseAction {
 				const up = j == 1 ? 1 : -1;
 
 				const anim = card.addAnimation()
-				.add(new AnimationDelay(i * 320))
+				.add(new AnimationDelay((Replay.you.field.cards.length - i) * 320))
 				.add(new AnimationEffect(Easing.linear, card.position, "y", card.position.y - up * 30,	240))
 				.add(new AnimationEffect(Easing.linear, card.position, "y", card.position.y + up * 70,	80))
 				.add(new AnimationEffect(Easing.linear, card.position, "y", card.position.y, 			120));
 
-				lastAnim = anim;
+				if (!lastAnim || anim.length > lastAnim.length)
+					lastAnim = anim;
 			}
 		}
 
