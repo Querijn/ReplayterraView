@@ -14,28 +14,25 @@ export default class PlayCardToBench extends BaseAction {
 	}
 
 	isReadyToPlay(timeMs) {
-		// Wait for animations to finish
-		const player = this.isYou ? Replay.you : Replay.opponent;
-		if (Scene.areAnimationsPlaying) {
-			this.time = -1;
+		if (Replay.timeLastAction < 0)
 			return false;
-		}
 
-		// Init timer
-		if (this.time < 0) {
-			this.time = timeMs;
-			return false;
-		}
-
-		// Wait 1 sec
-		return timeMs - this.time > 1000;
+		return timeMs - Replay.timeLastAction > 1000;
 	}
 
-	play(timeMs, skipAnimations) {
-		debug.log(`${timeMs}: Playing ${this.name} for ${this.isYou ? "you" : "them"}: ${skipAnimations ? "(skipping animations)" : ""}`);
+	isDone(timeMs) {
+		return this.animation && this.animation.isDoneAt(timeMs);
+	}
+
+	play(skipAnimations) {
+		debug.log(`Playing ${this.name} for ${this.isYou ? "you" : "them"}: CardID = ${this.card.id} ${skipAnimations ? "(skipping animations)" : ""}`);
 		
 		const player = this.isYou ? Replay.you : Replay.opponent;
-		player.hand.addCardToBench(this.card);
+		const card = player.hand.cards.find(c => c.id == this.card.id);
+		if (!card)
+			throw new Error(`Tried to play a card you ${this.isYou ? "you" : "they"} don't have (${this.card.id})!`);
+
+		this.animation = player.hand.moveToContainer(card, player.bench, skipAnimations);
 	}
 
 	get deckCardData() {

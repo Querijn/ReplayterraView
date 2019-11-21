@@ -27,7 +27,7 @@ export default class CardContainer {
 			console.log (`Adding card ${card.id} to top of ${playerName} ${this.name} ${skipAnimations ? "immediately." : `in ${moveDuration}ms`}.`);
 
 			this.cards.unshift(card);
-			lastAnim = card.moveTo(this.x, this.y, 0, moveDuration);
+			lastAnim = this.fixPositions(skipAnimations, card);
 		}
 		
 		return lastAnim;
@@ -45,7 +45,7 @@ export default class CardContainer {
 			console.log (`Adding card ${card.id} to bottom of ${playerName} ${this.name} ${skipAnimations ? "immediately." : `in ${moveDuration}ms`}.`);
 
 			this.cards.push(card);
-			lastAnim = this.fixPositions(skipAnimations); // This will move the card towards the container too.
+			lastAnim = this.fixPositions(skipAnimations, card); // This will move the card towards the container too.
 		}
 		
 		return lastAnim;
@@ -68,6 +68,7 @@ export default class CardContainer {
 		card = this.cards.splice(cardIndex, 1)[0];
 		debug.log(`${!this.player.isTop ? "Player" : "Opponent"}'s ${this.name} is moving a card to ${cardContainer.name}'s ${cardContainer.shouldAddToTop ? "top" : "bottom"} (${skipAnimations ? "skipping anims" : "with anims"})`);
 
+		this.fixPositions(skipAnimations, card);
 		if (cardContainer.shouldAddToTop)
 			return cardContainer.addCardsToTop([card], skipAnimations);
 		else
@@ -87,7 +88,7 @@ export default class CardContainer {
 			return cardContainer.addCardsToBottom(cards, skipAnimations);
 	}
 
-	fixPositions(skipAnimations) {
+	fixPositions(skipAnimations, card) {
 
 		const width = this.width * Scene.width;
 		const stepX = width / (this.cards.length || 1);
@@ -96,7 +97,7 @@ export default class CardContainer {
 		for (let i = 0; i < this.cards.length; i++) {
 
 			const card = this.cards[i];
-			const distFromMiddleIndex = this.cards.length > 1 ? this.cards.length / 2 - i : 0;
+			let distFromMiddleIndex = this.cards.length > 1 ? (this.cards.length - 1) / 2 - i : 0;
 
 			lastAnim = card.moveTo(
 				this.x + distFromMiddleIndex * stepX,

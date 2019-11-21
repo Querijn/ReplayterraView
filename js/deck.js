@@ -28,7 +28,7 @@ export default class Deck extends CardContainer {
 		debug.log(`${!this.player.isTop ? "Player" : "Opponent"}'s deck currently looks like this: `, this.cards.map(c => c.data ));
 	}
 	
-	fixPositions(skipAnimations) {
-		debugger;
+	fixPositions(skipAnimations, card) {
+		card.moveTo(this.x, this.y, 0, skipAnimations ? 0 : 250);
 	}
 }
