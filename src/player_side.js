@@ -17,7 +17,7 @@ export default class PlayerSide {
 		const toCorrectResY = (oldY) => (oldY / 600) * Scene.height;
 		
 		const deckX = isTop ? resX - 50 : 50;
-		const deckY = isTop ? 75 :	resY - 50;
+		const deckY = isTop ? 75 :	resY - 75;
 		const deckScale = 1.5 * extraScale;
 		this.deck = new Deck(this, toCorrectResX(deckX), toCorrectResY(deckY), deckScale);
 		
