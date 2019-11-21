@@ -29,7 +29,7 @@ export default class PlayerSide {
 		this.bench = new CardContainer("bench", this, benchX, benchY, benchWidth, true, CardContainer.ShowSide.ShowFront);
 
 		const fieldX = resX / 2;
-		const fieldY = isTop ? 200 : resY - 200;
+		const fieldY = isTop ? 225 : resY - 225;
 		const fieldWidth = 0.5;
 		this.field = new CardContainer("field", this, fieldX, fieldY, fieldWidth, true, CardContainer.ShowSide.ShowFront);
 		
