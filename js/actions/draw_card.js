@@ -13,19 +13,6 @@ export default class DrawCardAction extends BaseAction {
 	}
 
 	isReadyToPlay(timeMs) {
-		return this.isReplaceMulliganDone(timeMs) && this.isReadyToPlayDuringRound(timeMs);
-	}
-
-	isDone(timeMs) {
-		return this.animation && this.animation.isDone;
-	}
-
-	isReplaceMulliganDone(timeMs) {
-		if (ReplaceMulliganCardsAction.timeSettled > 0 && timeMs - ReplaceMulliganCardsAction.timeSettled > 250) {
-			return true;
-		}
-
-		this.time = -1;
 		return false;
 	}
 	

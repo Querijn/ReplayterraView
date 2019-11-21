@@ -53,9 +53,9 @@ export default class ShowMulliganCardsAction extends BaseAction {
 		
 		const player = this.isYou ? Replay.you : Replay.opponent;
 		const drawCard = () => {
-			this.animations.push(player.deck.drawCard(player.mulligan, skipAnimations)
+			this.animations.push(player.deck.drawFromTop(player.mulligan, skipAnimations)
 			.onDone((anim) => {
-				anim.owner.showFront();
+				anim.owner.showFront(0, skipAnimations ? 0 : 250);
 			}));
 		}
 

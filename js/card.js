@@ -53,7 +53,7 @@ export default class Card extends RenderObject {
 
 	moveTo(x, y, z = 1, durationMs = 250) {
 
-		debug.log(`Card ${this.data.id} is moving to ${x}, ${y}, ${z}. ${durationMs === 0 ? "This will happen immediately" : `This will take ${durationMs} ms.`}`);
+		debug.log(`Card ${this.data.id || "(no id)"}/${this.data.code} is moving to ${x}, ${y}, ${z}. ${durationMs === 0 ? "This will happen immediately" : `This will take ${durationMs} ms.`}`);
 		
 
 		this.addAnimation().add(new AnimationEffect(Easing.easeInOutQuad, this.position, "x", x, durationMs));

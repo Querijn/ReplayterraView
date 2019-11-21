@@ -15,15 +15,18 @@ export default class PlayerSide {
 		
 		const mullX = resX / 2;
 		const mullY = resY / 4 * (isTop ? 1 : 3);
-		this.mulligan = new CardContainer("mulligan", this, mullX, mullY);
+		const mullWidth = 0.5;
+		this.mulligan = new CardContainer("mulligan", this, mullX, mullY, mullWidth);
 
 		const handX = resX / 2;
 		const handY = isTop ? 0 : resY;
-		this.hand = new CardContainer("hand", this, handX, handY);
+		const handWidth = 0.3;
+		this.hand = new CardContainer("hand", this, handX, handY, handWidth);
 
 		const benchX = resX / 2;
 		const benchY = isTop ? 100 : resY - 100;
-		this.bench = new CardContainer("bench", this, benchX, benchY);
+		const benchWidth = 0.5;
+		this.bench = new CardContainer("bench", this, benchX, benchY, benchWidth);
 		
 		// debug.log(`${isTop ? "Top" : "Bottom"} player's deck is at ${deckX}, ${deckY}.`);
 		// debug.log(`${isTop ? "Top" : "Bottom"} player's mulligan is at ${mullX}, ${mullY}.`);

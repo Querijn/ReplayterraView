@@ -7,6 +7,7 @@ export default class ReplaceMulliganCardsAction extends BaseAction {
 
 	oldCards = [];
 	newCards = [];
+	finalAnimation = null;
 
 	constructor(isYou, oldCardCodes, finalCards) {
 		super("ReplaceMulliganCards");
@@ -34,18 +35,50 @@ export default class ReplaceMulliganCardsAction extends BaseAction {
 	}
 	
 	isReadyToPlay(timeMs) {
-		if (Replay.timeMulliganResolved < 0)
+		if (Replay.timeLastAction < 0)
 			return false;
 
-		return timeMs - Replay.timeMulliganResolved > 1000;
+		return timeMs - Replay.timeLastAction > 3000;
 	}
 
 	isDone(timeMs) {
-		return false;
+		return this.finalAnimation && this.finalAnimation.isDoneAt(timeMs);
 	}
 	
 	play(skipAnimations) {
 
+		const drawCard = () => {
+			player.deck.drawFromTop(player.mulligan, skipAnimations)
+			.onDone((anim) => {
+				anim.owner.showFront(0, skipAnimations ? 0 : 250);
+			});
+		};
+
+		const player = this.isYou ? Replay.you : Replay.opponent;
+		for (let i = this.indicesToRemove.length - 1; i >= 0; i--) {
+
+			const index = this.indicesToRemove[i];
+
+			const mulliganCard = player.mulligan.cards[index];
+			if (mulliganCard == null)
+				throw new Error(`Could not find card ${index}!`);
+			
+			player.mulligan.moveToContainer(mulliganCard, player.deck, skipAnimations);
+
+			if (skipAnimations)
+				drawCard();
+			else 
+				setTimeout(drawCard, 250 * i);
+		}
+
+		const onDone = () => {
+			this.finalAnimation = player.mulligan.moveAllToContainer(player.hand, skipAnimations);
+		};
+
+		if (skipAnimations)
+			onDone();
+		else 
+			setTimeout(onDone, 1000 + 250 * this.indicesToRemove.length); // A second after the last reveal.
 	}
 
 	get deckCardData() {
