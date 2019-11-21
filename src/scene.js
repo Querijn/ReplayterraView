@@ -100,9 +100,18 @@ export default class Scene {
 			this.width = 800; // window.innerWidth; // TODO: Fix this
 			this.height = 600; // window.innerHeight;
 
+			this.textureLoader = new THREE.TextureLoader();
+			const background = new THREE.PlaneGeometry(this.width, this.height);
+			const material = new THREE.MeshBasicMaterial({
+				side: THREE.DoubleSide,  map: this.textureLoader.load('assets/background.png')});
+			const quad = new THREE.Mesh(background, material);
+			this.scene.add(quad);
+			quad.rotation.z = Math.PI;
+			quad.position.x = this.width / 2;
+			quad.position.y = this.height / 2;
+
 			this.camera = new THREE.OrthographicCamera(0, this.width, 0, this.height, 0, 10000);
 			this.camera.position.z = 680;
-			this.textureLoader = new THREE.TextureLoader();
 		}
 	}
 
