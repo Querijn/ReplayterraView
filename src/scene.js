@@ -1,121 +1,126 @@
+import * as THREE from "three";
 import Card from "./card.js";
 
 export default class Scene {
+  static isThreeJS = false;
+  static scene = null;
+  static camera = null;
+  static textureLoader = null;
+  static renderObjects = [];
 
-	static isThreeJS = false;
-	static scene = null;
-	static camera = null;
-	static textureLoader = null;
-	static renderObjects = [];
+  static async _getThreeJS() {
+    return new Promise((resolve, reject) => {
+      const name = "ReplayterraEngine";
+      let script = document.getElementById(name);
+      if (script) {
+        resolve(script);
+        return;
+      }
 
-	static async _getThreeJS() {
-		return new Promise((resolve, reject) => {
+      script = document.createElement("script");
+      script.type = "text/javascript";
+      script.src = "three.min.js";
+      script.id = name;
+      script.addEventListener("load", () => resolve(script), false);
+      script.addEventListener("error", () => reject(script), false);
+      document.body.appendChild(script);
+    });
+  }
 
-			const name = "ReplayterraEngine";
-			let script = document.getElementById(name);
-			if (script) {
-				resolve(script);
-				return;
-			}
+  static async loadAsThreeJS(canvas) {
+    canvas.onresize = Scene.reset;
 
-			script = document.createElement('script');
-			script.type = 'text/javascript';
-			script.src = "three.min.js";
-			script.id = name;
-			script.addEventListener('load', () => resolve(script), false);
-			script.addEventListener('error', () => reject(script), false);
-			document.body.appendChild(script);
-		});
-	}
+    this.isThreeJS = true;
+    this.domElement = canvas;
+    this.renderer = new THREE.WebGLRenderer({
+      canvas,
+      alpha: true,
+      antialias: true
+    });
 
-	static async loadAsThreeJS() {
+    this.reset();
 
-		await this._getThreeJS();
+    await Card.loadThreeJSShader();
+  }
 
-		window.onresize = Scene._onResize;
+  static _onResize() {
+    return; // todo: fix this
+    if (Scene.isThreeJS) {
+      Scene.camera.right = this.width;
+      Scene.camera.bottom = this.height;
+      Scene.camera.updateProjectionMatrix();
 
-		this.isThreeJS = true;
-		this.reset();
+      Scene.renderer.setSize(window.innerWidth, window.innerHeight);
+    }
+  }
 
-		this.renderer = new THREE.WebGLRenderer({ alpha: true, antialias: true });
+  static _add(mesh) {
+    if (!this.isThreeJS) throw new Error("Not implemented");
 
-		Scene.renderer.setSize(this.width, this.height);
-		await Card.loadThreeJSShader();
-	}
+    this.scene.add(mesh);
+  }
 
-	static _onResize() { 
+  static _remove(mesh) {
+    if (!this.isThreeJS) throw new Error("Not implemented");
 
-		return; // todo: fix this
-		if (Scene.isThreeJS) {
-			Scene.camera.right = this.width;
-			Scene.camera.bottom = this.height;
-			Scene.camera.updateProjectionMatrix();
-			
-			Scene.renderer.setSize(window.innerWidth, window.innerHeight);
-		}
-	}
+    this.scene.remove(mesh);
+  }
 
-	static _add(mesh) {
-		if (!this.isThreeJS)
-			throw new Error("Not implemented");
+  static _addRenderObject(obj) {
+    this.renderObjects.push(obj);
+  }
 
-		this.scene.add(mesh);
-	}
+  static _removeRenderObject(obj) {
+    const index = this.renderObjects.findIndex(o => o === obj);
+    if (index < 0) throw new Error("Could not find Render Object to remove!");
+    this.renderObjects.splice(index, 1)[0];
+  }
 
-	static _remove(mesh) {
-		if (!this.isThreeJS)
-			throw new Error("Not implemented");
+  static update(timeMs) {
+    for (const renderObject of Scene.renderObjects) {
+      renderObject.beginUpdate(timeMs);
+    }
 
-		this.scene.remove(mesh);
-	}
+    if (Scene.isThreeJS) {
+      Scene.renderer.render(Scene.scene, Scene.camera);
+    }
+  }
 
-	static _addRenderObject(obj) {
-		this.renderObjects.push(obj);
-	}
+  static reset() {
+    if (this.isThreeJS) {
+      this.scene = new THREE.Scene();
 
-	static _removeRenderObject(obj) {
-		const index = this.renderObjects.findIndex(o => o === obj);
-		if (index < 0)
-			throw new Error("Could not find Render Object to remove!");
-		this.renderObjects.splice(index, 1)[0];
-	}
+      this.width = this.domElement.offsetWidth; // window.innerWidth; // TODO: Fix this
+      this.height = this.domElement.offsetWidth * 0.75; // window.innerHeight;
 
-	static update(timeMs) {
-		
-		for (const renderObject of Scene.renderObjects) {
-			renderObject.beginUpdate(timeMs);
-		}
+      this.textureLoader = new THREE.TextureLoader();
+      const background = new THREE.PlaneGeometry(this.width, this.height);
+      const material = new THREE.MeshBasicMaterial({
+        side: THREE.DoubleSide,
+        map: this.textureLoader.load("/bg.jpg")
+      });
+      const quad = new THREE.Mesh(background, material);
+      this.scene.add(quad);
+      quad.rotation.z = Math.PI;
+      quad.position.x = this.width / 2;
+      quad.position.y = this.height / 2;
 
-		if (Scene.isThreeJS) {
-			Scene.renderer.render(Scene.scene, Scene.camera);
-		}
-	}
+      this.camera = new THREE.OrthographicCamera(
+        0,
+        this.width,
+        0,
+        this.height,
+        0,
+        10000
+      );
+      this.camera.position.z = 680;
+    }
 
-	static reset() {
-		if (this.isThreeJS) {
-			this.scene = new THREE.Scene();
+    Scene.renderer.setSize(this.width, this.height);
+  }
 
-			this.width = 800; // window.innerWidth; // TODO: Fix this
-			this.height = 600; // window.innerHeight;
-
-			this.textureLoader = new THREE.TextureLoader();
-			const background = new THREE.PlaneGeometry(this.width, this.height);
-			const material = new THREE.MeshBasicMaterial({ side: THREE.DoubleSide,  map: this.textureLoader.load('assets/background.png')});
-			const quad = new THREE.Mesh(background, material);
-			this.scene.add(quad);
-			quad.rotation.z = Math.PI;
-			quad.position.x = this.width / 2;
-			quad.position.y = this.height / 2;
-
-			this.camera = new THREE.OrthographicCamera(0, this.width, 0, this.height, 0, 10000);
-			this.camera.position.z = 680;
-		}
-	}
-
-	static get areAnimationsPlaying() {
-
-		for (const renderObject of Scene.renderObjects)
-			if (renderObject.isAnimationPlaying)
-				return true;
-	}
+  static get areAnimationsPlaying() {
+    for (const renderObject of Scene.renderObjects)
+      if (renderObject.isAnimationPlaying) return true;
+  }
 }
