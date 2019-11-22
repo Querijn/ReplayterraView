@@ -1,0 +1,887 @@
+[
+	{
+		"type": "mulligan",
+		"initialCards": [
+			"01SI021",
+			"01SI049",
+			"01IO007",
+			"01SI010"
+		],
+		"finalCards": [
+			"01SI021",
+			"01SI047",
+			"01SI023",
+			"01SI007"
+		]
+	},
+	{
+		"type": "draw",
+		"code": "01SI021",
+		"id": "1452276318"
+	},
+	{
+		"type": "draw",
+		"code": "01SI047",
+		"id": "1576720896"
+	},
+	{
+		"type": "draw",
+		"code": "01SI023",
+		"id": "527067993"
+	},
+	{
+		"type": "draw",
+		"code": "01SI007",
+		"id": "2074122048"
+	},
+	{
+		"type": "draw",
+		"code": "01IO049",
+		"id": "686781515"
+	},
+	{
+		"type": "enemy_place",
+		"code": "01IO005",
+		"id": "1787801469"
+	},
+	{
+		"type": "draw",
+		"code": "01SI010",
+		"id": "421578046"
+	},
+	{
+		"type": "enemy_place",
+		"code": "01PZ019",
+		"id": "1070072817"
+	},
+	{
+		"type": "place",
+		"code": "01SI023",
+		"id": "527067993"
+	},
+	{
+		"type": "enemy_play",
+		"code": "01PZ019",
+		"id": "1070072817",
+		"x": 674
+	},
+	{
+		"type": "enemy_play",
+		"code": "01IO005",
+		"id": "1787801469",
+		"x": 969
+	},
+	{
+		"type": "play",
+		"code": "01SI023",
+		"id": "527067993",
+		"x": 969
+	},
+	{
+		"type": "fight",
+		"matchups": [
+			{
+				"ourCardID": null,
+				"enemyCardID": "1070072817",
+				"survivorCardIDs": [
+					"1070072817"
+				]
+			},
+			{
+				"ourCardID": "527067993",
+				"enemyCardID": "1787801469",
+				"survivorCardIDs": [
+					"527067993"
+				]
+			}
+		]
+	},
+	{
+		"type": "draw",
+		"code": "01IO049",
+		"id": "691381514"
+	},
+	{
+		"type": "place",
+		"code": "01SI021",
+		"id": "1452276318"
+	},
+	{
+		"type": "play",
+		"code": "01SI021",
+		"id": "1452276318",
+		"x": 822
+	},
+	{
+		"type": "enemy_play",
+		"code": "01PZ019",
+		"id": "1070072817",
+		"x": 822
+	},
+	{
+		"type": "fight",
+		"matchups": [
+			{
+				"ourCardID": "1452276318",
+				"enemyCardID": "1070072817",
+				"survivorCardIDs": []
+			}
+		]
+	},
+	{
+		"type": "enemy_place",
+		"code": "01IO045",
+		"id": "731527977"
+	},
+	{
+		"type": "enemy_place",
+		"code": "01IO005",
+		"id": "131336182"
+	},
+	{
+		"type": "draw",
+		"code": "01SI023",
+		"id": "908325486"
+	},
+	{
+		"type": "enemy_place",
+		"code": "01IO028",
+		"id": "931608264"
+	},
+	{
+		"type": "place",
+		"code": "01SI023",
+		"id": "908325486"
+	},
+	{
+		"type": "enemy_play",
+		"code": "01IO045",
+		"id": "731527977",
+		"x": 822
+	},
+	{
+		"type": "enemy_play",
+		"code": "01IO005",
+		"id": "131336182",
+		"x": 1117
+	},
+	{
+		"type": "enemy_play",
+		"code": "01IO028",
+		"id": "931608264",
+		"x": 527
+	},
+	{
+		"type": "fight",
+		"matchups": [
+			{
+				"ourCardID": null,
+				"enemyCardID": "931608264",
+				"survivorCardIDs": [
+					"931608264"
+				]
+			},
+			{
+				"ourCardID": null,
+				"enemyCardID": "731527977",
+				"survivorCardIDs": [
+					"731527977"
+				]
+			},
+			{
+				"ourCardID": null,
+				"enemyCardID": "131336182",
+				"survivorCardIDs": [
+					"131336182"
+				]
+			}
+		]
+	},
+	{
+		"type": "draw",
+		"code": "01SI047",
+		"id": "828380523"
+	},
+	{
+		"type": "place_spell",
+		"code": "01SI047",
+		"id": "1576720896"
+	},
+	{
+		"type": "draw",
+		"code": "01SI023",
+		"id": "1409732542"
+	},
+	{
+		"type": "spell_remove",
+		"code": "1576720896",
+		"id": "1576720896"
+	},
+	{
+		"type": "place_spell",
+		"code": "01SI047",
+		"id": "828380523"
+	},
+	{
+		"type": "draw",
+		"code": "01SI023",
+		"id": "513165608"
+	},
+	{
+		"type": "spell_remove",
+		"code": "828380523",
+		"id": "828380523"
+	},
+	{
+		"type": "place_spell",
+		"code": "01SI010",
+		"id": "421578046"
+	},
+	{
+		"type": "place",
+		"code": "01SI024",
+		"id": "1194670798"
+	},
+	{
+		"type": "place",
+		"code": "01SI024",
+		"id": "349123933"
+	},
+	{
+		"type": "spell_remove",
+		"code": "421578046",
+		"id": "421578046"
+	},
+	{
+		"type": "enemy_place",
+		"code": "01PZ029",
+		"id": "1292202473"
+	},
+	{
+		"type": "play",
+		"code": "01SI024",
+		"id": "1194670798",
+		"x": 674
+	},
+	{
+		"type": "play",
+		"code": "01SI024",
+		"id": "349123933",
+		"x": 969
+	},
+	{
+		"type": "play",
+		"code": "01SI021",
+		"id": "1452276318",
+		"x": 1117
+	},
+	{
+		"type": "enemy_place",
+		"code": "01PZ029",
+		"id": "1292202473"
+	},
+	{
+		"type": "enemy_play",
+		"code": "01IO005",
+		"id": "131336182",
+		"x": 1117
+	},
+	{
+		"type": "enemy_place",
+		"code": "01IO045",
+		"id": "731527977"
+	},
+	{
+		"type": "enemy_play",
+		"code": "01PZ029",
+		"id": "1292202473",
+		"x": 527
+	},
+	{
+		"type": "enemy_play",
+		"code": "01IO045",
+		"id": "731527977",
+		"x": 822
+	},
+	{
+		"type": "fight",
+		"matchups": [
+			{
+				"ourCardID": null,
+				"enemyCardID": "1292202473",
+				"survivorCardIDs": []
+			},
+			{
+				"ourCardID": "1194670798",
+				"enemyCardID": null,
+				"survivorCardIDs": []
+			},
+			{
+				"ourCardID": null,
+				"enemyCardID": "731527977",
+				"survivorCardIDs": []
+			},
+			{
+				"ourCardID": "349123933",
+				"enemyCardID": null,
+				"survivorCardIDs": []
+			},
+			{
+				"ourCardID": "1452276318",
+				"enemyCardID": "131336182",
+				"survivorCardIDs": []
+			}
+		]
+	},
+	{
+		"type": "draw",
+		"code": "01SI023",
+		"id": "1851268428"
+	},
+	{
+		"type": "enemy_place",
+		"code": "01PZ020",
+		"id": "175746088"
+	},
+	{
+		"type": "place",
+		"code": "01SI023",
+		"id": "1851268428"
+	},
+	{
+		"type": "enemy_play",
+		"code": "01IO028",
+		"id": "931608264",
+		"x": 674
+	},
+	{
+		"type": "enemy_play",
+		"code": "01PZ020",
+		"id": "175746088",
+		"x": 969
+	},
+	{
+		"type": "fight",
+		"matchups": [
+			{
+				"ourCardID": null,
+				"enemyCardID": "931608264",
+				"survivorCardIDs": [
+					"931608264"
+				]
+			},
+			{
+				"ourCardID": null,
+				"enemyCardID": "175746088",
+				"survivorCardIDs": [
+					"175746088"
+				]
+			}
+		]
+	},
+	{
+		"type": "draw",
+		"code": "01SI010",
+		"id": "413571397"
+	},
+	{
+		"type": "place_spell",
+		"code": "01SI010",
+		"id": "413571397"
+	},
+	{
+		"type": "place",
+		"code": "01SI024",
+		"id": "1144616744"
+	},
+	{
+		"type": "place",
+		"code": "01SI024",
+		"id": "1246193735"
+	},
+	{
+		"type": "spell_remove",
+		"code": "413571397",
+		"id": "413571397"
+	},
+	{
+		"type": "enemy_place",
+		"code": "01IO021",
+		"id": "893933587"
+	},
+	{
+		"type": "play",
+		"code": "01SI024",
+		"id": "1144616744",
+		"x": 671
+	},
+	{
+		"type": "play",
+		"code": "01SI024",
+		"id": "1246193735",
+		"x": 970
+	},
+	{
+		"type": "play",
+		"code": "01SI021",
+		"id": "1452276318",
+		"x": 1117
+	},
+	{
+		"type": "enemy_play",
+		"code": "01PZ020",
+		"id": "175746088",
+		"x": 527
+	},
+	{
+		"type": "enemy_play",
+		"code": "01IO028",
+		"id": "931608264",
+		"x": 822
+	},
+	{
+		"type": "fight",
+		"matchups": [
+			{
+				"ourCardID": null,
+				"enemyCardID": "175746088",
+				"survivorCardIDs": []
+			},
+			{
+				"ourCardID": "1144616744",
+				"enemyCardID": null,
+				"survivorCardIDs": []
+			},
+			{
+				"ourCardID": null,
+				"enemyCardID": "931608264",
+				"survivorCardIDs": [
+					"931608264"
+				]
+			},
+			{
+				"ourCardID": "1246193735",
+				"enemyCardID": null,
+				"survivorCardIDs": []
+			},
+			{
+				"ourCardID": "1452276318",
+				"enemyCardID": null,
+				"survivorCardIDs": []
+			}
+		]
+	},
+	{
+		"type": "draw",
+		"code": "01IO027",
+		"id": "1605849750"
+	},
+	{
+		"type": "enemy_place",
+		"code": "01PZ020",
+		"id": "1771568492"
+	},
+	{
+		"type": "enemy_play",
+		"code": "01IO028",
+		"id": "931608264",
+		"x": 822
+	},
+	{
+		"type": "enemy_play",
+		"code": "01PZ020",
+		"id": "1771568492",
+		"x": 1117
+	},
+	{
+		"type": "enemy_play",
+		"code": "01IO021",
+		"id": "893933587",
+		"x": 527
+	},
+	{
+		"type": "fight",
+		"matchups": [
+			{
+				"ourCardID": null,
+				"enemyCardID": "893933587",
+				"survivorCardIDs": [
+					"893933587"
+				]
+			},
+			{
+				"ourCardID": null,
+				"enemyCardID": "931608264",
+				"survivorCardIDs": [
+					"931608264"
+				]
+			},
+			{
+				"ourCardID": null,
+				"enemyCardID": "1771568492",
+				"survivorCardIDs": [
+					"1771568492"
+				]
+			}
+		]
+	},
+	{
+		"type": "draw",
+		"code": "01SI034",
+		"id": "1261235740"
+	},
+	{
+		"type": "place",
+		"code": "01IO027",
+		"id": "1605849750"
+	},
+	{
+		"type": "enemy_place_spell",
+		"code": "01PZ057",
+		"id": "64070353"
+	},
+	{
+		"type": "enemy_place",
+		"code": "01PZ032",
+		"id": "28069141"
+	},
+	{
+		"type": "enemy_place",
+		"code": "01PZ032",
+		"id": "585049635"
+	},
+	{
+		"type": "enemy_spell_remove",
+		"code": "64070353",
+		"id": "64070353"
+	},
+	{
+		"type": "place",
+		"code": "01SI023",
+		"id": "513165608"
+	},
+	{
+		"type": "play",
+		"code": "01SI023",
+		"id": "513165608",
+		"x": 971
+	},
+	{
+		"type": "play",
+		"code": "01IO027",
+		"id": "1605849750",
+		"x": 635
+	},
+	{
+		"type": "play",
+		"code": "01SI021",
+		"id": "1452276318",
+		"x": 1117
+	},
+	{
+		"type": "enemy_play",
+		"code": "01IO021",
+		"id": "893933587",
+		"x": 1117
+	},
+	{
+		"type": "enemy_place",
+		"code": "01PZ032",
+		"id": "585049635"
+	},
+	{
+		"type": "enemy_play",
+		"code": "01PZ032",
+		"id": "585049635",
+		"x": 822
+	},
+	{
+		"type": "enemy_place",
+		"code": "01PZ020",
+		"id": "1771568492"
+	},
+	{
+		"type": "enemy_play",
+		"code": "01PZ020",
+		"id": "1771568492",
+		"x": 527
+	},
+	{
+		"type": "enemy_place_spell",
+		"code": "01IO011",
+		"id": "489961324"
+	},
+	{
+		"type": "place_spell",
+		"code": "01IO049",
+		"id": "691381514"
+	},
+	{
+		"type": "spell_remove",
+		"code": "691381514",
+		"id": "691381514"
+	},
+	{
+		"type": "enemy_spell_remove",
+		"code": "489961324",
+		"id": "489961324"
+	},
+	{
+		"type": "fight",
+		"matchups": [
+			{
+				"ourCardID": null,
+				"enemyCardID": "1771568492",
+				"survivorCardIDs": []
+			},
+			{
+				"ourCardID": "1605849750",
+				"enemyCardID": null,
+				"survivorCardIDs": []
+			},
+			{
+				"ourCardID": null,
+				"enemyCardID": "585049635",
+				"survivorCardIDs": []
+			},
+			{
+				"ourCardID": "513165608",
+				"enemyCardID": null,
+				"survivorCardIDs": []
+			},
+			{
+				"ourCardID": "1452276318",
+				"enemyCardID": "893933587",
+				"survivorCardIDs": []
+			}
+		]
+	},
+	{
+		"type": "place_spell",
+		"code": "01SI034",
+		"id": "1261235740"
+	},
+	{
+		"type": "enemy_place_died",
+		"code": "01IO028",
+		"id": "931608264"
+	},
+	{
+		"type": "spell_remove",
+		"code": "1261235740",
+		"id": "1261235740"
+	},
+	{
+		"type": "draw",
+		"code": "01SI021",
+		"id": "99582073"
+	},
+	{
+		"type": "enemy_place_spell",
+		"code": "01PZ057",
+		"id": "413729570"
+	},
+	{
+		"type": "place_spell",
+		"code": "01IO049",
+		"id": "686781515"
+	},
+	{
+		"type": "spell_remove",
+		"code": "686781515",
+		"id": "686781515"
+	},
+	{
+		"type": "enemy_spell_remove",
+		"code": "413729570",
+		"id": "413729570"
+	},
+	{
+		"type": "enemy_play",
+		"code": "01PZ032",
+		"id": "28069141",
+		"x": 822
+	},
+	{
+		"type": "play",
+		"code": "01SI023",
+		"id": "1851268428",
+		"x": 823
+	},
+	{
+		"type": "fight",
+		"matchups": [
+			{
+				"ourCardID": "1851268428",
+				"enemyCardID": "28069141",
+				"survivorCardIDs": [
+					"1851268428"
+				]
+			}
+		]
+	},
+	{
+		"type": "draw",
+		"code": "01IO009",
+		"id": "187162035"
+	},
+	{
+		"type": "place",
+		"code": "01SI021",
+		"id": "99582073"
+	},
+	{
+		"type": "place",
+		"code": "01IO009",
+		"id": "187162035"
+	},
+	{
+		"type": "play",
+		"code": "01SI023",
+		"id": "527067993",
+		"x": 1327
+	},
+	{
+		"type": "play",
+		"code": "01SI023",
+		"id": "908325486",
+		"x": 1089
+	},
+	{
+		"type": "play",
+		"code": "01SI023",
+		"id": "1851268428",
+		"x": 850
+	},
+	{
+		"type": "play",
+		"code": "01SI021",
+		"id": "99582073",
+		"x": 612
+	},
+	{
+		"type": "play",
+		"code": "01IO009",
+		"id": "187162035",
+		"x": 373
+	},
+	{
+		"type": "play",
+		"code": "01IO009T1",
+		"id": "256776912",
+		"x": 1365
+	},
+	{
+		"type": "enemy_place_spell",
+		"code": "01PZ016",
+		"id": "418590673"
+	},
+	{
+		"type": "enemy_spell_remove",
+		"code": "418590673",
+		"id": "418590673"
+	},
+	{
+		"type": "enemy_place_spell",
+		"code": "01PZ010",
+		"id": "1846746353"
+	},
+	{
+		"type": "enemy_spell_remove",
+		"code": "1846746353",
+		"id": "1846746353"
+	},
+	{
+		"type": "enemy_place_spell",
+		"code": "01PZ016",
+		"id": "69996831"
+	},
+	{
+		"type": "enemy_spell_remove",
+		"code": "69996831",
+		"id": "69996831"
+	},
+	{
+		"type": "enemy_place_spell",
+		"code": "01PZ049",
+		"id": "1599505106"
+	},
+	{
+		"type": "enemy_spell_remove",
+		"code": "1599505106",
+		"id": "1599505106"
+	},
+	{
+		"type": "enemy_place_spell",
+		"code": "01PZ039",
+		"id": "2063016494"
+	},
+	{
+		"type": "enemy_spell_remove",
+		"code": "2063016494",
+		"id": "2063016494"
+	},
+	{
+		"type": "fight",
+		"matchups": [
+			{
+				"ourCardID": "187162035",
+				"enemyCardID": null,
+				"survivorCardIDs": [
+					"187162035"
+				]
+			},
+			{
+				"ourCardID": "99582073",
+				"enemyCardID": null,
+				"survivorCardIDs": []
+			},
+			{
+				"ourCardID": "1851268428",
+				"enemyCardID": null,
+				"survivorCardIDs": [
+					"1851268428"
+				]
+			},
+			{
+				"ourCardID": "908325486",
+				"enemyCardID": null,
+				"survivorCardIDs": [
+					"908325486"
+				]
+			},
+			{
+				"ourCardID": "527067993",
+				"enemyCardID": null,
+				"survivorCardIDs": [
+					"527067993"
+				]
+			},
+			{
+				"ourCardID": "256776912",
+				"enemyCardID": null,
+				"survivorCardIDs": []
+			}
+		]
+	},
+	{
+		"type": "place_died",
+		"code": "01SI023",
+		"id": "527067993"
+	},
+	{
+		"type": "place_died",
+		"code": "01SI023",
+		"id": "908325486"
+	},
+	{
+		"type": "place_died",
+		"code": "01SI023",
+		"id": "1851268428"
+	},
+	{
+		"type": "place_died",
+		"code": "01IO009",
+		"id": "187162035"
+	}
+]
