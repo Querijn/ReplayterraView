@@ -193,7 +193,7 @@ export default class Replay {
             console.log(`All replay actions played..`);
           }
         }
-      } else if (Replay.currentAction.isReadyToPlay(timeMs) || true) {
+      } else if (Replay.currentAction.isReadyToPlay(timeMs)) {
         Replay.currentAction.startPlay(/* skipAnimations = */ false);
 
         if (Replay.actions.length == Replay._currentActionIterator) {
