@@ -97,7 +97,7 @@ export default class Scene {
       const background = new THREE.PlaneGeometry(this.width, this.height);
       const material = new THREE.MeshBasicMaterial({
         side: THREE.DoubleSide,
-        map: this.textureLoader.load("/bg.jpg")
+        map: this.textureLoader.load("assets/background.jpg")
       });
       const quad = new THREE.Mesh(background, material);
       this.scene.add(quad);
