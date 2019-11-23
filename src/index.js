@@ -16,15 +16,15 @@ async function test() {
   Replay.play(actions);
 }
 
-export async function loadReplay(canvas) {
+export async function loadReplay(canvas, uuid) {
   console.log("ReplayterraView opened.");
 
   await Scene.loadAsThreeJS(canvas);
 
-  const urlParams = new URLSearchParams(window.location.search);
-  const replayRequest = urlParams.get("replay") || "/replay.json";
+  const data = await fetch("http://lor.stelar7.no/api/replay_by_id.php?id=" + uuid);
+  const tracker = (await data.json())["tracker_id"];
 
-  const response = await fetch(replayRequest);
+  const response = await fetch("http://lor.stelar7.no/api/replays/" + uuid + "/" + tracker + "/parsed.json");
   const actions = await response.json();
 
   Replay.play(actions);
