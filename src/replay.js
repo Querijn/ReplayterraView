@@ -217,6 +217,8 @@ export default class Replay {
     let cards = [].concat.apply([], cardArrays); // flatten array
     cards = cards.filter(c => c.code == "");
 
+    if (cards.length === 0)
+      return;
     // const card = cards[Math.floor(Math.random() * cards.length)]; // TODO: Turn this back on. It's currently turned off because for some reason, it sometimes can't find the card..
     const card = cards[0];
 
